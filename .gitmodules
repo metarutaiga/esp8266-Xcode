@@ -1,0 +1,3 @@
+[submodule "3rdParty/ESP8266_NONOS_SDK"]
+	path = 3rdParty/ESP8266_NONOS_SDK
+	url = https://github.com/espressif/ESP8266_NONOS_SDK.git
