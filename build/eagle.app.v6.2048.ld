@@ -84,13 +84,21 @@ SECTIONS
     *(.rodata.str*)
 
     *liblwip_536.a:espconn_buf.o        (.rodata .rodata.*)
+    *liblwip_536.a:etharp.o             (.rodata .rodata.*)
     *libmain.a:app_main.o               (.rodata .rodata.*)
     *libmain.a:mem_manager.o            (.rodata .rodata.*)
+    *libnet80211.a:ieee80211_hostap.o   (.rodata .rodata.*)
+    *libnet80211.a:ieee80211_ht.o       (.rodata .rodata.*)
     *libnet80211.a:ieee80211_input.o    (.rodata .rodata.* .data .data.*)
+    *libnet80211.a:ieee80211_output.o   (.rodata .rodata.*)
+    *libnet80211.a:wl_cnx.o             (.rodata .rodata.*)
     *libphy.a:phy_chip_v6.o             (.rodata .rodata.*)
+    *libphy.a:phy_chip_v6_ana.o         (.rodata .rodata.*)
+    *libphy.a:phy_chip_v6_cal.o         (.rodata .rodata.*)
     *libphy.a:phy_sleep.o               (.rodata .rodata.*)
     *libpp.a:esf_buf.o                  (.rodata .rodata.*)
     *libpp.a:lmac.o                     (.rodata .rodata.*)
+    *libpp.a:rate_control.o             (.rodata .rodata.*)
     *libwpa.a:wpa.o                     (.rodata .rodata.*)
 
     /* esp-clang */
@@ -115,6 +123,24 @@ SECTIONS
     *libwps.a:(.literal.* .text.*)
 
     *(.irom.literal .irom.text .irom.literal.* .irom.text.* .irom0.literal .irom0.text .irom0.literal.* .irom0.text.*)
+
+    . = ALIGN(4);		/* this table MUST be 4-byte aligned */
+    /*  C++ constructor and destructor tables, properly ordered:  */
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*(.dtors))
+    /*  C++ exception handlers table:  */
+
+    . = ALIGN(4);		/* this table MUST be 4-byte aligned */
+    _bss_table_start = ABSOLUTE(.);
+    LONG(_bss_start)
+    LONG(_bss_end)
+    _bss_table_end = ABSOLUTE(.);
 
     _irom0_text_end = ABSOLUTE(.);
   } >irom0_0_seg :irom0_0_phdr
@@ -167,6 +193,22 @@ SECTIONS
     _lit4_end = ABSOLUTE(.);
   } >iram1_0_seg :iram1_0_phdr
 
+  .data : ALIGN(4)
+  {
+    _data_start = ABSOLUTE(.);
+    *(.gnu.linkonce.d.*)
+    *(.data1)
+    *(.sdata)
+    *(.sdata.*)
+    *(.gnu.linkonce.s.*)
+    *(.sdata2)
+    *(.sdata2.*)
+    *(.gnu.linkonce.s2.*)
+    *(.jcr)
+    *(SORT_BY_ALIGNMENT(.data*))
+    _data_end = ABSOLUTE(.);
+  } >dram0_0_seg :dram0_0_phdr
+
   .rodata : ALIGN(4)
   {
     _rodata_start = ABSOLUTE(.);
@@ -181,16 +223,6 @@ SECTIONS
     *(.gnu.linkonce.e.*)
     *(.gnu.version_r)
     *(.eh_frame)
-    /*  C++ constructor and destructor tables, properly ordered:  */
-    KEEP (*crtbegin.o(.ctors))
-    KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
-    KEEP (*(SORT(.ctors.*)))
-    KEEP (*(.ctors))
-    KEEP (*crtbegin.o(.dtors))
-    KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
-    /*  C++ exception handlers table:  */
     __XT_EXCEPTION_DESCS__ = ABSOLUTE(.);
     *(.xt_except_desc)
     *(.gnu.linkonce.h.*)
@@ -198,29 +230,7 @@ SECTIONS
     *(.xt_except_desc_end)
     *(.dynamic)
     *(.gnu.version_d)
-    . = ALIGN(4);		/* this table MUST be 4-byte aligned */
-    _bss_table_start = ABSOLUTE(.);
-    LONG(_bss_start)
-    LONG(_bss_end)
-    _bss_table_end = ABSOLUTE(.);
     _rodata_end = ABSOLUTE(.);
-  } >dram0_0_seg :dram0_0_phdr
-
-  .data : ALIGN(4)
-  {
-    _data_start = ABSOLUTE(.);
-    *(.data)
-    *(.data.*)
-    *(.gnu.linkonce.d.*)
-    *(.data1)
-    *(.sdata)
-    *(.sdata.*)
-    *(.gnu.linkonce.s.*)
-    *(.sdata2)
-    *(.sdata2.*)
-    *(.gnu.linkonce.s2.*)
-    *(.jcr)
-    _data_end = ABSOLUTE(.);
   } >dram0_0_seg :dram0_0_phdr
 
   .bss ALIGN(8) (NOLOAD) : ALIGN(4)

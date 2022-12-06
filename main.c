@@ -2,20 +2,48 @@
 #include "osapi.h"
 #include "user_interface.h"
 
-void ICACHE_FLASH_ATTR user_pre_init(void)
+void delay(unsigned int ms);
+
+void setup(void)
 {
-    static const partition_item_t at_partition_table[] PROGMEM =
-    {
-        { SYSTEM_PARTITION_RF_CAL,           0x3fb000,  0x1000 },
-        { SYSTEM_PARTITION_PHY_DATA,         0x3fc000,  0x1000 },
-        { SYSTEM_PARTITION_SYSTEM_PARAMETER, 0x3fd000,  0x3000 },
-    };
-    system_partition_table_regist(at_partition_table, sizeof(at_partition_table) / sizeof(at_partition_table[0]), system_get_flash_size_map());
+    wifi_set_opmode_current(NULL_MODE);
+    wifi_fpm_set_sleep_type(MODEM_SLEEP_T);
+    wifi_fpm_open();
+    wifi_fpm_do_sleep(0xFFFFFFF);
+    wifi_set_opmode_current(STATIONAP_MODE);
 }
 
-void ICACHE_FLASH_ATTR user_init(void)
+void loop(void)
 {
-    system_set_os_print(1);
-    os_printf_plus(PSTR("%s\n"), PSTR("Hello world!"));
-    os_printf_plus(PSTR("RAM : %d\n"), system_get_free_heap_size());
+    static uint32_t show;
+    if (show < system_get_time())
+    {
+        show = system_get_time() + 1 * 1000 * 1000;
+        os_printf("[%10d] RAM : %d\n", system_get_time(), system_get_free_heap_size());
+    }
+
+    static uint8_t status = -1;
+    if (status != wifi_station_get_connect_status())
+    {
+        status = wifi_station_get_connect_status();
+        switch (status)
+        {
+        default:
+        {
+            struct station_config config = {};
+            config.all_channel_scan = true;
+
+            wifi_set_opmode_current(STATIONAP_MODE);
+            wifi_station_set_config(&config);
+            wifi_station_connect();
+            wifi_station_dhcpc_start();
+            break;
+        }
+        case STATION_GOT_IP:
+            wifi_set_opmode_current(STATION_MODE);
+            break;
+        }
+    }
+
+    delay(100);
 }

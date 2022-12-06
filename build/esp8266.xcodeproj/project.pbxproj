@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D6728E8F2925E3A50055855B /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D6728E8E2925E3A50055855B /* main.c */; };
 		D676DF4A293DCCB6008A10A1 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D676DF49293DCCB6008A10A1 /* phy.c */; };
+		D6DAD8F2293EE12C00EAF5B4 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D6DAD8F1293EE12C00EAF5B4 /* init.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +45,7 @@
 		D676DF47293DB8C5008A10A1 /* simple_pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = simple_pair.h; path = ../3rdParty/esp8266_NONOS_SDK/include/simple_pair.h; sourceTree = "<group>"; };
 		D676DF48293DCCB6008A10A1 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = user_config.h; path = ../user_config.h; sourceTree = "<group>"; };
 		D676DF49293DCCB6008A10A1 /* phy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = phy.c; path = ../phy.c; sourceTree = "<group>"; };
+		D6DAD8F1293EE12C00EAF5B4 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../init.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				D676DF2A293DB88A008A10A1 /* 3rdParty */,
+				D6DAD8F1293EE12C00EAF5B4 /* init.c */,
 				D6728E8E2925E3A50055855B /* main.c */,
 				D676DF49293DCCB6008A10A1 /* phy.c */,
 				D676DF48293DCCB6008A10A1 /* user_config.h */,
@@ -230,6 +233,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6DAD8F2293EE12C00EAF5B4 /* init.c in Sources */,
 				D6728E8F2925E3A50055855B /* main.c in Sources */,
 				D676DF4A293DCCB6008A10A1 /* phy.c in Sources */,
 			);
