@@ -1,9 +1,4 @@
-#include "c_types.h"
-#include "osapi.h"
-#include "user_interface.h"
-
-void setup(void);
-void loop(void);
+#include "esp8266.h"
 
 static void init_down(void)
 {

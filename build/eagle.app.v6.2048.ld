@@ -85,6 +85,7 @@ SECTIONS
 
     *liblwip_536.a:espconn_buf.o        (.rodata .rodata.*)
     *liblwip_536.a:etharp.o             (.rodata .rodata.*)
+    *liblwip_536.a:sntp.o               (.rodata .rodata.*)
     *libmain.a:app_main.o               (.rodata .rodata.*)
     *libmain.a:mem_manager.o            (.rodata .rodata.*)
     *libnet80211.a:ieee80211_hostap.o   (.rodata .rodata.*)

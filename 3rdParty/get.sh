@@ -9,5 +9,10 @@ if [ ! -d "xtensa-lx106-elf" ]; then
   tar xvf x86_64-apple-darwin14.xtensa-lx106-elf-e5f9fec.220621.tar.gz
 fi
 
-mkdir esp-clang
-ln -s ../xtensa-lx106-elf/xtensa-lx106-elf esp-clang/xtensa-lx106-elf
+if [ ! -d "esp-clang/xtensa-lx106-elf" ]; then
+  ln -s ../xtensa-lx106-elf/xtensa-lx106-elf esp-clang/xtensa-lx106-elf
+fi
+
+if [ ! -d "mqtt" ]; then
+  ln -s ESP8266_NONOS_SDK/examples/esp_mqtt_proj/mqtt mqtt
+fi

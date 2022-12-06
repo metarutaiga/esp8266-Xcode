@@ -1,4 +1,4 @@
-#include <string.h>
+#include "esp8266.h"
 
 const char phy_data[128] PROGMEM =
 {
@@ -16,7 +16,8 @@ extern int __real_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size);
 extern int __wrap_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size);
 extern int __wrap_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size)
 {
-    if (addr == 0x3fc000 && size == 128) {
+    if (addr == 0x3fc000 && size == 128)
+    {
         memcpy_P(dst, phy_data, sizeof(phy_data));
         return 0;
     }
