@@ -9,12 +9,7 @@
 /* Begin PBXBuildFile section */
 		D6728E8F2925E3A50055855B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6728E8E2925E3A50055855B /* main.cpp */; };
 		D676DF4A293DCCB6008A10A1 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D676DF49293DCCB6008A10A1 /* phy.c */; };
-		D69FFA22293F2A2E00CC7E75 /* mqtt.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA12293F2A2E00CC7E75 /* mqtt.c */; };
-		D69FFA24293F2A2E00CC7E75 /* queue.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA1D293F2A2E00CC7E75 /* queue.c */; };
-		D69FFA25293F2A2E00CC7E75 /* utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA1E293F2A2E00CC7E75 /* utils.c */; };
-		D69FFA26293F2A2E00CC7E75 /* mqtt_msg.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA1F293F2A2E00CC7E75 /* mqtt_msg.c */; };
-		D69FFA27293F2A2E00CC7E75 /* proto.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA20293F2A2E00CC7E75 /* proto.c */; };
-		D69FFA28293F2A2E00CC7E75 /* ringbuf.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA21293F2A2E00CC7E75 /* ringbuf.c */; };
+		D69FFA2C293F897E00CC7E75 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D69FFA2B293F897E00CC7E75 /* libmqtt.a */; };
 		D6DAD8F2293EE12C00EAF5B4 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D6DAD8F1293EE12C00EAF5B4 /* init.c */; };
 /* End PBXBuildFile section */
 
@@ -51,23 +46,9 @@
 		D676DF47293DB8C5008A10A1 /* simple_pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = simple_pair.h; path = ../3rdParty/esp8266_NONOS_SDK/include/simple_pair.h; sourceTree = "<group>"; };
 		D676DF48293DCCB6008A10A1 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = user_config.h; path = ../user_config.h; sourceTree = "<group>"; };
 		D676DF49293DCCB6008A10A1 /* phy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = phy.c; path = ../phy.c; sourceTree = "<group>"; };
-		D69FFA12293F2A2E00CC7E75 /* mqtt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mqtt.c; sourceTree = "<group>"; };
-		D69FFA13293F2A2E00CC7E75 /* Makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = Makefile; sourceTree = "<group>"; };
-		D69FFA15293F2A2E00CC7E75 /* mqtt_msg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mqtt_msg.h; sourceTree = "<group>"; };
-		D69FFA16293F2A2E00CC7E75 /* utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utils.h; sourceTree = "<group>"; };
-		D69FFA17293F2A2E00CC7E75 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
-		D69FFA18293F2A2E00CC7E75 /* ringbuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ringbuf.h; sourceTree = "<group>"; };
-		D69FFA19293F2A2E00CC7E75 /* proto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = proto.h; sourceTree = "<group>"; };
-		D69FFA1A293F2A2E00CC7E75 /* mqtt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mqtt.h; sourceTree = "<group>"; };
-		D69FFA1B293F2A2E00CC7E75 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
-		D69FFA1C293F2A2E00CC7E75 /* typedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = typedef.h; sourceTree = "<group>"; };
-		D69FFA1D293F2A2E00CC7E75 /* queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = queue.c; sourceTree = "<group>"; };
-		D69FFA1E293F2A2E00CC7E75 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utils.c; sourceTree = "<group>"; };
-		D69FFA1F293F2A2E00CC7E75 /* mqtt_msg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mqtt_msg.c; sourceTree = "<group>"; };
-		D69FFA20293F2A2E00CC7E75 /* proto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = proto.c; sourceTree = "<group>"; };
-		D69FFA21293F2A2E00CC7E75 /* ringbuf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ringbuf.c; sourceTree = "<group>"; };
 		D69FFA29293F2C1300CC7E75 /* mqtt_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mqtt_config.h; path = ../mqtt_config.h; sourceTree = "<group>"; };
 		D69FFA2A293F441200CC7E75 /* esp8266.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = esp8266.h; path = ../esp8266.h; sourceTree = "<group>"; };
+		D69FFA2B293F897E00CC7E75 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6DAD8F1293EE12C00EAF5B4 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../init.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -76,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D69FFA2C293F897E00CC7E75 /* libmqtt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +67,7 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D69FFA2B293F897E00CC7E75 /* libmqtt.a */,
 				D614A5F6289A5FB400AF1D97 /* libesp8266.a */,
 			);
 			name = Frameworks;
@@ -101,7 +84,7 @@
 		D644A038231ED82900B75B77 = {
 			isa = PBXGroup;
 			children = (
-				D676DF2A293DB88A008A10A1 /* 3rdParty */,
+				D676DF2B293DB8A4008A10A1 /* esp8266_NONOS_SDK */,
 				D69FFA2A293F441200CC7E75 /* esp8266.h */,
 				D6DAD8F1293EE12C00EAF5B4 /* init.c */,
 				D6728E8E2925E3A50055855B /* main.cpp */,
@@ -120,15 +103,6 @@
 				30A9A7BB25ADC792000FA104 /* libesp8266.so */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D676DF2A293DB88A008A10A1 /* 3rdParty */ = {
-			isa = PBXGroup;
-			children = (
-				D69FFA11293F2A2E00CC7E75 /* mqtt */,
-				D676DF2B293DB8A4008A10A1 /* esp8266_NONOS_SDK */,
-			);
-			name = 3rdParty;
 			sourceTree = "<group>";
 		};
 		D676DF2B293DB8A4008A10A1 /* esp8266_NONOS_SDK */ = {
@@ -179,37 +153,6 @@
 			);
 			name = json;
 			path = ../3rdParty/esp8266_NONOS_SDK/include/json;
-			sourceTree = "<group>";
-		};
-		D69FFA11293F2A2E00CC7E75 /* mqtt */ = {
-			isa = PBXGroup;
-			children = (
-				D69FFA14293F2A2E00CC7E75 /* include */,
-				D69FFA13293F2A2E00CC7E75 /* Makefile */,
-				D69FFA1F293F2A2E00CC7E75 /* mqtt_msg.c */,
-				D69FFA12293F2A2E00CC7E75 /* mqtt.c */,
-				D69FFA20293F2A2E00CC7E75 /* proto.c */,
-				D69FFA1D293F2A2E00CC7E75 /* queue.c */,
-				D69FFA21293F2A2E00CC7E75 /* ringbuf.c */,
-				D69FFA1E293F2A2E00CC7E75 /* utils.c */,
-			);
-			name = mqtt;
-			path = ../3rdParty/mqtt;
-			sourceTree = "<group>";
-		};
-		D69FFA14293F2A2E00CC7E75 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				D69FFA17293F2A2E00CC7E75 /* debug.h */,
-				D69FFA15293F2A2E00CC7E75 /* mqtt_msg.h */,
-				D69FFA1A293F2A2E00CC7E75 /* mqtt.h */,
-				D69FFA19293F2A2E00CC7E75 /* proto.h */,
-				D69FFA1B293F2A2E00CC7E75 /* queue.h */,
-				D69FFA18293F2A2E00CC7E75 /* ringbuf.h */,
-				D69FFA1C293F2A2E00CC7E75 /* typedef.h */,
-				D69FFA16293F2A2E00CC7E75 /* utils.h */,
-			);
-			path = include;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,12 +236,6 @@
 				D6DAD8F2293EE12C00EAF5B4 /* init.c in Sources */,
 				D6728E8F2925E3A50055855B /* main.cpp in Sources */,
 				D676DF4A293DCCB6008A10A1 /* phy.c in Sources */,
-				D69FFA26293F2A2E00CC7E75 /* mqtt_msg.c in Sources */,
-				D69FFA22293F2A2E00CC7E75 /* mqtt.c in Sources */,
-				D69FFA27293F2A2E00CC7E75 /* proto.c in Sources */,
-				D69FFA24293F2A2E00CC7E75 /* queue.c in Sources */,
-				D69FFA28293F2A2E00CC7E75 /* ringbuf.c in Sources */,
-				D69FFA25293F2A2E00CC7E75 /* utils.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

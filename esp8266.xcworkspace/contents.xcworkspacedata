@@ -4,4 +4,7 @@
    <FileRef
       location = "container:build/esp8266.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "container:build/mqtt.xcodeproj">
+   </FileRef>
 </Workspace>

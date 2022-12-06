@@ -11,7 +11,7 @@ LD = ../3rdParty/esp-clang/bin/clang
 LDPLUSPLUS = ../3rdParty/esp-clang/bin/clang++
 LD_DEPENDENCY_INFO_FILE =
 LD_LTO_OBJECT_FILE =
-LIBTOOL = 
+LIBTOOL = $PROJECT_DIR/ar-wrapper 
 LIBTOOL_DEPENDENCY_INFO_FILE =
 ALTERNATE_LINKER = $PROJECT_DIR/lld-wrapper
 
