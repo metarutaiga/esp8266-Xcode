@@ -5,4 +5,4 @@ void mqtt_publish(const char* topic, const void* data, int length);
 
 void mqtt_information();
 void mqtt_loop();
-void mqtt_setup(char* ip, int port);
+void mqtt_setup(const char* ip, int port);

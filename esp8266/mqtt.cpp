@@ -1,24 +1,20 @@
 #include "esp8266.h"
 #include "mqtt.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#define BOOL bool
-#define uint8_t char
-#include "../mqtt/include/mqtt.h"
-#undef uint8_t
-#define MQTT_Publish(client, topic, data_, data_length_, qos, retain) \
-{ \
-    const char* data = data_; \
-    int data_length = data_length_ ? data_length_ : strlen(data); \
-    MQTT_Publish(client, topic, data, data_length, qos, retain); \
-}
-
-#ifdef __cplusplus
+extern "C"
+{
+#   define BOOL bool
+#   define uint8_t const char
+#   include "../mqtt/include/mqtt.h"
+#   undef BOOL
+#   undef uint8_t
+#   define MQTT_Publish(client, topic, data_, data_length_, qos, retain) \
+    { \
+        const char* data = data_; \
+        int data_length = data_length_ ? data_length_ : strlen(data); \
+        MQTT_Publish(client, topic, data, data_length, qos, retain); \
+    }
 };
-#endif
 
 extern char version[16];
 extern char thisname[16];
@@ -57,8 +53,8 @@ void mqtt_information()
     struct ip_info ip_info = {};
     if (wifi_get_ip_info(STATION_IF, &ip_info))
     {
-        os_sprintf(number, IPSTR, IP2STR(&ip_info.ip));
-        MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, "ESP", "IP", 0), number, 0, 0, 1);
+        os_sprintf(number + 64, IPSTR, IP2STR(&ip_info.ip));
+        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "IP", 0), number + 64, 0, 0, 1);
     }
 
     if (struct rst_info* info = system_get_rst_info())
@@ -101,7 +97,7 @@ void mqtt_loop()
         show = system_get_time() + 10 * 1000 * 1000;
 
         // Time
-        static int now_timestamp = 0;
+        static uint32 now_timestamp = 0;
         uint32 timestamp = sntp_get_current_timestamp();
         if (now_timestamp != timestamp / 60)
         {
@@ -111,26 +107,26 @@ void mqtt_loop()
         }
 
         // Heap
-        static int now_free_heap = 0;
-        int free_heap = system_get_free_heap_size();
+        static uint16 now_free_heap = 0;
+        uint16 free_heap = system_get_free_heap_size();
         if (now_free_heap != free_heap)
         {
             now_free_heap = free_heap;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "FreeHeap", 0), itoa(now_free_heap, number + 64, 10), 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "FreeHeap", 0), itoa(free_heap, number + 64, 10), 0, 0, 0);
         }
 
         // RSSI
-        static char now_rssi = 0;
-        char rssi = wifi_station_get_rssi();
+        static sint8 now_rssi = 0;
+        sint8 rssi = wifi_station_get_rssi();
         if (now_rssi != rssi)
         {
             now_rssi = rssi;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "RSSI", 0), itoa(now_rssi, number + 64, 10), 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "RSSI", 0), itoa(rssi | 0xFFFFFF00, number + 64, 10), 0, 0, 0);
         }
     }
 }
 
-void mqtt_setup(char* ip, int port)
+void mqtt_setup(const char* ip, int port)
 {
     if (mqtt_client == nullptr)
     {
