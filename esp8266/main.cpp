@@ -3,10 +3,19 @@
 static MQTT_Client* mqtt_client;
 static bool mqtt_connected;
 static char mqtt_ip[] PROGMEM = "192.168.1.1";
+static char wifi_ssid[] PROGMEM = "wifi";
+static char wifi_pass[] PROGMEM = "1234";
+static char wifi_format[] PROGMEM = "ESP8266_%02X%02X%02X";
 
 static char version[] PROGMEM = "1.00";
 static char thisname[16];
 static char number[128];
+
+static char* to_string(int value)
+{
+    os_sprintf(number, PSTR("%d"), value);
+    return number;
+}
 
 char* mqtt_prefix(char* pointer, const char* prefix, ...)
 {
@@ -89,7 +98,7 @@ void mqtt_loop()
         if (now_free_heap != free_heap)
         {
             now_free_heap = free_heap;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("FreeHeap"), 0), itoa(now_free_heap, number, 10), 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("FreeHeap"), 0), to_string(now_free_heap), 0, 0, 0);
         }
 
         // RSSI
@@ -98,7 +107,7 @@ void mqtt_loop()
         if (now_rssi != rssi)
         {
             now_rssi = rssi;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("RSSI"), 0), itoa(now_rssi, number, 10), 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("RSSI"), 0), to_string(now_rssi), 0, 0, 0);
         }
     }
 }
@@ -133,7 +142,7 @@ void setup(void)
 {
     uint8 macaddr[6] = {};
     wifi_get_macaddr(STATION_IF, macaddr);
-    os_sprintf(thisname, PSTR("ESP8266_%02X%02X%02X"), macaddr[3], macaddr[4], macaddr[5]);
+    os_sprintf(thisname, wifi_format, macaddr[3], macaddr[4], macaddr[5]);
     wifi_station_set_hostname(thisname);
 
     wifi_set_opmode_current(NULL_MODE);
@@ -161,8 +170,8 @@ void loop(void)
         default:
         {
             struct station_config config = {};
-            strcpy_P((char*)config.ssid, PSTR("wifi"));
-            strcpy_P((char*)config.password, PSTR("1234"));
+            strcpy((char*)config.ssid, wifi_ssid);
+            strcpy((char*)config.password, wifi_pass);
             config.all_channel_scan = true;
 
             wifi_set_opmode_current(STATIONAP_MODE);

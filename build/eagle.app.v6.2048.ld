@@ -125,6 +125,10 @@ SECTIONS
 
     *(.irom.literal .irom.text .irom.literal.* .irom.text.* .irom0.literal .irom0.text .irom0.literal.* .irom0.text.*)
 
+    *.c.o(.literal* .text*)
+    *.cc.o(.literal* .text*)
+    *.cpp.o(.literal* .text*)
+
     . = ALIGN(4);		/* this table MUST be 4-byte aligned */
     /*  C++ constructor and destructor tables, properly ordered:  */
     KEEP (*crtbegin.o(.ctors))
@@ -206,7 +210,7 @@ SECTIONS
     *(.sdata2.*)
     *(.gnu.linkonce.s2.*)
     *(.jcr)
-    *(SORT_BY_ALIGNMENT(.data*))
+    *(SORT_BY_ALIGNMENT(EXCLUDE_FILE(*lib_a-impure.o) .data*))
     _data_end = ABSOLUTE(.);
   } >dram0_0_seg :dram0_0_phdr
 
@@ -218,6 +222,7 @@ SECTIONS
     *(.rodata.*)
     *(.gnu.linkonce.r.*)
     *(.rodata1)
+    *libc.a:lib_a-impure.o(.data)
     __XT_EXCEPTION_TABLE__ = ABSOLUTE(.);
     *(.xt_except_table)
     *(.gcc_except_table)

@@ -10,8 +10,8 @@ int main(int argc, char* argv[])
     printf("%d:%s\n", i, argv[i]);
     if (strstr(argv[i], "ar-wrapper"))
     {
-      args += "../3rdParty/esp-clang/bin/llvm-ar";
-//    args += "../3rdParty/xtensa-lx106-elf/bin/xtensa-lx106-elf-ar";
+      args += "esp-clang/bin/llvm-ar";
+//    args += "xtensa-lx106-elf/bin/xtensa-lx106-elf-ar";
       args += " ";
       args += "r";
       args += " ";

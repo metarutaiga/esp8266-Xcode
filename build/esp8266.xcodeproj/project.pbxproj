@@ -7,49 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D6728E8F2925E3A50055855B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6728E8E2925E3A50055855B /* main.cpp */; };
-		D676DF4A293DCCB6008A10A1 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D676DF49293DCCB6008A10A1 /* phy.c */; };
 		D69FFA2C293F897E00CC7E75 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D69FFA2B293F897E00CC7E75 /* libmqtt.a */; };
-		D6DAD8F2293EE12C00EAF5B4 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D6DAD8F1293EE12C00EAF5B4 /* init.c */; };
+		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
+		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
+		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		D614A5F6289A5FB400AF1D97 /* libesp8266.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libesp8266.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
-		D6728E8E2925E3A50055855B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../main.cpp; sourceTree = "<group>"; };
-		D676DF2D293DB8C5008A10A1 /* espconn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = espconn.h; path = ../3rdParty/esp8266_NONOS_SDK/include/espconn.h; sourceTree = "<group>"; };
-		D676DF2E293DB8C5008A10A1 /* at_custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = at_custom.h; path = ../3rdParty/esp8266_NONOS_SDK/include/at_custom.h; sourceTree = "<group>"; };
-		D676DF2F293DB8C5008A10A1 /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ping.h; path = ../3rdParty/esp8266_NONOS_SDK/include/ping.h; sourceTree = "<group>"; };
-		D676DF30293DB8C5008A10A1 /* ip_addr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ip_addr.h; path = ../3rdParty/esp8266_NONOS_SDK/include/ip_addr.h; sourceTree = "<group>"; };
-		D676DF31293DB8C5008A10A1 /* pwm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pwm.h; path = ../3rdParty/esp8266_NONOS_SDK/include/pwm.h; sourceTree = "<group>"; };
-		D676DF32293DB8C5008A10A1 /* osapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = osapi.h; path = ../3rdParty/esp8266_NONOS_SDK/include/osapi.h; sourceTree = "<group>"; };
-		D676DF33293DB8C5008A10A1 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = queue.h; path = ../3rdParty/esp8266_NONOS_SDK/include/queue.h; sourceTree = "<group>"; };
-		D676DF34293DB8C5008A10A1 /* smartconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = smartconfig.h; path = ../3rdParty/esp8266_NONOS_SDK/include/smartconfig.h; sourceTree = "<group>"; };
-		D676DF35293DB8C5008A10A1 /* spi_flash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = spi_flash.h; path = ../3rdParty/esp8266_NONOS_SDK/include/spi_flash.h; sourceTree = "<group>"; };
-		D676DF36293DB8C5008A10A1 /* eagle_soc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eagle_soc.h; path = ../3rdParty/esp8266_NONOS_SDK/include/eagle_soc.h; sourceTree = "<group>"; };
-		D676DF37293DB8C5008A10A1 /* mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mem.h; path = ../3rdParty/esp8266_NONOS_SDK/include/mem.h; sourceTree = "<group>"; };
-		D676DF38293DB8C5008A10A1 /* os_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = os_type.h; path = ../3rdParty/esp8266_NONOS_SDK/include/os_type.h; sourceTree = "<group>"; };
-		D676DF39293DB8C5008A10A1 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gpio.h; path = ../3rdParty/esp8266_NONOS_SDK/include/gpio.h; sourceTree = "<group>"; };
-		D676DF3A293DB8C5008A10A1 /* airkiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = airkiss.h; path = ../3rdParty/esp8266_NONOS_SDK/include/airkiss.h; sourceTree = "<group>"; };
-		D676DF3B293DB8C5008A10A1 /* c_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = c_types.h; path = ../3rdParty/esp8266_NONOS_SDK/include/c_types.h; sourceTree = "<group>"; };
-		D676DF3C293DB8C5008A10A1 /* ets_sys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ets_sys.h; path = ../3rdParty/esp8266_NONOS_SDK/include/ets_sys.h; sourceTree = "<group>"; };
-		D676DF3D293DB8C5008A10A1 /* sntp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sntp.h; path = ../3rdParty/esp8266_NONOS_SDK/include/sntp.h; sourceTree = "<group>"; };
-		D676DF3E293DB8C5008A10A1 /* upgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = upgrade.h; path = ../3rdParty/esp8266_NONOS_SDK/include/upgrade.h; sourceTree = "<group>"; };
-		D676DF3F293DB8C5008A10A1 /* espnow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = espnow.h; path = ../3rdParty/esp8266_NONOS_SDK/include/espnow.h; sourceTree = "<group>"; };
-		D676DF40293DB8C5008A10A1 /* user_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = user_interface.h; path = ../3rdParty/esp8266_NONOS_SDK/include/user_interface.h; sourceTree = "<group>"; };
-		D676DF41293DB8C5008A10A1 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = version.h; path = ../3rdParty/esp8266_NONOS_SDK/include/version.h; sourceTree = "<group>"; };
-		D676DF43293DB8C5008A10A1 /* jsonparse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonparse.h; sourceTree = "<group>"; };
-		D676DF44293DB8C5008A10A1 /* jsontree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsontree.h; sourceTree = "<group>"; };
-		D676DF45293DB8C5008A10A1 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
-		D676DF46293DB8C5008A10A1 /* wpa2_enterprise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = wpa2_enterprise.h; path = ../3rdParty/esp8266_NONOS_SDK/include/wpa2_enterprise.h; sourceTree = "<group>"; };
-		D676DF47293DB8C5008A10A1 /* simple_pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = simple_pair.h; path = ../3rdParty/esp8266_NONOS_SDK/include/simple_pair.h; sourceTree = "<group>"; };
-		D676DF48293DCCB6008A10A1 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = user_config.h; path = ../user_config.h; sourceTree = "<group>"; };
-		D676DF49293DCCB6008A10A1 /* phy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = phy.c; path = ../phy.c; sourceTree = "<group>"; };
-		D69FFA29293F2C1300CC7E75 /* mqtt_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mqtt_config.h; path = ../mqtt_config.h; sourceTree = "<group>"; };
-		D69FFA2A293F441200CC7E75 /* esp8266.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = esp8266.h; path = ../esp8266.h; sourceTree = "<group>"; };
 		D69FFA2B293F897E00CC7E75 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6DAD8F1293EE12C00EAF5B4 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../init.c; sourceTree = "<group>"; };
+		D69FFA4C2941832300CC7E75 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../esp8266/main.cpp; sourceTree = "<group>"; };
+		D69FFA4D2941832300CC7E75 /* esp8266.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = esp8266.h; path = ../esp8266/esp8266.h; sourceTree = "<group>"; };
+		D69FFA4E2941832300CC7E75 /* phy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = phy.c; path = ../esp8266/phy.c; sourceTree = "<group>"; };
+		D69FFA512941832400CC7E75 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../esp8266/init.c; sourceTree = "<group>"; };
+		D69FFA5E294185BA00CC7E75 /* mqtt_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mqtt_config.h; sourceTree = "<group>"; };
+		D69FFA5F294185BA00CC7E75 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +51,8 @@
 			isa = PBXGroup;
 			children = (
 				D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */,
+				D69FFA5E294185BA00CC7E75 /* mqtt_config.h */,
+				D69FFA5F294185BA00CC7E75 /* user_config.h */,
 			);
 			name = Configs;
 			sourceTree = "<group>";
@@ -84,13 +60,10 @@
 		D644A038231ED82900B75B77 = {
 			isa = PBXGroup;
 			children = (
-				D676DF2B293DB8A4008A10A1 /* esp8266_NONOS_SDK */,
-				D69FFA2A293F441200CC7E75 /* esp8266.h */,
-				D6DAD8F1293EE12C00EAF5B4 /* init.c */,
-				D6728E8E2925E3A50055855B /* main.cpp */,
-				D69FFA29293F2C1300CC7E75 /* mqtt_config.h */,
-				D676DF49293DCCB6008A10A1 /* phy.c */,
-				D676DF48293DCCB6008A10A1 /* user_config.h */,
+				D69FFA4D2941832300CC7E75 /* esp8266.h */,
+				D69FFA512941832400CC7E75 /* init.c */,
+				D69FFA4C2941832300CC7E75 /* main.cpp */,
+				D69FFA4E2941832300CC7E75 /* phy.c */,
 				CE999BD625D21EC800351116 /* Configs */,
 				D644A042231ED82900B75B77 /* Products */,
 				300264BD24266097004559E0 /* Frameworks */,
@@ -103,56 +76,6 @@
 				30A9A7BB25ADC792000FA104 /* libesp8266.so */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D676DF2B293DB8A4008A10A1 /* esp8266_NONOS_SDK */ = {
-			isa = PBXGroup;
-			children = (
-				D676DF2C293DB8AF008A10A1 /* include */,
-			);
-			name = esp8266_NONOS_SDK;
-			sourceTree = "<group>";
-		};
-		D676DF2C293DB8AF008A10A1 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				D676DF42293DB8C5008A10A1 /* json */,
-				D676DF3A293DB8C5008A10A1 /* airkiss.h */,
-				D676DF2E293DB8C5008A10A1 /* at_custom.h */,
-				D676DF3B293DB8C5008A10A1 /* c_types.h */,
-				D676DF36293DB8C5008A10A1 /* eagle_soc.h */,
-				D676DF2D293DB8C5008A10A1 /* espconn.h */,
-				D676DF3F293DB8C5008A10A1 /* espnow.h */,
-				D676DF3C293DB8C5008A10A1 /* ets_sys.h */,
-				D676DF39293DB8C5008A10A1 /* gpio.h */,
-				D676DF30293DB8C5008A10A1 /* ip_addr.h */,
-				D676DF37293DB8C5008A10A1 /* mem.h */,
-				D676DF38293DB8C5008A10A1 /* os_type.h */,
-				D676DF32293DB8C5008A10A1 /* osapi.h */,
-				D676DF2F293DB8C5008A10A1 /* ping.h */,
-				D676DF31293DB8C5008A10A1 /* pwm.h */,
-				D676DF33293DB8C5008A10A1 /* queue.h */,
-				D676DF47293DB8C5008A10A1 /* simple_pair.h */,
-				D676DF34293DB8C5008A10A1 /* smartconfig.h */,
-				D676DF3D293DB8C5008A10A1 /* sntp.h */,
-				D676DF35293DB8C5008A10A1 /* spi_flash.h */,
-				D676DF3E293DB8C5008A10A1 /* upgrade.h */,
-				D676DF40293DB8C5008A10A1 /* user_interface.h */,
-				D676DF41293DB8C5008A10A1 /* version.h */,
-				D676DF46293DB8C5008A10A1 /* wpa2_enterprise.h */,
-			);
-			name = include;
-			sourceTree = "<group>";
-		};
-		D676DF42293DB8C5008A10A1 /* json */ = {
-			isa = PBXGroup;
-			children = (
-				D676DF45293DB8C5008A10A1 /* json.h */,
-				D676DF43293DB8C5008A10A1 /* jsonparse.h */,
-				D676DF44293DB8C5008A10A1 /* jsontree.h */,
-			);
-			name = json;
-			path = ../3rdParty/esp8266_NONOS_SDK/include/json;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -233,9 +156,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6DAD8F2293EE12C00EAF5B4 /* init.c in Sources */,
-				D6728E8F2925E3A50055855B /* main.cpp in Sources */,
-				D676DF4A293DCCB6008A10A1 /* phy.c in Sources */,
+				D69FFA542941832400CC7E75 /* init.c in Sources */,
+				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
+				D69FFA532941832400CC7E75 /* phy.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

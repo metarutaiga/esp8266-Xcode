@@ -1,10 +1,10 @@
 .DS_Store
-3rdParty/esp-clang/
-3rdParty/xtensa-lx106-elf/
-3rdParty/*.tar.gz
-3rdParty/*.tar.xz
 bin/
 build/esp8266.xcodeproj/xcuserdata/
 build/temp/
+build/esp-clang/
+build/xtensa-lx106-elf/
+build/*.tar.gz
+build/*.tar.xz
 esp8266.xcworkspace/xcshareddata/
 esp8266.xcworkspace/xcuserdata/

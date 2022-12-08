@@ -18,7 +18,7 @@ extern int __wrap_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size)
 {
     if (addr == 0x3fc000 && size == 128)
     {
-        memcpy_P(dst, phy_data, sizeof(phy_data));
+        memcpy(dst, phy_data, sizeof(phy_data));
         return 0;
     }
     return __real_spi_flash_read(addr, dst, size);

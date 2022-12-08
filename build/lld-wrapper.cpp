@@ -11,8 +11,8 @@ int main(int argc, char* argv[])
     {
       args += argv[i];
       args.resize(args.size() - sizeof("lld-wrapper") + 1);
-//    args += "../3rdParty/esp-clang/bin/ld.lld";
-      args += "../3rdParty/xtensa-lx106-elf/bin/xtensa-lx106-elf-ld";
+//    args += "esp-clang/bin/ld.lld";
+      args += "xtensa-lx106-elf/bin/xtensa-lx106-elf-ld";
       args += " ";
       continue;
     }
