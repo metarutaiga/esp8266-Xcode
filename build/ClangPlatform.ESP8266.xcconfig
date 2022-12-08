@@ -30,6 +30,8 @@ OTHER_CFLAGS = $(inherited) -nostdlib
 OTHER_CFLAGS = $(inherited) -Wno-comment
 OTHER_CFLAGS = $(inherited) -Wno-pointer-sign
 OTHER_CFLAGS = $(inherited) -Wno-strict-prototypes
+OTHER_CFLAGS = $(inherited) -Wno-switch
+OTHER_CFLAGS = $(inherited) -Wno-writable-strings
 
 OTHER_CFLAGS = $(inherited) -DICACHE_FLASH -DUSE_OPTIMIZE_PRINTF
 OTHER_CFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf --sysroot=esp-clang/xtensa-lx106-elf -mcpu=esp8266
