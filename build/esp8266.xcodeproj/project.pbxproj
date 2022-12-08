@@ -11,6 +11,7 @@
 		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
 		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
+		D69FFA6329419B4C00CC7E75 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA6229419B4C00CC7E75 /* lost.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		D69FFA512941832400CC7E75 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../esp8266/init.c; sourceTree = "<group>"; };
 		D69FFA5E294185BA00CC7E75 /* mqtt_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mqtt_config.h; sourceTree = "<group>"; };
 		D69FFA5F294185BA00CC7E75 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
+		D69FFA6229419B4C00CC7E75 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +64,7 @@
 			children = (
 				D69FFA4D2941832300CC7E75 /* esp8266.h */,
 				D69FFA512941832400CC7E75 /* init.c */,
+				D69FFA6229419B4C00CC7E75 /* lost.c */,
 				D69FFA4C2941832300CC7E75 /* main.cpp */,
 				D69FFA4E2941832300CC7E75 /* phy.c */,
 				CE999BD625D21EC800351116 /* Configs */,
@@ -159,6 +162,7 @@
 				D69FFA542941832400CC7E75 /* init.c in Sources */,
 				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
 				D69FFA532941832400CC7E75 /* phy.c in Sources */,
+				D69FFA6329419B4C00CC7E75 /* lost.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

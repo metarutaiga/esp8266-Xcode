@@ -15,4 +15,9 @@ typedef enum
 #define QUEUE_BUFFER_SIZE       1024
 #define PROTOCOL_NAMEv31                    /*MQTT version 3.1 compatible with Mosquitto v0.15*/
 
+#ifndef USER_AT_MQTT_H_
+#undef os_printf
+#define os_printf(...)
+#endif
+
 #endif // __MQTT_CONFIG_H__

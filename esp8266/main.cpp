@@ -11,21 +11,16 @@ static char version[] PROGMEM = "1.00";
 static char thisname[16];
 static char number[128];
 
-static char* to_string(int value)
-{
-    os_sprintf(number, PSTR("%d"), value);
-    return number;
-}
-
 char* mqtt_prefix(char* pointer, const char* prefix, ...)
 {
     va_list args;
     va_start(args, prefix);
     char* output = pointer;
-    pointer += os_sprintf(pointer, PSTR("%s/%s"), thisname, prefix);
+    pointer += os_sprintf(pointer, "%s", thisname);
+    pointer += os_sprintf(pointer, "/%s", prefix);
     while (const char* name = va_arg(args, char*))
     {
-        pointer += os_sprintf(pointer, PSTR("/%s"), name);
+        pointer += os_sprintf(pointer, "/%s", name);
     }
     va_end(args);
     return output;
@@ -37,7 +32,7 @@ void mqtt_information()
     if (wifi_get_ip_info(STATION_IF, &ip_info))
     {
         os_sprintf(number, IPSTR, IP2STR(&ip_info.ip));
-        MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("IP"), 0), number, 0, 0, 1);
+        MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, "ESP", "IP", 0), number, 0, 0, 1);
     }
 
     if (struct rst_info* info = system_get_rst_info())
@@ -45,31 +40,31 @@ void mqtt_information()
         const char* reason;
         switch (info->reason)
         {
-            case REASON_DEFAULT_RST:        reason = PSTR("Default");           break;
-            case REASON_WDT_RST:            reason = PSTR("Hardware Watchdog"); break;
-            case REASON_EXCEPTION_RST:      reason = PSTR("Exception");         break;
-            case REASON_SOFT_WDT_RST:       reason = PSTR("Software Watchdog"); break;
-            case REASON_SOFT_RESTART:       reason = PSTR("Software Restart");  break;
-            case REASON_DEEP_SLEEP_AWAKE:   reason = PSTR("Deep-Sleep Awake");  break;
-            case REASON_EXT_SYS_RST:        reason = PSTR("External System");   break;
-            default:                        reason = PSTR("Unknown");           break;
+            case REASON_DEFAULT_RST:        reason = "Default";             break;
+            case REASON_WDT_RST:            reason = "Hardware Watchdog";   break;
+            case REASON_EXCEPTION_RST:      reason = "Exception";           break;
+            case REASON_SOFT_WDT_RST:       reason = "Software Watchdog";   break;
+            case REASON_SOFT_RESTART:       reason = "Software Restart";    break;
+            case REASON_DEEP_SLEEP_AWAKE:   reason = "Deep-Sleep Awake";    break;
+            case REASON_EXT_SYS_RST:        reason = "External System";     break;
+            default:                        reason = "Unknown";             break;
         }
-        MQTT_Publish(mqtt_client, mqtt_prefix(number, PSTR("ESP"), PSTR("ResetReason"), 0), reason, 0, 0, 0);
+        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "ResetReason", 0), reason, 0, 0, 0);
 
         if (info->reason >= REASON_WDT_RST && info->reason <= REASON_SOFT_WDT_RST)
         {
             char buff[256];
-            os_sprintf(buff, PSTR("Fatal exception:%d flag:%d epc1:0x%08x epc2:0x%08x epc3:0x%08x excvaddr:0x%08x depc:0x%08x"), info->exccause, info->reason, info->epc1, info->epc2, info->epc3, info->excvaddr, info->depc);
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, PSTR("ESP"), PSTR("ResetInfo"), 0), buff, 0, 0, 0);
+            os_sprintf(buff, "Exception:%d flag:%d epc1:0x%08x epc2:0x%08x epc3:0x%08x excvaddr:0x%08x depc:0x%08x", info->exccause, info->reason, info->epc1, info->epc2, info->epc3, info->excvaddr, info->depc);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "ResetInfo", 0), buff, 0, 0, 0);
         }
         else
         {
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, PSTR("ESP"), PSTR("ResetInfo"), 0), reason, 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "ResetInfo", 0), reason, 0, 0, 0);
         }
     }
 
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, PSTR("ESP"), PSTR("Build"), 0), PSTR(__DATE__ " " __TIME__), 0, 0, 1);
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, PSTR("ESP"), PSTR("Version"), 0), version, 0, 0, 1);
+    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Build", 0), __DATE__ " " __TIME__, 0, 0, 1);
+    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Version", 0), version, 0, 0, 1);
 }
 
 void mqtt_loop()
@@ -88,8 +83,8 @@ void mqtt_loop()
         if (now_timestamp != timestamp / 60)
         {
             now_timestamp = timestamp / 60;
-            os_sprintf(number, PSTR("%d:%d"), timestamp / 3600 % 24, timestamp / 60 % 60);
-            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("Time"), 0), number, 0, 0, 0);
+            os_sprintf(number, "%d:%d", timestamp / 3600 % 24, timestamp / 60 % 60);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, "ESP", "Time", 0), number, 0, 0, 0);
         }
 
         // Heap
@@ -98,7 +93,7 @@ void mqtt_loop()
         if (now_free_heap != free_heap)
         {
             now_free_heap = free_heap;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("FreeHeap"), 0), to_string(now_free_heap), 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, "ESP", "FreeHeap", 0), itoa(now_free_heap, number, 10), 0, 0, 0);
         }
 
         // RSSI
@@ -107,7 +102,7 @@ void mqtt_loop()
         if (now_rssi != rssi)
         {
             now_rssi = rssi;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, PSTR("ESP"), PSTR("RSSI"), 0), to_string(now_rssi), 0, 0, 0);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number + 64, "ESP", "RSSI", 0), itoa(now_rssi, number, 10), 0, 0, 0);
         }
     }
 }
@@ -119,11 +114,11 @@ void mqtt_setup()
         mqtt_client = (MQTT_Client*)calloc(1, sizeof(MQTT_Client));
         MQTT_InitConnection(mqtt_client, mqtt_ip, 1883, 0);
         MQTT_InitClient(mqtt_client, thisname, 0, 0, 120, 1);
-        MQTT_InitLWT(mqtt_client, mqtt_prefix(number, PSTR("connected"), 0), "false", 0, 1);
+        MQTT_InitLWT(mqtt_client, mqtt_prefix(number, "connected", 0), "false", 0, 1);
         MQTT_OnConnected(mqtt_client, [](uint32_t* args)
         {
             mqtt_connected = true;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, PSTR("connected"), 0), PSTR("true"), 0, 0, 1);
+            MQTT_Publish(mqtt_client, mqtt_prefix(number, "connected", 0), "true", 0, 0, 1);
             mqtt_information();
         });
         MQTT_OnDisconnected(mqtt_client, [](uint32_t* args)
@@ -149,7 +144,6 @@ void setup(void)
     wifi_fpm_set_sleep_type(MODEM_SLEEP_T);
     wifi_fpm_open();
     wifi_fpm_do_sleep(0xFFFFFFF);
-    wifi_set_opmode_current(STATIONAP_MODE);
 }
 
 void loop(void)
