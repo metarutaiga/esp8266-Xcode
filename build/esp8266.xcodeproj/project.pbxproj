@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D69FFA2C293F897E00CC7E75 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D69FFA2B293F897E00CC7E75 /* libmqtt.a */; };
+		D60D09962942F1240084F160 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60D09952942F1240084F160 /* libmqtt.a */; };
+		D60D0A3A29430F8E0084F160 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60D0A3929430F8E0084F160 /* libcrypto.a */; };
 		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
 		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
@@ -17,9 +18,9 @@
 
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
-		D614A5F6289A5FB400AF1D97 /* libesp8266.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libesp8266.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D60D09952942F1240084F160 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D60D0A3929430F8E0084F160 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
-		D69FFA2B293F897E00CC7E75 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69FFA4C2941832300CC7E75 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../esp8266/main.cpp; sourceTree = "<group>"; };
 		D69FFA4D2941832300CC7E75 /* esp8266.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = esp8266.h; path = ../esp8266/esp8266.h; sourceTree = "<group>"; };
 		D69FFA4E2941832300CC7E75 /* phy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = phy.c; path = ../esp8266/phy.c; sourceTree = "<group>"; };
@@ -62,7 +63,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D69FFA2C293F897E00CC7E75 /* libmqtt.a in Frameworks */,
+				D60D0A3A29430F8E0084F160 /* libcrypto.a in Frameworks */,
+				D60D09962942F1240084F160 /* libmqtt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,8 +74,8 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D69FFA2B293F897E00CC7E75 /* libmqtt.a */,
-				D614A5F6289A5FB400AF1D97 /* libesp8266.a */,
+				D60D0A3929430F8E0084F160 /* libcrypto.a */,
+				D60D09952942F1240084F160 /* libmqtt.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

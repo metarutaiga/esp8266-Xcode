@@ -25,7 +25,7 @@ OTHER_CFLAGS = $(inherited) -fno-builtin-printf
 OTHER_CFLAGS = $(inherited) -fno-inline-functions
 OTHER_CFLAGS = $(inherited) -fno-jump-tables
 OTHER_CFLAGS = $(inherited) -fsigned-char
-OTHER_CFLAGS = $(inherited) -mtext-section-literals
+//OTHER_CFLAGS = $(inherited) -mtext-section-literals
 OTHER_CFLAGS = $(inherited) -nostdlib
 OTHER_CFLAGS = $(inherited) -Wno-comment
 OTHER_CFLAGS = $(inherited) -Wno-pointer-sign
@@ -45,7 +45,7 @@ OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-Map,$(TARGET_BUILD_DIR)/$(EXECUT
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,--start-group
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lairkiss
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lc
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lcrypto
+//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lcrypto
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lespnow
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lgcc
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -llwip_536
@@ -55,8 +55,8 @@ OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lphy
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lpp
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lsmartconfig
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa2
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwps
+//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa2
+//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwps
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,--end-group
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-wrap,spi_flash_read
 
