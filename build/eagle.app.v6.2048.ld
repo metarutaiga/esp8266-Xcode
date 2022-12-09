@@ -106,29 +106,29 @@ SECTIONS
     /* esp-clang */
     *(*.irom.text.*)
 
-    *libc.a:(.literal .text .literal.* .text.*)
-    *libm.a:(.literal .text .literal.* .text.*)
+    *libc.a:                            (.literal .text .literal.* .text.*)
+    *libm.a:                            (.literal .text .literal.* .text.*)
 
-    *libat.a:(.literal.* .text.*)
-    *libcrypto.a:(.literal.* .text.*)
-    *libespnow.a:(.literal.* .text.*)
-    *libjson.a:(.literal.* .text.*)
-    *liblwip.a:(.literal.* .text.*)
-    *liblwip_536.a:(.literal.* .text.*)
-    *libmesh.a:(.literal.* .text.*)
-    *libnet80211.a:(.literal.* .text.*)
-    *libsmartconfig.a:(.literal.* .text.*)
-    *libssl.a:(.literal.* .text.*)
-    *libupgrade.a:(.literal.* .text.*)
-    *libwpa.a:(.literal.* .text.*)
-    *libwpa2.a:(.literal.* .text.*)
-    *libwps.a:(.literal.* .text.*)
+    *libat.a:                           (.literal .text .literal.* .text.*)
+    *libcrypto.a:                       (.literal .text .literal.* .text.*)
+    *libespnow.a:                       (.literal .text .literal.* .text.*)
+    *libjson.a:                         (.literal .text .literal.* .text.*)
+    *liblwip.a:                         (.literal .text .literal.* .text.*)
+    *liblwip_536.a:                     (.literal .text .literal.* .text.*)
+    *libmesh.a:                         (.literal .text .literal.* .text.*)
+    *libnet80211.a:                     (.literal .text .literal.* .text.*)
+    *libsmartconfig.a:                  (.literal .text .literal.* .text.*)
+    *libssl.a:                          (.literal .text .literal.* .text.*)
+    *libupgrade.a:                      (.literal .text .literal.* .text.*)
+    *libwpa.a:                          (.literal .text .literal.* .text.*)
+    *libwpa2.a:                         (.literal .text .literal.* .text.*)
+    *libwps.a:                          (.literal .text .literal.* .text.*)
 
     *(.irom.literal .irom.text .irom.literal.* .irom.text.* .irom0.literal .irom0.text .irom0.literal.* .irom0.text.*)
 
-    *.c.o(.literal* .text*)
-    *.cc.o(.literal* .text*)
-    *.cpp.o(.literal* .text*)
+    *.c.o                               (.literal .text .literal.* .text.*)
+    *.cc.o                              (.literal .text .literal.* .text.*)
+    *.cpp.o                             (.literal .text .literal.* .text.*)
 
     . = ALIGN(4);		/* this table MUST be 4-byte aligned */
     /*  C++ constructor and destructor tables, properly ordered:  */

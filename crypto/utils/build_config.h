@@ -51,6 +51,17 @@
 #define CONFIG_TLS_INTERNAL_CLIENT
 #define CONFIG_INTERNAL_LIBTOMMATH
 #define CONFIG_CRYPTO_INTERNAL
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "os.h"
+#undef os_malloc
+#undef os_realloc
+#undef os_free
+#define _C_TYPES_H_
+#include "mem.h"
 #endif
 
 #endif /* BUILD_CONFIG_H */

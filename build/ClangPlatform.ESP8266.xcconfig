@@ -24,6 +24,7 @@ OTHER_CFLAGS = $(inherited) -ffunction-sections
 OTHER_CFLAGS = $(inherited) -fno-builtin-printf
 OTHER_CFLAGS = $(inherited) -fno-inline-functions
 OTHER_CFLAGS = $(inherited) -fno-jump-tables
+//OTHER_CFLAGS = $(inherited) -fno-unique-section-names
 OTHER_CFLAGS = $(inherited) -fsigned-char
 //OTHER_CFLAGS = $(inherited) -mtext-section-literals
 OTHER_CFLAGS = $(inherited) -nostdlib
