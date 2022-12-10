@@ -14,7 +14,7 @@
 #include "crypto.h"
 
 
-static void MD5Transform(u32 buf[4], u32 const in[16]);
+void MD5Transform(u32 buf[4], u32 const in[16]);
 
 
 typedef struct MD5Context MD5_CTX;

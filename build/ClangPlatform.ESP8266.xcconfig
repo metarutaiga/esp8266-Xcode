@@ -60,6 +60,7 @@ OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwps
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,--end-group
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-wrap,spi_flash_read
+OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-wrap,spi_flash_write
 
 OTHER_LDFLAGS[config=Release] = $(inherited) -Wl,--gc-sections
 
