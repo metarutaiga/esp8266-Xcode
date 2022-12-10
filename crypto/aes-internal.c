@@ -14,6 +14,8 @@
  * See README for more details.
  */
 
+#ifndef __XTENSA__
+
 #include "includes.h"
 
 #include "common.h"
@@ -843,3 +845,5 @@ int rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[], int keyBits)
 
 	return -1;
 }
+
+#endif

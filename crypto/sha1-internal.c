@@ -44,6 +44,7 @@ int sha1_vector(size_t num_elem, const u8 *addr[], const size_t *len, u8 *mac)
 }
 #endif /* CONFIG_CRYPTO_INTERNAL */
 
+#ifndef __XTENSA__
 
 /* ===== start - public domain SHA1 implementation ===== */
 
@@ -304,3 +305,5 @@ void SHA1Final(unsigned char digest[20], SHA1_CTX* context)
 }
 
 /* ===== end - public domain SHA1 implementation ===== */
+
+#endif

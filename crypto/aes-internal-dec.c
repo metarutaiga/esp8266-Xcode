@@ -14,6 +14,8 @@
  * See README for more details.
  */
 
+#ifndef __XTENSA__
+
 #include "includes.h"
 
 #include "common.h"
@@ -161,3 +163,5 @@ void aes_decrypt_deinit(void *ctx)
 	os_memset(ctx, 0, AES_PRIV_SIZE);
 	os_free(ctx);
 }
+
+#endif
