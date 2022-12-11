@@ -1,3 +1,12 @@
 [submodule "3rdParty/ESP8266_NONOS_SDK"]
 	path = ESP8266_NONOS_SDK
 	url = https://github.com/espressif/ESP8266_NONOS_SDK.git
+[submodule "esp-homekit"]
+	path = esp-homekit
+	url = https://github.com/metarutaiga/esp-homekit
+[submodule "http-parser"]
+	path = http-parser
+	url = https://github.com/nodejs/http-parser
+[submodule "cJSON"]
+	path = cJSON
+	url = https://github.com/DaveGamble/cJSON

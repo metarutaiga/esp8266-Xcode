@@ -61,6 +61,7 @@
 		D60D0A8D294311830084F160 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E02942F7610084F160 /* sha512.c */; };
 		D60D0A90294313A30084F160 /* aes-wrap.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D0A8E294313A30084F160 /* aes-wrap.c */; };
 		D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D0A8F294313A30084F160 /* aes-unwrap.c */; };
+		D6927FF42945B8A100C7F5A9 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D6927FF32945B75600C7F5A9 /* base64.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -154,6 +155,8 @@
 		D60D0A2B2942F9E90084F160 /* asn1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn1.c; path = ../crypto/tls/asn1.c; sourceTree = "<group>"; };
 		D60D0A8E294313A30084F160 /* aes-wrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-wrap.c"; path = "../crypto/aes-wrap.c"; sourceTree = "<group>"; };
 		D60D0A8F294313A30084F160 /* aes-unwrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-unwrap.c"; path = "../crypto/aes-unwrap.c"; sourceTree = "<group>"; };
+		D6927FF22945B75600C7F5A9 /* base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
+		D6927FF32945B75600C7F5A9 /* base64.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
 		D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -179,6 +182,8 @@
 		D60D09A12942F69D0084F160 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				D6927FF32945B75600C7F5A9 /* base64.c */,
+				D6927FF22945B75600C7F5A9 /* base64.h */,
 				D60D09A32942F69D0084F160 /* build_config.h */,
 				D60D0A1C2942F8F30084F160 /* byteswap.h */,
 				D60D09A62942F69D0084F160 /* common.h */,
@@ -359,6 +364,7 @@
 				D60D0A5B294311830084F160 /* pkcs5.c in Sources */,
 				D60D0A5C294311830084F160 /* pkcs8.c in Sources */,
 				D60D0A5D294311830084F160 /* rsa.c in Sources */,
+				D6927FF42945B8A100C7F5A9 /* base64.c in Sources */,
 				D60D0A5E294311830084F160 /* aes-cbc.c in Sources */,
 				D60D0A5F294311830084F160 /* aes-ccm.c in Sources */,
 				D60D0A60294311830084F160 /* aes-ctr.c in Sources */,

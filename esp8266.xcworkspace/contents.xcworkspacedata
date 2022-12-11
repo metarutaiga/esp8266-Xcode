@@ -2,10 +2,13 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "container:build/crypto.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:build/esp8266.xcodeproj">
    </FileRef>
    <FileRef
-      location = "container:build/crypto.xcodeproj">
+      location = "container:build/esp-homekit.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:build/mqtt.xcodeproj">

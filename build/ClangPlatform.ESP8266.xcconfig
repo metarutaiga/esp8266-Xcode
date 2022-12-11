@@ -34,12 +34,12 @@ OTHER_CFLAGS = $(inherited) -Wno-strict-prototypes
 OTHER_CFLAGS = $(inherited) -Wno-switch
 OTHER_CFLAGS = $(inherited) -Wno-writable-strings
 
-OTHER_CFLAGS = $(inherited) -DICACHE_FLASH -DUSE_OPTIMIZE_PRINTF
-OTHER_CFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf --sysroot=esp-clang/xtensa-lx106-elf -mcpu=esp8266
+OTHER_CFLAGS = $(inherited) -DESP_NONOS -DICACHE_FLASH -DUSE_OPTIMIZE_PRINTF
+OTHER_CFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf -isysroot esp-clang/xtensa-lx106-elf -mcpu=esp8266
 OTHER_CPLUSPLUSFLAGS = $(inherited) -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS
 
 OTHER_LDFLAGS = $(inherited) -nostdlib -Wl,-static
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf --sysroot=esp-clang/xtensa-lx106-elf -mcpu=esp8266
+OTHER_LDFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf -isysroot esp-clang/xtensa-lx106-elf -mcpu=esp8266
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -u call_user_start
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -T eagle.app.v6.2048.ld
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-Map,$(TARGET_BUILD_DIR)/$(EXECUTABLE_NAME).map
