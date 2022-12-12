@@ -16,7 +16,7 @@ extern "C"
     }
 };
 
-extern char version[16];
+extern const char version[16];
 extern char thisname[16];
 extern char number[128];
 

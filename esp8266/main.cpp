@@ -6,9 +6,9 @@ static char wifi_ssid[] PROGMEM = "wifi";
 static char wifi_pass[] PROGMEM = "1234";
 static char wifi_format[] PROGMEM = "ESP8266_%02X%02X%02X";
 
-char version[] PROGMEM = "1.00";
-char thisname[16] = "";
-char number[128] = "";
+extern const char version[] = "1.00";
+char thisname[16] IRAM_ATTR = "";
+char number[128] IRAM_ATTR = "";
 
 void setup(void)
 {

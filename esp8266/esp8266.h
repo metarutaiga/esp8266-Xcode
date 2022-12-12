@@ -1,5 +1,7 @@
 #pragma once
 
+#define IRAM_ATTR __attribute__((section(".iram.text")))
+
 #ifdef __cplusplus
 extern "C" {
 #endif

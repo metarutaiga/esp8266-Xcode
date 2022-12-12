@@ -15,7 +15,7 @@ static void loop_task(os_event_t* event)
 
 void user_pre_init(void)
 {
-    static const partition_item_t at_partition_table[] PROGMEM =
+    static const partition_item_t at_partition_table[] =
     {
         { SYSTEM_PARTITION_RF_CAL,           0x3fb000,  0x1000 },
         { SYSTEM_PARTITION_PHY_DATA,         0x3fc000,  0x1000 },

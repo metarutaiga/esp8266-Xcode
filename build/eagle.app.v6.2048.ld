@@ -71,86 +71,6 @@ SECTIONS
     _dport0_data_end = ABSOLUTE(.);
   } >dport0_0_seg :dport0_0_phdr
 
-  .irom0.text : ALIGN(4)
-  {
-    _irom0_text_start = ABSOLUTE(.);
-
-    *(.sdk.version)
-
-    /* esp-clang */
-    *(*.irom0.pstr.*)
-
-    *(.irom.literal .irom.text)
-    *(.rodata.str*)
-
-    *libcrypto.a:                       (.rodata .rodata.*)
-    *liblwip_536.a:espconn_buf.o        (.rodata .rodata.*)
-    *liblwip_536.a:etharp.o             (.rodata .rodata.*)
-    *liblwip_536.a:sntp.o               (.rodata .rodata.*)
-    *libmain.a:app_main.o               (.rodata .rodata.*)
-    *libmain.a:mem_manager.o            (.rodata .rodata.*)
-    *libnet80211.a:ieee80211_hostap.o   (.rodata .rodata.*)
-    *libnet80211.a:ieee80211_ht.o       (.rodata .rodata.*)
-    *libnet80211.a:ieee80211_input.o    (.rodata .rodata.* .data .data.*)
-    *libnet80211.a:ieee80211_output.o   (.rodata .rodata.*)
-    *libnet80211.a:wl_cnx.o             (.rodata .rodata.*)
-    *libphy.a:phy_chip_v6.o             (.rodata .rodata.*)
-    *libphy.a:phy_chip_v6_ana.o         (.rodata .rodata.*)
-    *libphy.a:phy_chip_v6_cal.o         (.rodata .rodata.*)
-    *libphy.a:phy_sleep.o               (.rodata .rodata.*)
-    *libpp.a:esf_buf.o                  (.rodata .rodata.*)
-    *libpp.a:lmac.o                     (.rodata .rodata.*)
-    *libpp.a:rate_control.o             (.rodata .rodata.*)
-    *libwpa.a:wpa.o                     (.rodata .rodata.*)
-
-    /* esp-clang */
-    *(*.irom.text.*)
-
-    *libc.a:                            (.literal .text .literal.* .text.*)
-    *libm.a:                            (.literal .text .literal.* .text.*)
-
-    *libat.a:                           (.literal .text .literal.* .text.*)
-    *libcrypto.a:                       (.literal .text .literal.* .text.*)
-    *libespnow.a:                       (.literal .text .literal.* .text.*)
-    *libjson.a:                         (.literal .text .literal.* .text.*)
-    *liblwip.a:                         (.literal .text .literal.* .text.*)
-    *liblwip_536.a:                     (.literal .text .literal.* .text.*)
-    *libmesh.a:                         (.literal .text .literal.* .text.*)
-    *libnet80211.a:                     (.literal .text .literal.* .text.*)
-    *libsmartconfig.a:                  (.literal .text .literal.* .text.*)
-    *libssl.a:                          (.literal .text .literal.* .text.*)
-    *libupgrade.a:                      (.literal .text .literal.* .text.*)
-    *libwpa.a:                          (.literal .text .literal.* .text.*)
-    *libwpa2.a:                         (.literal .text .literal.* .text.*)
-    *libwps.a:                          (.literal .text .literal.* .text.*)
-
-    *(.irom.literal .irom.text .irom.literal.* .irom.text.* .irom0.literal .irom0.text .irom0.literal.* .irom0.text.*)
-
-    *.c.o                               (.literal .text .literal.* .text.*)
-    *.cc.o                              (.literal .text .literal.* .text.*)
-    *.cpp.o                             (.literal .text .literal.* .text.*)
-
-    . = ALIGN(4);		/* this table MUST be 4-byte aligned */
-    /*  C++ constructor and destructor tables, properly ordered:  */
-    KEEP (*crtbegin.o(.ctors))
-    KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
-    KEEP (*(SORT(.ctors.*)))
-    KEEP (*(.ctors))
-    KEEP (*crtbegin.o(.dtors))
-    KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
-    KEEP (*(SORT(.dtors.*)))
-    KEEP (*(.dtors))
-    /*  C++ exception handlers table:  */
-
-    . = ALIGN(4);		/* this table MUST be 4-byte aligned */
-    _bss_table_start = ABSOLUTE(.);
-    LONG(_bss_start)
-    LONG(_bss_end)
-    _bss_table_end = ABSOLUTE(.);
-
-    _irom0_text_end = ABSOLUTE(.);
-  } >irom0_0_seg :irom0_0_phdr
-
   .text : ALIGN(4)
   {
     _stext = .;
@@ -182,7 +102,28 @@ SECTIONS
     *(.entry.text)
     *(.init.literal)
     *(.init)
-    *(.literal .text .literal.* .text.* .stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
+    *libc.a:(.data .data.*) 
+    *libgcc.a:(.data .data.*) 
+    *liblwip_536.a:(.data .data.*)
+    *libnet80211.a:(.data .data.*)
+    *libphy.a:(.data .data.*)
+    *libpp.a:(.data .data.*)
+    *libwpa.a:(.data .data.*)
+ /* *libc.a:(.literal .text .literal.* .text.*) */
+ /* *libgcc.a:(.literal .text .literal.* .text.*) */
+    *liblwip_536.a:(.literal .text .literal.* .text.*)
+    *libmain.a:(.literal .text .literal.* .text.*)
+    *libphy.a:(.literal .text .literal.* .text.*)
+    *libpp.a:(.literal .text .literal.* .text.*)
+    *(*.iram.text*)
+    *libc.a:(.bss .bss.*) 
+    *libgcc.a:(.bss .bss.*) 
+    *liblwip_536.a:(.bss .bss.*) 
+    *libnet80211.a:(.bss .bss.*)
+    *libphy.a:(.bss .bss.*)
+/*  *libpp.a:(EXCLUDE_FILE(esf_buf.o pp.o wdev.o) .bss EXCLUDE_FILE(esf_buf.o pp.o wdev.o) .bss.*)  */
+    *libwpa.a:(.bss .bss.*)
+    *(.stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
     *(.fini.literal)
     *(.fini)
     *(.gnu.version)
@@ -199,9 +140,59 @@ SECTIONS
     _lit4_end = ABSOLUTE(.);
   } >iram1_0_seg :iram1_0_phdr
 
+  .irom0.text : ALIGN(4)
+  {
+    _irom0_text_start = ABSOLUTE(.);
+
+    *(.sdk.version)
+    *(*.rodata.__func__* *.rodata.str* *.pstr* *.irom.text* *.irom0.text.*)
+    *(*.rodata*)
+    *(*.literal* *.text*)
+    *(.gnu.linkonce.r.*)
+    __XT_EXCEPTION_TABLE__ = ABSOLUTE(.);
+    *(.xt_except_table)
+    *(.gcc_except_table)
+    *(.gnu.linkonce.e.*)
+    *(.gnu.version_r)
+    *(.eh_frame)
+    /*  C++ constructor and destructor tables, properly ordered:  */
+    KEEP (*crtbegin.o(.ctors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .ctors))
+    KEEP (*(SORT(.ctors.*)))
+    KEEP (*(.ctors))
+    KEEP (*crtbegin.o(.dtors))
+    KEEP (*(EXCLUDE_FILE (*crtend.o) .dtors))
+    KEEP (*(SORT(.dtors.*)))
+    KEEP (*(.dtors))
+    /*  C++ exception handlers table:  */
+    __XT_EXCEPTION_DESCS__ = ABSOLUTE(.);
+    *(.xt_except_desc)
+    *(.gnu.linkonce.h.*)
+    __XT_EXCEPTION_DESCS_END__ = ABSOLUTE(.);
+    *(.xt_except_desc_end)
+    *(.dynamic)
+    *(.gnu.version_d)
+    . = ALIGN(4);		/* this table MUST be 4-byte aligned */
+    _bss_table_start = ABSOLUTE(.);
+    LONG(_bss_start)
+    LONG(_bss_end)
+    _bss_table_end = ABSOLUTE(.);
+
+    _irom0_text_end = ABSOLUTE(.);
+  } >irom0_0_seg :irom0_0_phdr
+
+  .rodata : ALIGN(4)
+  {
+    _rodata_start = ABSOLUTE(.);
+    _rodata_end = ABSOLUTE(.);
+  } >dram0_0_seg :dram0_0_phdr
+
   .data : ALIGN(4)
   {
     _data_start = ABSOLUTE(.);
+    *(SORT_BY_ALIGNMENT(.data*))
+    *(.data)
+    *(.data.*)
     *(.gnu.linkonce.d.*)
     *(.data1)
     *(.sdata)
@@ -211,33 +202,7 @@ SECTIONS
     *(.sdata2.*)
     *(.gnu.linkonce.s2.*)
     *(.jcr)
-    *(SORT_BY_ALIGNMENT(EXCLUDE_FILE(*lib_a-impure.o) .data*))
     _data_end = ABSOLUTE(.);
-  } >dram0_0_seg :dram0_0_phdr
-
-  .rodata : ALIGN(4)
-  {
-    _rodata_start = ABSOLUTE(.);
-    *(.sdk.version)
-    *(.rodata)
-    *(.rodata.*)
-    *(.gnu.linkonce.r.*)
-    *(.rodata1)
-    *libc.a:lib_a-impure.o(.data)
-    __XT_EXCEPTION_TABLE__ = ABSOLUTE(.);
-    *(.xt_except_table)
-    *(.gcc_except_table)
-    *(.gnu.linkonce.e.*)
-    *(.gnu.version_r)
-    *(.eh_frame)
-    __XT_EXCEPTION_DESCS__ = ABSOLUTE(.);
-    *(.xt_except_desc)
-    *(.gnu.linkonce.h.*)
-    __XT_EXCEPTION_DESCS_END__ = ABSOLUTE(.);
-    *(.xt_except_desc_end)
-    *(.dynamic)
-    *(.gnu.version_d)
-    _rodata_end = ABSOLUTE(.);
   } >dram0_0_seg :dram0_0_phdr
 
   .bss ALIGN(8) (NOLOAD) : ALIGN(4)
