@@ -31,14 +31,26 @@ extern _xtos_handler _xtos_c_handler_table[];
 static _xtos_handler origin_exception;
 static void dump_exception(struct exception_frame *ef, int cause)
 {
-    uint32_t excvaddr;
-    __asm__ __volatile__ ("rsr.excvaddr %0;" : "=r"(excvaddr):: "memory");
-    static int entered = 0;
-    if (entered == 0)
+    extern int divide;
+    if ((ef->epc & 0xffff0000) == 0x40000000)
     {
-        entered = 1;
-        os_printf("%08x %08x %08x\n", ef->epc & -3, excvaddr, ef->ps);
-        entered = 0;
+        
+    }
+    else if ((ef->epc >= (uint32_t)&divide) && (ef->epc < (uint32_t)&divide + 0x800))
+    {
+        
+    }
+    else
+    {
+        uint32_t excvaddr;
+        __asm__ __volatile__ ("rsr.excvaddr %0;" : "=r"(excvaddr):: "memory");
+        static int entered = 0;
+        if (entered == 0)
+        {
+            entered = 1;
+            os_printf("%08x %08x %08x\n", ef->epc, excvaddr, ef->ps);
+            entered = 0;
+        }
     }
     origin_exception(ef, cause);
 }

@@ -102,127 +102,16 @@ SECTIONS
     *(.entry.text)
     *(.init.literal)
     *(.init)
-    *libc.a:(.data .data.*) 
-    *libgcc.a:(.data .data.*) 
-    *liblwip_536.a:(.data .data.*)
-    *libnet80211.a:ieee80211_scan.o(.data.g_scan_chan_list)
-    *libnet80211.a:(.data EXCLUDE_FILE(ieee80211_hostap.o ieee80211_scan.o) .data.*)
-    *libphy.a:phy_chip_v6.o(.data .data.*)
-    *libphy.a:(EXCLUDE_FILE(phy_chip_v6.o) .data .data.*)
-    *libpp.a:pp.o(.data.tcb)
-    *libpp.a:pp.o(.data.CanDoFreqCal)
-    *libpp.a:pp.o(.data.test_freq_val_first)
-/*  *libpp.a:pp.o(.data.sleep_start_wait_time) */
-/*  *libpp.a:pp.o(.data.NoiseTimerInterval) */
-    *libpp.a:pp.o(.data.PeriodCalInterval)
-/*  *libpp.a:pp.o(.data.noise_now) */
-    *libpp.a:pp.o(.data.soft_wdt_interval)
-    *libpp.a:trc.o(.data.rc11BSchedTbl)
-    *libpp.a:trc.o(.data.rcP2P11GSchedTbl)
-    *libpp.a:trc.o(.data.rc11GSchedTbl)
-    *libpp.a:trc.o(.data.rcP2P11NSchedTbl)
-    *libpp.a:trc.o(.data.rc11NSchedTbl)
-    *libpp.a:trc.o(.data.BasicOFDMSched)
-    *libpp.a:trc.o(.data.user_rc_limit)
-    *libpp.a:(.data EXCLUDE_FILE(pm_for_bcn_only_mode.o pp.o pm.o trc.o) .data.*)
-    *libwpa.a:(.data .data.*)
     *libc.a:(.literal .text .literal.* .text.*)
     *libgcc.a:(.literal .text .literal.* .text.*)
     *liblwip_536.a:(.literal .text .literal.* .text.*)
     *libmain.a:(.literal .text .literal.* .text.*)
     *libphy.a:(.literal .text .literal.* .text.*)
     *libpp.a:(.literal .text .literal.* .text.*)
+    *libnet80211.a:ieee80211_input.o(.data.rate_11n_rate2_rateid_table)
+    *libnet80211.a:ieee80211_input.o(.data.rate_11g_rate2_rateid_table)
+    *libnet80211.a:ieee80211_input.o(.data.rate_11b_rate2_rateid_table)
     *(*.iram.text*)
-    *libc.a:(.bss .bss.*) 
-    *libgcc.a:(.bss .bss.*) 
-    *liblwip_536.a:dns.o(.bss) /* update per second */
-    *liblwip_536.a:etharp.o(.bss) /* update per some second */
-    *liblwip_536.a:(EXCLUDE_FILE(dns.o etharp.o tcp.o tcp_in.o) .bss .bss.*)
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.twice_no_bcn*) */
-    *libnet80211.a:ieee80211_hostap.o(.bss.period_cal_cnt*)
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.APBcnRecv) */
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.ap_freq_force_to_scan) */
-    *libnet80211.a:ieee80211_hostap.o(.bss.APRecvBcnStartTick)
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.tim_offset) */
-    *libnet80211.a:ieee80211_hostap.o(.bss.bcn_freqcal_start_addr)
-    *libnet80211.a:ieee80211_hostap.o(.bss.BcnIntvl)
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.BcnWithMcastSendCnt) */
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.BcnWithMcastSendStart) */
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.PendFreeBcnEb) */
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.BcnEb_update) */
-    *libnet80211.a:ieee80211_hostap.o(.bss.BcnEb)
-/*  *libnet80211.a:ieee80211_hostap.o(.bss.beacon_send_start_flag) */
-    *libnet80211.a:ieee80211_hostap.o(.bss.beacon_timer)
-    *libnet80211.a:ieee80211_input.o(.bss.max_11b_rate)
-    *libnet80211.a:ieee80211_input.o(.bss.max_11g_rate)
-    *libnet80211.a:ieee80211_input.o(.bss.max_11n_rate)
-    *libnet80211.a:ieee80211_scan.o(.bss.slp_wk_cpu_scan_wait_timer*)
-    *libnet80211.a:ieee80211_scan.o(.bss.scannum)
-    *libnet80211.a:ieee80211_scan.o(.bss.freq_change_check_softap_link_enable)
-/*  *libnet80211.a:ieee80211_scan.o(.bss.TestStaFreqCalValInput) */
-    *libnet80211.a:ieee80211_scan.o(.bss.FreqCalCntForScan)
-    *libnet80211.a:ieee80211_scan.o(.bss.arg_slp)
-    *libnet80211.a:ieee80211_scan.o(.bss.cb_slp)
-    *libnet80211.a:ieee80211_scan.o(.bss.priority_slp)
-    *libnet80211.a:ieee80211_scan.o(.bss.type_slp)
-/*  *libnet80211.a:ieee80211_scan.o(.bss.connect_scan_flag) */
-    *libnet80211.a:ieee80211_sta.o(.bss.sta_csa_timer)
-    *libnet80211.a:ieee80211_sta.o(.bss.rssi_saved)
-/*  *libnet80211.a:wl_cnx.o(.bss.no_ap_found_index) */
-    *libnet80211.a:wl_cnx.o(.bss.reconnect_flag)
-    *libnet80211.a:wl_cnx.o(.bss.g_cnx_probe_rc_list_cb)
-    *libnet80211.a:wl_cnx.o(.bss.cnx_csa_timer)
-    *libnet80211.a:wl_cnx.o(.bss.g_cnxMgr)
-    *libnet80211.a:(.bss EXCLUDE_FILE(ieee80211_hostap.o ieee80211_input.o ieee80211_scan.o ieee80211_sta.o wl_cnx.o wl_chm.o) .bss.*)
-    *libphy.a:(EXCLUDE_FILE(phy_chip_v6.o phy_chip_v6_ana.o phy_chip_v6_cal.o phy_sleep.o) .bss .bss.*)
-    *libpp.a:esf_buf.o(.bss.g_free_rxblock_eb_cnt)
-    *libpp.a:esf_buf.o(.bss.ebCxt)
-/*  *libpp.a:pm.o(.bss.retry*) */
-    *libpp.a:pm.o(.bss.rtc_cal_done*)
-    *libpp.a:pm.o(.bss.LightSleepWakedCb)
-    *libpp.a:pm.o(.bss.StopLightSleepFunc)
-    *libpp.a:pm.o(.bss.pmTaskQ)
-/*  *libpp.a:pm.o(.bss.pm_sig_cnt) */
-/*  *libpp.a:pp.o(.bss.need_pwctrl*) */
-/*  *libpp.a:pp.o(.bss.current_ifidx*) */
-    *libpp.a:pp.o(.bss.pmdofreqcal)
-    *libpp.a:pp.o(.bss.avg_freqoffset_sta_freqcal)
-    *libpp.a:pp.o(.bss.all_freqoffset_sta_freqcal)
-    *libpp.a:pp.o(.bss.pktnum_sta_freqcal)
-    *libpp.a:pp.o(.bss.PktNumInOneChk)
-    *libpp.a:pp.o(.bss.test_freq_val_force_flag)
-    *libpp.a:pp.o(.bss.TestStaFreqCalValFilter)
-    *libpp.a:pp.o(.bss.PktsNumInOneChk)
-    *libpp.a:pp.o(.bss.AllFreqOffsetInOneChk)
-    *libpp.a:pp.o(.bss.AvgFreqOffsetInOneChk)
-    *libpp.a:pp.o(.bss.idx_to_be_use)
-    *libpp.a:pp.o(.bss.buffed_eb_arr)
-/*  *libpp.a:pp.o(.bss.total_buffed_eb_num) */
-/*  *libpp.a:pp.o(.bss.idle_timer_enabled) */
-/*  *libpp.a:pp.o(.bss.idle_timer_reopen_flag) */
-    *libpp.a:pp.o(.bss.period_cal_tick)
-    *libpp.a:pp.o(.bss.pend_flag_noise_check)
-    *libpp.a:pp.o(.bss.pend_flag_periodic_cal)
-/*  *libpp.a:pp.o(.bss.pp_soft_wdt_count) */
-/*  *libpp.a:pp.o(.bss.dbg_stop_hw_wdt) */
-/*  *libpp.a:pp.o(.bss.dbg_stop_sw_wdt) */
-/*  *libpp.a:pp.o(.bss.TxRxCxt) */
-    *libpp.a:pp.o(.bss.ppTaskQ)
-    *libpp.a:pp.o(.bss.noise_test_timer)
-    *libpp.a:pp.o(.bss.mac_idle_timer)
-    *libpp.a:trc.o(.bss.updateCounter)
-/*  *libpp.a:trc.o(.bss.interface_trc_mask) */
-/*  *libpp.a:trc.o(.bss.trc_mask) */
-    *libpp.a:wdev.o(.bss.MacTimerCb)
-    *libpp.a:wdev.o(.bss.BcnSendTick)
-/*  *libpp.a:wdev.o(.bss.WdevRxIsClose) */
-    *libpp.a:wdev.o(.bss.WdevTimOffSet)
-    *libpp.a:(.bss EXCLUDE_FILE(esf_buf.o pm.o pp.o lmac.o rate_control.o trc.o wdev.o) .bss.*)
-    *libwpa.a:wpa_auth.o(.bss.s_sm_valid_bitmap)
-    *libwpa.a:wpa_auth.o(.bss.s_sm_table)
-    *libwpa.a:wpa.o(.bss.assoc_ie_buf)
-    *libwpa.a:wpa.o(.bss.gWpaSm)
-/*  *libwpa.a:(.bss .bss.*) */
     *(.stub .gnu.warning .gnu.linkonce.literal.* .gnu.linkonce.t.*.literal .gnu.linkonce.t.*)
     *(.fini.literal)
     *(.fini)
@@ -255,12 +144,14 @@ SECTIONS
     *(.sdata2.*)
     *(.gnu.linkonce.s2.*)
     *(.jcr)
-/*  *liblwip_536.a:etharp.o(.rodata) */
-/*  *libphy.a:phy_chip_v6.o(.rodata) */
-/*  *libphy.a:phy_chip_v6_ana.o(.rodata) */
-/*  *libpp.a:rate_control.o(.rodata.our_ack_time) */
-/*  *libnet80211.a:wl_cnx.o(.rodata) */
-/*  *libnet80211.a:ieee80211_phy.o(.irom.text) */
+    *(.rodata.CSWTCH*)
+    *liblwip_536.a:etharp.o(.rodata)
+    *libphy.a:phy_chip_v6.o(.rodata)
+    *libphy.a:phy_chip_v6_ana.o(.rodata)
+    *libpp.a:rate_control.o(.rodata.our_ack_time)
+    *libnet80211.a:wl_cnx.o(.rodata)
+    *libnet80211.a:ieee80211_crypto_ccmp.o(.irom.text)
+    *libnet80211.a:ieee80211_phy.o(.irom.text)
     _data_end = ABSOLUTE(.);
   } >dram0_0_seg :dram0_0_phdr
 
