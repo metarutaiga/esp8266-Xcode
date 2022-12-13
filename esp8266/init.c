@@ -1,5 +1,54 @@
 #include "esp8266.h"
 
+struct exception_frame
+{
+    uint32_t epc;
+    uint32_t ps;
+    uint32_t sar;
+    uint32_t unused;
+    uint32_t a0;
+    // note: no a1 here!
+    uint32_t a2;
+    uint32_t a3;
+    uint32_t a4;
+    uint32_t a5;
+    uint32_t a6;
+    uint32_t a7;
+    uint32_t a8;
+    uint32_t a9;
+    uint32_t a10;
+    uint32_t a11;
+    uint32_t a12;
+    uint32_t a13;
+    uint32_t a14;
+    uint32_t cause;
+};
+
+typedef void (*_xtos_handler)(struct exception_frame *ef, int cause);
+extern _xtos_handler _xtos_exc_handler_table[];
+extern _xtos_handler _xtos_c_handler_table[];
+
+static _xtos_handler origin_exception;
+static void dump_exception(struct exception_frame *ef, int cause)
+{
+    uint32_t excvaddr;
+    __asm__ __volatile__ ("rsr.excvaddr %0;" : "=r"(excvaddr):: "memory");
+    static int entered = 0;
+    if (entered == 0)
+    {
+        entered = 1;
+        os_printf("%08x %08x %08x\n", ef->epc & -3, excvaddr, ef->ps);
+        entered = 0;
+    }
+    origin_exception(ef, cause);
+}
+
+void hook_exception(void)
+{
+    origin_exception = _xtos_c_handler_table[3];
+    _xtos_c_handler_table[3] = dump_exception;
+}
+
 static void init_down(void)
 {
     system_set_os_print(1);

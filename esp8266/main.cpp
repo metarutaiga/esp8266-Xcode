@@ -7,8 +7,8 @@ static char wifi_pass[] PROGMEM = "1234";
 static char wifi_format[] PROGMEM = "ESP8266_%02X%02X%02X";
 
 extern const char version[] = "1.00";
-char thisname[16] IRAM_ATTR = "";
-char number[128] IRAM_ATTR = "";
+char thisname[16] = "";
+char number[128] = "";
 
 void setup(void)
 {
@@ -29,7 +29,14 @@ void loop(void)
     if (show < system_get_time())
     {
         show = system_get_time() + 1 * 1000 * 1000;
-        os_printf("[%10d] RAM : %d\n", system_get_time(), system_get_free_heap_size());
+        char mode = 'B';
+        switch (wifi_get_phy_mode())
+        {
+        case PHY_MODE_11B: mode = 'B'; break;
+        case PHY_MODE_11G: mode = 'G'; break;
+        case PHY_MODE_11N: mode = 'N'; break;
+        }
+        os_printf("[%10d] RAM : %d %c\n", system_get_time(), system_get_free_heap_size(), mode);
     }
 
     static uint8_t status = 0;
