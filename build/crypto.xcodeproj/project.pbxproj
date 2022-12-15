@@ -19,8 +19,8 @@
 		D60D0A61294311830084F160 /* aes-eax.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B02942F69E0084F160 /* aes-eax.c */; };
 		D60D0A62294311830084F160 /* aes-encblock.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09AC2942F69D0084F160 /* aes-encblock.c */; };
 		D60D0A63294311830084F160 /* aes-gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09A82942F69D0084F160 /* aes-gcm.c */; };
-		D60D0A64294311830084F160 /* aes-internal-dec.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B32942F69E0084F160 /* aes-internal-dec.c */; };
-		D60D0A65294311830084F160 /* aes-internal-enc.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B12942F69E0084F160 /* aes-internal-enc.c */; };
+		D60D0A64294311830084F160 /* aes-internal-dec.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B32942F69E0084F160 /* aes-internal-dec.c */; settings = {COMPILER_FLAGS = "-Daes_internal_dec"; }; };
+		D60D0A65294311830084F160 /* aes-internal-enc.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B12942F69E0084F160 /* aes-internal-enc.c */; settings = {COMPILER_FLAGS = "-Daes_internal_enc"; }; };
 		D60D0A66294311830084F160 /* aes-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09AA2942F69D0084F160 /* aes-internal.c */; };
 		D60D0A67294311830084F160 /* aes-omac1.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09AE2942F69E0084F160 /* aes-omac1.c */; };
 		D60D0A68294311830084F160 /* aes-siv.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B42942F69E0084F160 /* aes-siv.c */; };
@@ -372,18 +372,18 @@
 				D60D0A62294311830084F160 /* aes-encblock.c in Sources */,
 				D60D0A63294311830084F160 /* aes-gcm.c in Sources */,
 				D60D0A64294311830084F160 /* aes-internal-dec.c in Sources */,
-				D60D0A90294313A30084F160 /* aes-wrap.c in Sources */,
 				D60D0A65294311830084F160 /* aes-internal-enc.c in Sources */,
 				D60D0A66294311830084F160 /* aes-internal.c in Sources */,
 				D60D0A67294311830084F160 /* aes-omac1.c in Sources */,
 				D60D0A68294311830084F160 /* aes-siv.c in Sources */,
+				D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */,
+				D60D0A90294313A30084F160 /* aes-wrap.c in Sources */,
 				D60D0A6B294311830084F160 /* crypto_internal-cipher.c in Sources */,
 				D60D0A6C294311830084F160 /* crypto_internal-modexp.c in Sources */,
 				D60D0A6D294311830084F160 /* crypto_internal-rsa.c in Sources */,
 				D60D0A6E294311830084F160 /* crypto_internal.c in Sources */,
 				D60D0A6F294311830084F160 /* des-internal.c in Sources */,
 				D60D0A70294311830084F160 /* dh_group5.c in Sources */,
-				D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */,
 				D60D0A71294311830084F160 /* dh_groups.c in Sources */,
 				D60D0A72294311830084F160 /* fips_prf_internal.c in Sources */,
 				D60D0A73294311830084F160 /* md4-internal.c in Sources */,
