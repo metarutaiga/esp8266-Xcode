@@ -8,6 +8,9 @@
       location = "container:build/crypto.xcodeproj">
    </FileRef>
    <FileRef
+      location = "container:build/lwip.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:build/mqtt.xcodeproj">
    </FileRef>
 </Workspace>

@@ -14,6 +14,7 @@
 		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
 		D69FFA6329419B4C00CC7E75 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA6229419B4C00CC7E75 /* lost.c */; };
 		D69FFA662941B93D00CC7E75 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA642941B93D00CC7E75 /* mqtt.cpp */; };
+		D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA1ED0294AD2E0009EEA4C /* liblwip.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		D69FFA812941BBF800CC7E75 /* smartconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smartconfig.h; sourceTree = "<group>"; };
 		D69FFA822941BBF800CC7E75 /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ping.h; sourceTree = "<group>"; };
 		D69FFA832941BBF800CC7E75 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
+		D6CA1ED0294AD2E0009EEA4C /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D60D0A3A29430F8E0084F160 /* libcrypto.a in Frameworks */,
+				D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */,
 				D60D09962942F1240084F160 /* libmqtt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -74,6 +77,7 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D6CA1ED0294AD2E0009EEA4C /* liblwip.a */,
 				D60D0A3929430F8E0084F160 /* libcrypto.a */,
 				D60D09952942F1240084F160 /* libmqtt.a */,
 			);

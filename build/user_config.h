@@ -25,4 +25,35 @@
 #ifndef __USER_CONFIG_H__
 #define __USER_CONFIG_H__
 
+#ifdef LWIP_OPEN_SRC
+#pragma clang diagnostic ignored "-Wcomma"
+#pragma clang diagnostic ignored "-Wpointer-bool-conversion"
+#pragma clang diagnostic ignored "-Wsometimes-uninitialized"
+#pragma clang diagnostic ignored "-Wtautological-pointer-compare"
+#pragma clang diagnostic ignored "-Wunneeded-internal-declaration"
+#pragma clang diagnostic ignored "-Wunused-function"
+#pragma clang diagnostic ignored "-Wunused-value"
+#pragma clang diagnostic ignored "-Wunused-variable"
+#undef TCP_MSS
+#undef _TIME_T_
+#define EBUF_LWIP
+#define PBUF_RSV_FOR_WLAN
+#define TCP_MSS 536
+#define _TIME_T_ long
+#include <sys/timeb.h>
+#include <sys/_tz_structs.h>
+#else
+#include <user_interface.h>
+#endif
+
+#pragma clang diagnostic ignored "-Wsection"
+#include <c_types.h>
+#include <sys/pgmspace.h>
+#undef ICACHE_FLASH_ATTR
+#undef ICACHE_RODATA_ATTR
+#undef PROGMEM
+#define ICACHE_FLASH_ATTR   __attribute__((section(".irom0.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
+#define ICACHE_RODATA_ATTR  __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
+#define PROGMEM             __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
+
 #endif
