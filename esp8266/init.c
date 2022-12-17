@@ -38,7 +38,11 @@ static void dump_exception(struct exception_frame *ef, int cause)
     }
     else if ((ef->epc >= (uint32_t)&divide) && (ef->epc < (uint32_t)&divide + 0x800))
     {
-        
+        // sprintf
+    }
+    else if ((ef->epc >= (uint32_t)&strsep) && (ef->epc < (uint32_t)&strsep + 0x88))
+    {
+        // strsep / strtok
     }
     else
     {

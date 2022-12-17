@@ -206,8 +206,9 @@ SECTIONS
     _irom0_text_start = ABSOLUTE(.);
 
     *(.sdk.version)
-    *(*.rodata.__func__* *.rodata.str* *.pstr* *.irom.text* *.irom0.text.*)
+    *(*.rodata.__func__* *.rodata.str* *.pstr* *.irom.text*)
     *(*.rodata*)
+    *(*.irom0.text.*)
     *(*.literal* *.text*)
     *(.gnu.linkonce.r.*)
     __XT_EXCEPTION_TABLE__ = ABSOLUTE(.);

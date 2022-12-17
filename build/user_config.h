@@ -55,5 +55,6 @@
 #define ICACHE_FLASH_ATTR   __attribute__((section(".irom0.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define ICACHE_RODATA_ATTR  __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define PROGMEM             __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
+#define IRAM_ATTR           __attribute__((section(".iram.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 
 #endif

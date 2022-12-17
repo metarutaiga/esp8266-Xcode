@@ -1,4 +1,6 @@
 #include "esp8266.h"
+#include "fs/fs.h"
+#include "http.h"
 #include "mqtt.h"
 
 static char mqtt_ip[] PROGMEM = "192.168.1.1";
@@ -21,6 +23,8 @@ void setup(void)
     wifi_fpm_set_sleep_type(MODEM_SLEEP_T);
     wifi_fpm_open();
     wifi_fpm_do_sleep(0xFFFFFFF);
+
+    fs_init();
 }
 
 void loop(void)
@@ -60,9 +64,14 @@ void loop(void)
         }
         case STATION_GOT_IP:
             wifi_set_opmode_current(STATION_MODE);
+            http_init(80);
             mqtt_setup(mqtt_ip, 1883);
-            sntp_setservername(0, "jp.pool.ntp.org");
+            sntp_setservername(0, "pool.ntp.org");
             sntp_init();
+
+            extern bool web_system(void *arg, int line);
+
+            http_regist("/", "text/html", web_system);
             break;
         }
     }

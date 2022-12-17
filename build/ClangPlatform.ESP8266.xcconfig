@@ -36,7 +36,9 @@ OTHER_CFLAGS = $(inherited) -Wno-writable-strings
 
 OTHER_CFLAGS = $(inherited) -DICACHE_FLASH -DUSE_OPTIMIZE_PRINTF
 OTHER_CFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf -isysroot esp-clang/xtensa-lx106-elf -mcpu=esp8266
+OTHER_CPLUSPLUSFLAGS = $(inherited) -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1
 OTHER_CPLUSPLUSFLAGS = $(inherited) -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS
+OTHER_CPLUSPLUSFLAGS = $(inherited) -D_LIBCPP_HAS_NO_THREADS
 
 OTHER_LDFLAGS = $(inherited) -nostdlib -Wl,-static
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf -isysroot esp-clang/xtensa-lx106-elf -mcpu=esp8266

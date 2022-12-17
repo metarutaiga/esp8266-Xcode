@@ -16,10 +16,6 @@ extern "C"
     }
 };
 
-extern const char version[16];
-extern char thisname[16];
-extern char number[128];
-
 static MQTT_Client* mqtt_client;
 static bool mqtt_connected;
 
