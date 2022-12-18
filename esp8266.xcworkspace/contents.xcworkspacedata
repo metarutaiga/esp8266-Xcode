@@ -16,7 +16,4 @@
    <FileRef
       location = "container:build/mqtt.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "container:build/spiffs.xcodeproj">
-   </FileRef>
 </Workspace>

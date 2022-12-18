@@ -18,7 +18,6 @@
 		D6CA2262294B6708009EEA4C /* http.c in Sources */ = {isa = PBXBuildFile; fileRef = D6CA2261294B6708009EEA4C /* http.c */; };
 		D6D0416A294C28CB006B09EE /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
 		D6D0416E294C52B4006B09EE /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D0416D294C52B4006B09EE /* fs.c */; };
-		D6D0417C294C68E7006B09EE /* libspiffs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D0417B294C68E7006B09EE /* libspiffs.a */; };
 		D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D04184294EF255006B09EE /* liblittlefs.a */; };
 /* End PBXBuildFile section */
 
@@ -81,7 +80,6 @@
 				D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */,
 				D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */,
 				D60D09962942F1240084F160 /* libmqtt.a in Frameworks */,
-				D6D0417C294C68E7006B09EE /* libspiffs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
