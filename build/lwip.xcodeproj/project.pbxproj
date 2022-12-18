@@ -57,7 +57,6 @@
 		30A9A7BB25ADC792000FA104 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D69FFA60294185C300CC7E75 /* user_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
-		D69FFA61294185C300CC7E75 /* lwip_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lwip_config.h; sourceTree = "<group>"; };
 		D6CA2143294B1B38009EEA4C /* memp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = memp.c; sourceTree = "<group>"; };
 		D6CA2144294B1B38009EEA4C /* dhcp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dhcp.c; sourceTree = "<group>"; };
 		D6CA2145294B1B38009EEA4C /* sys.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sys.c; sourceTree = "<group>"; };
@@ -178,7 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */,
-				D69FFA61294185C300CC7E75 /* lwip_config.h */,
 				D69FFA60294185C300CC7E75 /* user_config.h */,
 			);
 			name = Configs;

@@ -1,11 +1,9 @@
 #include "esp8266.h"
+#include <string>
 #include "fs/fs.h"
 #include "http.h"
 #include "mqtt.h"
 
-static char mqtt_ip[] PROGMEM = "192.168.1.1";
-static char wifi_ssid[] PROGMEM = "wifi";
-static char wifi_pass[] PROGMEM = "1234";
 static char wifi_format[] PROGMEM = "ESP8266_%02X%02X%02X";
 
 extern const char version[] = "1.00";
@@ -25,6 +23,13 @@ void setup(void)
     wifi_fpm_do_sleep(0xFFFFFFF);
 
     fs_init();
+    http_init(80);
+
+    extern bool web_system(void* arg, const char* url, int line);
+    extern bool web_ssid(void* arg, const char* url, int line);
+
+    http_regist("/", "text/html", web_system);
+    http_regist("/ssid", nullptr, web_ssid);
 }
 
 void loop(void)
@@ -52,9 +57,25 @@ void loop(void)
         default:
         {
             struct station_config config = {};
-            strcpy((char*)config.ssid, wifi_ssid);
-            strcpy((char*)config.password, wifi_pass);
             config.all_channel_scan = true;
+
+            // SSID
+            int fd = fs_open("ssid", "r");
+            if (fd >= 0)
+            {
+                os_strcpy((char*)config.ssid, fs_gets(number, 128, fd));
+                os_strcpy((char*)config.password, fs_gets(number, 128, fd));
+                fs_close(fd);
+            }
+            fd = fs_open("ip", "r");
+            if (fd >= 0)
+            {
+                std::string ip = fs_gets(number, 128, fd);
+                std::string gateway = fs_gets(number, 128, fd);
+                std::string subnet = fs_gets(number, 128, fd);
+                std::string dns = fs_gets(number, 128, fd);
+                fs_close(fd);
+            }
 
             wifi_set_opmode_current(STATIONAP_MODE);
             wifi_station_set_config(&config);
@@ -64,14 +85,30 @@ void loop(void)
         }
         case STATION_GOT_IP:
             wifi_set_opmode_current(STATION_MODE);
-            http_init(80);
-            mqtt_setup(mqtt_ip, 1883);
-            sntp_setservername(0, "pool.ntp.org");
+
+            // MQTT
+            int fd = fs_open("ssid", "r");
+            if (fd >= 0)
+            {
+                std::string mqtt = fs_gets(number, 128, fd);
+                std::string port = fs_gets(number, 128, fd);
+                mqtt_setup(mqtt.c_str(), strtol(port.c_str(), nullptr, 10));
+                fs_close(fd);
+            }
+
+            // NTP
+            std::string ntp = "pool.ntp.org";
+            std::string zone = "8";
+            fd = fs_open("ntp", "r");
+            if (fd >= 0)
+            {
+                ntp = fs_gets(number, 128, fd);
+                zone = fs_gets(number, 128, fd);
+                fs_close(fd);
+            }
+            sntp_setservername(0, ntp.data());
+            sntp_set_timezone(strtol(zone.c_str(), nullptr, 10));
             sntp_init();
-
-            extern bool web_system(void *arg, int line);
-
-            http_regist("/", "text/html", web_system);
             break;
         }
     }

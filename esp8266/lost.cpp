@@ -1,6 +1,9 @@
 #include "esp8266.h"
 #include <string>
 
+extern "C" int conv_str_decimal(const char* str);
+extern "C" int conv_str_hex(const char* str);
+
 extern "C" char* itoa(int value, char* str, int base)
 {
     if (base == 16)
@@ -12,6 +15,22 @@ extern "C" char* itoa(int value, char* str, int base)
         os_sprintf(str, "%d", value);
     }
     return str;
+}
+
+extern "C" char* strdup(const char* str)
+{
+    int len = os_strlen(str);
+    char* dup = (char*)os_malloc(len + 1);
+    os_memcpy(dup, str, len);
+    dup[len] = 0;
+    return dup;
+}
+
+extern "C" long strtol(const char* str, char** str_end, int base)
+{
+    if (base == 16)
+        return conv_str_decimal(str);
+    return conv_str_hex(str);
 }
 
 void* operator new(size_t size)

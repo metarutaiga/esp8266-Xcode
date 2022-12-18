@@ -1,8 +1,9 @@
 #include "esp8266.h"
 #include <string>
 #include "http.h"
+#include "fs/fs.h"
 
-bool web_system(void *arg, int line)
+bool web_system(void *arg, const char* url, int line)
 {
     std::string html;
 
@@ -26,11 +27,12 @@ bool web_system(void *arg, int line)
     {
         // SSID
         std::string ssid;
-#if 0
-        if (File file = LittleFS.open(String(F("ssid")).c_str(), String(F("r")).c_str())) {
-            ssid = file.readStringUntil('\n'); ssid.trim();
+        int fd = fs_open("ssid", "r");
+        if (fd >= 0)
+        {
+            ssid = fs_gets(number, 128, fd);
+            fs_close(fd);
         }
-#endif
         html += "<form method='get' action='ssid'>";
         html +=     "<label>SSID</label>";
         html +=     "<input name='ssid' length=32 value='"; html += ssid + "'>";
@@ -58,14 +60,15 @@ bool web_system(void *arg, int line)
         os_sprintf(number, IPSTR, IP2STR(&info.gw)); gateway = number;
         os_sprintf(number, IPSTR, IP2STR(&info.netmask)); subnet = number;
         os_sprintf(number, IPSTR, IP2STR(&dns_server)); dns = number;
-#if 0
-        if (File file = LittleFS.open(String(F("ip")).c_str(), String(F("r")).c_str())) {
-            ip = file.readStringUntil('\n'); ssid.trim();
-            gateway = file.readStringUntil('\n'); ssid.trim();
-            subnet = file.readStringUntil('\n'); ssid.trim();
-            dns = file.readStringUntil('\n'); ssid.trim();
+        int fd = fs_open("ip", "r");
+        if (fd >= 0)
+        {
+            ip = fs_gets(number, 128, fd);
+            gateway = fs_gets(number, 128, fd);
+            subnet = fs_gets(number, 128, fd);
+            dns = fs_gets(number, 128, fd);
+            fs_close(fd);
         }
-#endif
         html += "<form method='get' action='ip'>";
         html +=     "<label>IP</label>";
         html +=     "<input name='ip' length=32 value='"; html += ip + "'>";
@@ -88,11 +91,12 @@ bool web_system(void *arg, int line)
     {
         // OTA
         std::string ota;
-#if 0
-        if (File file = LittleFS.open(String(F("ota")).c_str(), String(F("r")).c_str())) {
-            ota = file.readStringUntil('\n'); ota.trim();
+        int fd = fs_open("ota", "r");
+        if (fd >= 0)
+        {
+            ota = fs_gets(number, 128, fd);
+            fs_close(fd);
         }
-#endif
         html += "<form method='get' action='ota'>";
         html +=     "<label>OTA</label>";
         html +=     "<input name='ota' length=32 value='"; html += ota + "'>";
@@ -107,12 +111,13 @@ bool web_system(void *arg, int line)
         // MQTT
         std::string mqtt;
         std::string mqttPort = "1883";
-#if 0
-        if (File file = LittleFS.open(String(F("mqtt")).c_str(), String(F("r")).c_str())) {
-            mqtt = file.readStringUntil('\n'); mqtt.trim();
-            mqttPort = file.readStringUntil('\n'); mqttPort.trim();
+        int fd = fs_open("mqtt", "r");
+        if (fd >= 0)
+        {
+            mqtt = fs_gets(number, 128, fd);
+            mqttPort = fs_gets(number, 128, fd);
+            fs_close(fd);
         }
-#endif
         html += "<form method='get' action='mqtt'>";
         html +=     "<label>MQTT</label>";
         html +=     "<input name='mqtt' length=32 value='"; html += mqtt + "'>";
@@ -130,12 +135,13 @@ bool web_system(void *arg, int line)
         // NTP
         std::string ntp = "pool.ntp.org";
         std::string ntpZone = "8";
-#if 0
-        if (File file = LittleFS.open(String(F("ntp")).c_str(), String(F("r")).c_str())) {
-            ntp = file.readStringUntil('\n'); ntp.trim();
-            ntpZone = file.readStringUntil('\n'); ntpZone.trim();
+        int fd = fs_open("ntp", "r");
+        if (fd >= 0)
+        {
+            ntp = fs_gets(number, 128, fd);
+            ntpZone = fs_gets(number, 128, fd);
+            fs_close(fd);
         }
-#endif
         html += "<form method='get' action='ntp'>";
         html +=     "<label>NTP</label>";
         html +=     "<input name='name' length=32 value='"; html += ntp + "'>";
@@ -171,5 +177,51 @@ bool web_system(void *arg, int line)
         break;
     }
 
+    return false;
+}
+
+bool web_ssid(void* arg, const char* url, int line)
+{
+    struct espconn* pespconn = (struct espconn*)arg;
+
+    char* buffer = strdup(url);
+    if (buffer)
+    {
+        std::string ssid;
+        std::string pass;
+
+        char* token = buffer;
+        char* path = strsep(&token, "?");
+        while (path)
+        {
+            char* key = strsep(&token, "?=");
+            char* value = strsep(&token, "?=");
+            if (key == nullptr || value == nullptr)
+                break;
+            if (strcmp(key, "ssid"))
+                ssid = value;
+            if (strcmp(key, "pass"))
+                pass = value;
+        }
+
+        int fd = fs_open("ssid", "w");
+        if (fd >= 0)
+        {
+            fs_write(ssid.data(), ssid.length(), fd);
+            fs_write("\n", 1, fd);
+            fs_write(pass.data(), pass.length(), fd);
+            fs_write("\n", 1, fd);
+            fs_close(fd);
+        }
+ 
+        os_free(buffer);
+    }
+
+    char header[128];
+    int length = os_sprintf(header,
+                            "HTTP/1.1 302 Found\r\n"
+                            "Location: %s\r\n"
+                            "\r\n", "/");
+    espconn_sent(pespconn, (uint8_t*)header, length);
     return false;
 }

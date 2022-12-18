@@ -11,7 +11,7 @@ extern "C"
 #   define MQTT_Publish(client, topic, data_, data_length_, qos, retain) \
     { \
         const char* data = data_; \
-        int data_length = data_length_ ? data_length_ : strlen(data); \
+        int data_length = data_length_ ? data_length_ : os_strlen(data); \
         MQTT_Publish(client, topic, data, data_length, qos, retain); \
     }
 };

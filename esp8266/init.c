@@ -94,6 +94,7 @@ void user_init(void)
     static os_event_t loop_event;
     system_os_task(loop_task, USER_TASK_PRIO_1, &loop_event, 1);
     system_init_done_cb(init_down);
+    hook_exception();
 }
 
 static void delay_end(void* timer_arg)

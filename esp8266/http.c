@@ -8,13 +8,14 @@ struct http_handler
     struct http_handler* next;
     const char *url;
     const char *type;
-    bool (*handler)(void *arg, int line);
+    bool (*handler)(void *arg, const char* url, int line);
 };
 struct http_handler* http_handlers;
 
 struct http_chunk
 {
-    bool (*handler)(void *arg, int line);
+    bool (*handler)(void *arg, const char* url, int line);
+    char* url;
     int line;
 };
 
@@ -35,15 +36,25 @@ void http_server_recv(void *arg, char *pusrdata, unsigned short length)
             {
                 struct http_chunk *chunk = pespconn->reverse = os_realloc(pespconn->reverse, sizeof(struct http_chunk));
                 chunk->handler = node->handler;
+                chunk->url = strdup(url);
                 chunk->line = 0;
 
-                char header[128];
-                int length = os_sprintf(header,
-                                        "HTTP/1.1 200 OK\r\n"
-                                        "Content-Type: %s\r\n"
-                                        "Transfer-Encoding: chunked\r\n"
-                                        "\r\n", node->type);
-                espconn_sent(pespconn, (uint8_t*)header, length);
+                if (node->type)
+                {
+                    char header[128];
+                    int length = os_sprintf(header,
+                                            "HTTP/1.1 200 OK\r\n"
+                                            "Content-Type: %s\r\n"
+                                            "Transfer-Encoding: chunked\r\n"
+                                            "\r\n", node->type);
+                    espconn_sent(pespconn, (uint8_t*)header, length);
+                }
+                else
+                {
+                    if (chunk->handler(arg, chunk->url, chunk->line))
+                        return;
+                    espconn_disconnect(pespconn);
+                }
                 return;
             }
             node = node->next;
@@ -56,10 +67,8 @@ void http_server_sent(void *arg)
 {
     struct espconn *pespconn = arg;
 
-    os_printf("%s\n", "http_server_write_finish");
-    
     struct http_chunk *chunk = (struct http_chunk *)pespconn->reverse;
-    if (chunk->handler(arg, chunk->line))
+    if (chunk->handler(arg, chunk->url, chunk->line))
         return;
     espconn_disconnect(pespconn);
 }
@@ -68,8 +77,13 @@ void http_server_discon(void *arg)
 {
     struct espconn *pespconn = arg;
 
-    os_free(pespconn->reverse);
-    pespconn->reverse = NULL;
+    struct http_chunk *chunk = (struct http_chunk *)pespconn->reverse;
+    if (chunk)
+    {
+        os_free(chunk->url);
+        os_free(chunk);
+        pespconn->reverse = NULL;
+    }
 }
 
 void http_listen(void *arg)
@@ -102,9 +116,9 @@ void http_init(int port)
     espconn_accept(&esp_conn);
 }
 
-void http_regist(const char* url, const char *type, bool (*handler)(void *arg, int line))
+void http_regist(const char* url, const char *type, bool (*handler)(void *arg, const char* url, int line))
 {
-    if (url == NULL || type == NULL || handler == NULL)
+    if (url == NULL || handler == NULL)
         return;
 
     struct http_handler *node = http_handlers;
@@ -133,9 +147,9 @@ bool http_chunk_send(void *arg, int line, const char *data, size_t data_length)
 
     char buffer[1024];
     size_t number_length = os_sprintf(buffer, "%x", data_length);
-    memcpy(buffer + number_length, "\r\n", 2);
-    memcpy(buffer + number_length + 2, data, data_length);
-    memcpy(buffer + number_length + 2 + data_length, "\r\n", 2);
+    os_memcpy(buffer + number_length, "\r\n", 2);
+    os_memcpy(buffer + number_length + 2, data, data_length);
+    os_memcpy(buffer + number_length + 2 + data_length, "\r\n", 2);
     if (espconn_sent(pespconn, (uint8_t*)buffer, number_length + 2 + data_length + 2) != ESPCONN_OK)
     {
         return false;
