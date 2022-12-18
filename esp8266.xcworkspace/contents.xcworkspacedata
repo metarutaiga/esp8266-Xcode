@@ -8,6 +8,9 @@
       location = "container:build/crypto.xcodeproj">
    </FileRef>
    <FileRef
+      location = "container:build/littlefs.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:build/lwip.xcodeproj">
    </FileRef>
    <FileRef

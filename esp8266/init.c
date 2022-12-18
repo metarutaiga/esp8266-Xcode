@@ -40,7 +40,7 @@ static void dump_exception(struct exception_frame *ef, int cause)
     {
         // sprintf
     }
-    else if ((ef->epc >= (uint32_t)&strsep) && (ef->epc < (uint32_t)&strsep + 0x88))
+    else if ((ef->epc >= (uint32_t)&strsep) && (ef->epc < (uint32_t)&strsep + 0x100))
     {
         // strsep / strtok
     }

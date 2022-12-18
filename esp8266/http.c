@@ -32,7 +32,7 @@ void http_server_recv(void *arg, char *pusrdata, unsigned short length)
         struct http_handler *node = http_handlers;
         while (node)
         {
-            if (strcmp(node->url, url) == 0)
+            if (strncmp(node->url, url, strlen(node->url)) == 0)
             {
                 struct http_chunk *chunk = pespconn->reverse = os_realloc(pespconn->reverse, sizeof(struct http_chunk));
                 chunk->handler = node->handler;

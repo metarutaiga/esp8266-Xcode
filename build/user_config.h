@@ -25,6 +25,21 @@
 #ifndef __USER_CONFIG_H__
 #define __USER_CONFIG_H__
 
+#ifdef LFS_UTIL_H
+#undef LFS_CONFIG
+#undef LFS_UTIL_H
+#ifndef __cplusplus
+#define __cplusplus
+#include <c_types.h>
+#undef __cplusplus
+#endif
+#define LFS_NAME_MAX 32
+#define LFS_NO_DEBUG
+#define LFS_NO_WARN
+#define LFS_NO_ERROR
+#include "littlefs/lfs.h"
+#endif
+
 #ifdef LWIP_OPEN_SRC
 #pragma clang diagnostic ignored "-Wcomma"
 #pragma clang diagnostic ignored "-Wpointer-bool-conversion"

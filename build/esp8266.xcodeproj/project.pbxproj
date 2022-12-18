@@ -19,6 +19,7 @@
 		D6D0416A294C28CB006B09EE /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
 		D6D0416E294C52B4006B09EE /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D0416D294C52B4006B09EE /* fs.c */; };
 		D6D0417C294C68E7006B09EE /* libspiffs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D0417B294C68E7006B09EE /* libspiffs.a */; };
+		D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D04184294EF255006B09EE /* liblittlefs.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		D6D0416C294C52B4006B09EE /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/fs/fs.h; sourceTree = "<group>"; };
 		D6D0416D294C52B4006B09EE /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/fs/fs.c; sourceTree = "<group>"; };
 		D6D0417B294C68E7006B09EE /* libspiffs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libspiffs.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D04184294EF255006B09EE /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,6 +78,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D60D0A3A29430F8E0084F160 /* libcrypto.a in Frameworks */,
+				D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */,
 				D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */,
 				D60D09962942F1240084F160 /* libmqtt.a in Frameworks */,
 				D6D0417C294C68E7006B09EE /* libspiffs.a in Frameworks */,
@@ -88,6 +91,7 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D6D04184294EF255006B09EE /* liblittlefs.a */,
 				D6D0417B294C68E7006B09EE /* libspiffs.a */,
 				D6CA1ED0294AD2E0009EEA4C /* liblwip.a */,
 				D60D0A3929430F8E0084F160 /* libcrypto.a */,

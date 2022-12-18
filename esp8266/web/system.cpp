@@ -194,13 +194,13 @@ bool web_ssid(void* arg, const char* url, int line)
         char* path = strsep(&token, "?");
         while (path)
         {
-            char* key = strsep(&token, "?=");
-            char* value = strsep(&token, "?=");
+            char* key = strsep(&token, "?=&");
+            char* value = strsep(&token, "?=&");
             if (key == nullptr || value == nullptr)
                 break;
-            if (strcmp(key, "ssid"))
+            if (strcmp(key, "ssid") == 0)
                 ssid = value;
-            if (strcmp(key, "pass"))
+            if (strcmp(key, "pass") == 0)
                 pass = value;
         }
 
