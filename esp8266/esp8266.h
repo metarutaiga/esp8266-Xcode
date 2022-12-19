@@ -11,6 +11,8 @@ extern "C" {
 #include <user_interface.h>
 #include <espconn.h>
 
+extern void system_restart_local();
+
 extern const char version[16];
 extern char thisname[16];
 extern char number[128];

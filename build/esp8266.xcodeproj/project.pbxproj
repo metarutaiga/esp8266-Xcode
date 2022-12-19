@@ -88,9 +88,9 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D60D0A3929430F8E0084F160 /* libcrypto.a */,
 				D6D04184294EF255006B09EE /* liblittlefs.a */,
 				D6CA1ED0294AD2E0009EEA4C /* liblwip.a */,
-				D60D0A3929430F8E0084F160 /* libcrypto.a */,
 				D60D09952942F1240084F160 /* libmqtt.a */,
 			);
 			name = Frameworks;
