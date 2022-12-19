@@ -16,7 +16,7 @@ extern int __real_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size);
 extern int __wrap_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size);
 extern int __wrap_spi_flash_read(uint32_t addr, uint32_t* dst, size_t size)
 {
-//  os_printf("spi_flash_read(%08x, %p, %d)\n", addr, dst, size);
+//  os_printf("spi_flash_read(%p, %p, %d)\n", (char*)addr, dst, size);
     if (addr == 0x3fc000 && size == 128)
     {
         os_memcpy(dst, phy_data, 128);
@@ -29,6 +29,6 @@ extern int __real_spi_flash_write(uint32_t addr, const uint32_t* dst, size_t siz
 extern int __wrap_spi_flash_write(uint32_t addr, const uint32_t* dst, size_t size);
 extern int __wrap_spi_flash_write(uint32_t addr, const uint32_t* dst, size_t size)
 {
-//  os_printf("spi_flash_write(%08x, %p, %d)\n", addr, dst, size);
+//  os_printf("spi_flash_write(%p, %p, %d)\n", (char*)addr, dst, size);
     return __real_spi_flash_write(addr, dst, size);
 }

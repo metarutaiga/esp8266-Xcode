@@ -1,8 +1,8 @@
 #include "esp8266.h"
 #include <string>
-#include "fs/fs.h"
-#include "http.h"
-#include "mqtt.h"
+#include "app/fs.h"
+#include "app/http.h"
+#include "app/mqtt.h"
 
 extern bool web_system(void* arg, const char* url, int line);
 extern bool web_ssid(void* arg, const char* url, int line);

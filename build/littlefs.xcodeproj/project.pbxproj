@@ -15,7 +15,6 @@
 		30A9A7BB25ADC792000FA104 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D69FFA60294185C300CC7E75 /* user_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
-		D6D0417D294DFDD2006B09EE /* littlefs_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = littlefs_config.h; sourceTree = "<group>"; };
 		D6D0417E294EEC69006B09EE /* lfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lfs.h; path = ../littlefs/lfs.h; sourceTree = "<group>"; };
 		D6D0417F294EEC69006B09EE /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = ../littlefs/lfs.c; sourceTree = "<group>"; };
 		D6D04180294EEC69006B09EE /* lfs_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs_util.c; path = ../littlefs/lfs_util.c; sourceTree = "<group>"; };
@@ -37,7 +36,6 @@
 			isa = PBXGroup;
 			children = (
 				D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */,
-				D6D0417D294DFDD2006B09EE /* littlefs_config.h */,
 				D69FFA60294185C300CC7E75 /* user_config.h */,
 			);
 			name = Configs;

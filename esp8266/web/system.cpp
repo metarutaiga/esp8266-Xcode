@@ -1,7 +1,7 @@
 #include "esp8266.h"
 #include <string>
-#include "http.h"
-#include "fs/fs.h"
+#include "app/fs.h"
+#include "app/http.h"
 
 bool web_system(void *arg, const char* url, int line)
 {
