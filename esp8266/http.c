@@ -141,6 +141,18 @@ void http_regist(const char* url, const char *type, bool (*handler)(void *arg, c
     http_handlers = node;
 }
 
+void http_redirect(void* arg, const char* url)
+{
+    struct espconn *pespconn = arg;
+
+    char header[128];
+    int length = os_sprintf(header,
+                            "HTTP/1.1 302 Found\r\n"
+                            "Location: %s\r\n"
+                            "\r\n", url);
+    espconn_sent(pespconn, (uint8_t*)header, length);
+}
+
 bool http_chunk_send(void *arg, int line, const char *data, size_t data_length)
 {
     struct espconn *pespconn = arg;
@@ -157,4 +169,23 @@ bool http_chunk_send(void *arg, int line, const char *data, size_t data_length)
     struct http_chunk *chunk = (struct http_chunk *)pespconn->reverse;
     chunk->line = line;
     return true;
+}
+
+void http_parameter_parse(const char* url, void (*parser)(void* context, const char* key, const char* value), void* context)
+{
+    char* buffer = strdup(url);
+    if (buffer)
+    {
+        char* token = buffer;
+        char* path = strsep(&token, "?=&");
+        while (path)
+        {
+            char* key = strsep(&token, "?=&");
+            char* value = strsep(&token, "?=&");
+            if (key == NULL || value == NULL)
+                break;
+            parser(context, key, value);
+        }
+        os_free(buffer);
+    }
 }

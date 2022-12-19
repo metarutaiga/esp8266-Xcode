@@ -35,7 +35,7 @@ bool web_system(void *arg, const char* url, int line)
         }
         html += "<form method='get' action='ssid'>";
         html +=     "<label>SSID</label>";
-        html +=     "<input name='ssid' length=32 value='"; html += ssid + "'>";
+        html +=     "<input name='ssid' length=32 value='" + ssid + "'>";
         html +=     "<br>";
         html +=     "<label>PASS</label>";
         html +=     "<input type='password' name='pass' length=32>";
@@ -71,16 +71,16 @@ bool web_system(void *arg, const char* url, int line)
         }
         html += "<form method='get' action='ip'>";
         html +=     "<label>IP</label>";
-        html +=     "<input name='ip' length=32 value='"; html += ip + "'>";
+        html +=     "<input name='ip' length=32 value='" + ip + "'>";
         html +=     "<br>";
         html +=     "<label>Gateway</label>";
-        html +=     "<input name='gateway' length=32 value='"; html += gateway + "'>";
+        html +=     "<input name='gateway' length=32 value='" + gateway + "'>";
         html +=     "<br>";
         html +=     "<label>Subnet</label>";
-        html +=     "<input name='subnet' length=32 value='"; html += subnet + "'>";
+        html +=     "<input name='subnet' length=32 value='" + subnet + "'>";
         html +=     "<br>";
         html +=     "<label>DNS</label>";
-        html +=     "<input name='dns' length=32 value='"; html += dns + "'>";
+        html +=     "<input name='dns' length=32 value='" + dns + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
         if (http_chunk_send(arg, 3, html.data(), html.length()) == false)
@@ -99,7 +99,7 @@ bool web_system(void *arg, const char* url, int line)
         }
         html += "<form method='get' action='ota'>";
         html +=     "<label>OTA</label>";
-        html +=     "<input name='ota' length=32 value='"; html += ota + "'>";
+        html +=     "<input name='ota' length=32 value='" + ota + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
         if (http_chunk_send(arg, 4, html.data(), html.length()) == false)
@@ -120,10 +120,10 @@ bool web_system(void *arg, const char* url, int line)
         }
         html += "<form method='get' action='mqtt'>";
         html +=     "<label>MQTT</label>";
-        html +=     "<input name='mqtt' length=32 value='"; html += mqtt + "'>";
+        html +=     "<input name='mqtt' length=32 value='" + mqtt + "'>";
         html +=     "<br>";
         html +=     "<label>PORT</label>";
-        html +=     "<input name='port' length=32 value='"; html += mqttPort + "'>";
+        html +=     "<input name='port' length=32 value='" + mqttPort + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
         if (http_chunk_send(arg, 5, html.data(), html.length()) == false)
@@ -144,10 +144,10 @@ bool web_system(void *arg, const char* url, int line)
         }
         html += "<form method='get' action='ntp'>";
         html +=     "<label>NTP</label>";
-        html +=     "<input name='name' length=32 value='"; html += ntp + "'>";
+        html +=     "<input name='name' length=32 value='" + ntp + "'>";
         html +=     "<br>";
         html +=     "<label>ZONE</label>";
-        html +=     "<input name='zone' length=32 value='"; html += ntpZone + "'>";
+        html +=     "<input name='zone' length=32 value='" + ntpZone + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
         html += sntp_get_real_time(sntp_get_current_timestamp());
@@ -182,46 +182,141 @@ bool web_system(void *arg, const char* url, int line)
 
 bool web_ssid(void* arg, const char* url, int line)
 {
-    struct espconn* pespconn = (struct espconn*)arg;
+    http_redirect(arg, "/");
 
-    char* buffer = strdup(url);
-    if (buffer)
+    std::string text;
+    http_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
-        std::string ssid;
-        std::string pass;
-
-        char* token = buffer;
-        char* path = strsep(&token, "?");
-        while (path)
+        std::string& text = *(std::string*)context;
+        if (strcmp(key, "ssid") == 0 ||
+            strcmp(key, "pass") == 0)
         {
-            char* key = strsep(&token, "?=&");
-            char* value = strsep(&token, "?=&");
-            if (key == nullptr || value == nullptr)
-                break;
-            if (strcmp(key, "ssid") == 0)
-                ssid = value;
-            if (strcmp(key, "pass") == 0)
-                pass = value;
+            text += value;
+            text += '\n';
         }
+    }, &text);
 
-        int fd = fs_open("ssid", "w");
-        if (fd >= 0)
-        {
-            fs_write(ssid.data(), ssid.length(), fd);
-            fs_write("\n", 1, fd);
-            fs_write(pass.data(), pass.length(), fd);
-            fs_write("\n", 1, fd);
-            fs_close(fd);
-        }
- 
-        os_free(buffer);
+    int fd = fs_open("ssid", "w");
+    if (fd >= 0)
+    {
+        fs_write(text.data(), text.length(), fd);
+        fs_close(fd);
     }
 
-    char header[128];
-    int length = os_sprintf(header,
-                            "HTTP/1.1 302 Found\r\n"
-                            "Location: %s\r\n"
-                            "\r\n", "/");
-    espconn_sent(pespconn, (uint8_t*)header, length);
+    return false;
+}
+
+bool web_ip(void* arg, const char* url, int line)
+{
+    http_redirect(arg, "/");
+
+    std::string text;
+    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    {
+        std::string& text = *(std::string*)context;
+        if (strcmp(key, "ip") == 0 ||
+            strcmp(key, "gateway") == 0 ||
+            strcmp(key, "subnet") == 0 ||
+            strcmp(key, "dns") == 0)
+        {
+            text += value;
+            text += '\n';
+        }
+    }, &text);
+
+    int fd = fs_open("ip", "w");
+    if (fd >= 0)
+    {
+        fs_write(text.data(), text.length(), fd);
+        fs_close(fd);
+    }
+
+    return false;
+}
+
+bool web_ota(void* arg, const char* url, int line)
+{
+    http_redirect(arg, "/");
+
+    std::string text;
+    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    {
+        std::string& text = *(std::string*)context;
+        if (strcmp(key, "ota") == 0)
+        {
+            text += value;
+            text += '\n';
+        }
+    }, &text);
+
+    int fd = fs_open("ota", "w");
+    if (fd >= 0)
+    {
+        fs_write(text.data(), text.length(), fd);
+        fs_close(fd);
+    }
+
+    return false;
+}
+
+bool web_mqtt(void* arg, const char* url, int line)
+{
+    http_redirect(arg, "/");
+
+    std::string text;
+    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    {
+        std::string& text = *(std::string*)context;
+        if (strcmp(key, "mqtt") == 0 ||
+            strcmp(key, "port") == 0)
+        {
+            text += value;
+            text += '\n';
+        }
+    }, &text);
+
+    int fd = fs_open("mqtt", "w");
+    if (fd >= 0)
+    {
+        fs_write(text.data(), text.length(), fd);
+        fs_close(fd);
+    }
+
+    return false;
+}
+
+bool web_ntp(void* arg, const char* url, int line)
+{
+    http_redirect(arg, "/");
+
+    std::string text;
+    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    {
+        std::string& text = *(std::string*)context;
+        if (strcmp(key, "name") == 0 ||
+            strcmp(key, "zone") == 0)
+        {
+            text += value;
+            text += '\n';
+        }
+    }, &text);
+
+    int fd = fs_open("ntp", "w");
+    if (fd >= 0)
+    {
+        fs_write(text.data(), text.length(), fd);
+        fs_close(fd);
+    }
+
+    return false;
+}
+
+bool web_reset(void* arg, const char* url, int line)
+{
+    http_redirect(arg, "/");
+
+    extern bool forceReset;
+    forceReset = true;
+
     return false;
 }
