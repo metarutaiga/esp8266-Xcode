@@ -182,8 +182,10 @@ void http_parameter_parse(const char* url, void (*parser)(void* context, const c
         {
             char* key = strsep(&token, "?=&");
             char* value = strsep(&token, "?=&");
-            if (key == NULL || value == NULL)
+            if (key == NULL)
                 break;
+            if (value == NULL)
+                value = "";
             parser(context, key, value);
         }
         os_free(buffer);

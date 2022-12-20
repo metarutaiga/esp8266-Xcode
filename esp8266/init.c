@@ -82,9 +82,12 @@ void user_pre_init(void)
 {
     static const partition_item_t at_partition_table[] =
     {
-        { SYSTEM_PARTITION_RF_CAL,           0x3fb000,  0x1000 },
-        { SYSTEM_PARTITION_PHY_DATA,         0x3fc000,  0x1000 },
-        { SYSTEM_PARTITION_SYSTEM_PARAMETER, 0x3fd000,  0x3000 },
+        { SYSTEM_PARTITION_BOOTLOADER,       0x000000,  0x01000 },
+        { SYSTEM_PARTITION_OTA_1,            0x001000,  0xff000 },
+        { SYSTEM_PARTITION_OTA_2,            0x101000,  0xff000 },
+        { SYSTEM_PARTITION_RF_CAL,           0x3fb000,  0x01000 },
+        { SYSTEM_PARTITION_PHY_DATA,         0x3fc000,  0x01000 },
+        { SYSTEM_PARTITION_SYSTEM_PARAMETER, 0x3fd000,  0x03000 },
     };
     system_partition_table_regist(at_partition_table, sizeof(at_partition_table) / sizeof(at_partition_table[0]), system_get_flash_size_map());
 }

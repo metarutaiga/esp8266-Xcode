@@ -3,6 +3,7 @@
 #include "app/fs.h"
 #include "app/http.h"
 #include "app/mqtt.h"
+#include "app/ota.h"
 
 extern bool web_system(void* arg, const char* url, int line);
 extern bool web_ssid(void* arg, const char* url, int line);
@@ -28,6 +29,9 @@ void wifi(System_Event_t* event)
         wifi_set_opmode_current(STATION_MODE);
         wifi_station_set_hostname(thisname);
 
+        // HTTP
+        http_regist("/", "text/html", web_system);
+
         // MQTT
         int fd = fs_open("mqtt", "r");
         if (fd >= 0)
@@ -52,8 +56,14 @@ void wifi(System_Event_t* event)
         sntp_set_timezone(strtol(zone.c_str(), nullptr, 10));
         sntp_init();
 
-        // HTTP
-        http_regist("/", "text/html", web_system);
+        // OTA
+        fd = fs_open("ota", "r");
+        if (fd >= 0)
+        {
+            if (strcmp(fs_gets(number, 128, fd), "YES") == 0)
+                ota_init(8266);
+            fs_close(fd);
+        }
         break;
     }
     case EVENT_STAMODE_CONNECTED:

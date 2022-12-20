@@ -89,6 +89,25 @@ bool web_system(void *arg, const char* url, int line)
     }
     case 3:
     {
+        // OTA
+        std::string ota;
+        int fd = fs_open("ota", "r");
+        if (fd >= 0)
+        {
+            ota = fs_gets(number, 128, fd);
+            fs_close(fd);
+        }
+        html += "<form method='get' action='ota'>";
+        html +=     "<label>OTA</label>";
+        html +=     "<input name='ota' length=32 value='" + ota + "'>";
+        html +=     "<input type='submit'>";
+        html += "</form>";
+        if (http_chunk_send(arg, 4, html.data(), html.length()) == false)
+            return true;
+        html.clear();
+    }
+    case 4:
+    {
         // MQTT
         std::string mqtt;
         std::string mqttPort = "1883";
@@ -107,11 +126,11 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input name='port' length=32 value='" + mqttPort + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
-        if (http_chunk_send(arg, 4, html.data(), html.length()) == false)
+        if (http_chunk_send(arg, 5, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
-    case 4:
+    case 5:
     {
         // NTP
         std::string ntp = "pool.ntp.org";
@@ -132,11 +151,11 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input type='submit'>";
         html += "</form>";
         html += sntp_get_real_time(sntp_get_current_timestamp());
-        if (http_chunk_send(arg, 5, html.data(), html.length()) == false)
+        if (http_chunk_send(arg, 6, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
-    case 5:
+    case 6:
     {
         // Reset
         html += "<form method='get' action='reset'>";
@@ -146,12 +165,12 @@ bool web_system(void *arg, const char* url, int line)
         // Tail
         html += "</body>";
         html += "</html>";
-        if (http_chunk_send(arg, 6, html.data(), html.length()) == false)
+        if (http_chunk_send(arg, 7, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
-    case 6:
-        if (http_chunk_send(arg, 7, "", 0) == false)
+    case 7:
+        if (http_chunk_send(arg, 8, "", 0) == false)
             return true;
         html.clear();
     default:

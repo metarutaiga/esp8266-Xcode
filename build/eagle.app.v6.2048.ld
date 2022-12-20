@@ -107,6 +107,7 @@ SECTIONS
     *liblwip.a:dhcpserver.o(.data.dhcps_lease_time)
     *liblwip.a:sntp.o(.data.sntp_update_delay)
     *liblwip.a:tcp.o(.data.tcp_next_iss.iss)
+    *libnet80211.a:wl_chm.o(.text)
     *libc.a:(.literal .text .literal.* .text.*)
     *libgcc.a:(.literal .text .literal.* .text.*)
     *liblwip.a:(.literal .text .literal.* .text.*)

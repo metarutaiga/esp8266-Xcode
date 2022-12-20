@@ -59,6 +59,7 @@ OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lnet80211
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lphy
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lpp
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lsmartconfig
+OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lupgrade
 OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa2
 //OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwps
