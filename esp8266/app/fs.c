@@ -94,7 +94,7 @@ int lfs_flash_sync(const struct lfs_config *c)
 
 void fs_init()
 {
-    static struct lfs_config cfg = {};
+    static struct lfs_config cfg IRAM_ATTR = {};
     cfg.read = lfs_flash_read;
     cfg.prog = lfs_flash_prog;
     cfg.erase = lfs_flash_erase;

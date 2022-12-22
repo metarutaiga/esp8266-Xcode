@@ -4,6 +4,17 @@
 #include <upgrade.h>
 #include "ota.h"
 
+#define espconn_sent(espconn, psent, length) \
+{ \
+    const char* rom = psent; \
+    uint8_t ram[length]; \
+    for (int i = 0; i < length; ++i) \
+    { \
+        ram[i] = pgm_read_byte(rom + i); \
+    } \
+    espconn_sent(espconn, ram, length); \
+}
+
 struct espupgrade
 {
     int address;
@@ -41,6 +52,7 @@ static void ota_tcp_send(void* arg)
     {
         system_upgrade_flag_set(UPGRADE_FLAG_FINISH);
         espconn_sent(pespconn, "OK", 2);
+        espconn_disconnect(pespconn);
     }
 }
 
@@ -48,8 +60,8 @@ static void ota_tcp_discon(void* arg)
 {
     struct espconn* pespconn = arg;
 
-    free(pespconn->reverse);
-    free(pespconn);
+    os_free(pespconn->reverse);
+    os_free(pespconn);
 
     if (system_upgrade_flag_check() == UPGRADE_FLAG_FINISH)
     {
@@ -72,7 +84,7 @@ static void ota_tcp_init(char ip[4], int port, int size)
     memcpy(esp_conn->proto.tcp->remote_ip, ip, 4);
     esp_conn->proto.tcp->remote_port = port;
     esp_conn->reverse = pupgrade;
-    partition_item_t partition_item;
+    partition_item_t partition_item = {};
     if (system_upgrade_userbin_check() == UPGRADE_FW_BIN1)
         system_partition_get_item(SYSTEM_PARTITION_OTA_2, &partition_item);
     if (system_upgrade_userbin_check() == UPGRADE_FW_BIN2)
@@ -97,17 +109,17 @@ void ota_udp_recv(void* arg, char* pusrdata, unsigned short length)
     const char* remote_port = strsep(&buffer, " ");
     const char* content_size = strsep(&buffer, " ");
     const char* file_md5 = strsep(&buffer, " ");
-    if (command == NULL || remote_port == NULL || content_size == NULL || file_md5 == NULL)
-        return;
-
-    remot_info* remote = NULL;
-    if (espconn_get_connection_info(pespconn, &remote, 0) == 0)
+    if (command && remote_port && content_size && file_md5)
     {
-        memcpy(pespconn->proto.udp->remote_ip, remote->remote_ip, 4);
-        pespconn->proto.udp->remote_port = remote->remote_port;
-        espconn_sent(pespconn, "OK", 2);
+        remot_info* remote = NULL;
+        if (espconn_get_connection_info(pespconn, &remote, 0) == 0)
+        {
+            memcpy(pespconn->proto.udp->remote_ip, remote->remote_ip, 4);
+            pespconn->proto.udp->remote_port = remote->remote_port;
+            espconn_sent(pespconn, "OK", 2);
 
-        ota_tcp_init(remote->remote_ip, strtol(remote_port, NULL, 10), strtol(content_size, NULL, 10));
+            ota_tcp_init(remote->remote_ip, strtol(remote_port, NULL, 10), strtol(content_size, NULL, 10));
+        }
     }
 
     os_free(buffer);
@@ -115,7 +127,7 @@ void ota_udp_recv(void* arg, char* pusrdata, unsigned short length)
 
 void ota_init(int port)
 {
-    static struct espconn* esp_conn;
+    static struct espconn* esp_conn IRAM_ATTR;
     if (esp_conn == NULL)
     {
         esp_conn = os_zalloc(sizeof(struct espconn));

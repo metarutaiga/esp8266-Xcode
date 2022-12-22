@@ -28,7 +28,7 @@ typedef void (*_xtos_handler)(struct exception_frame *ef, int cause);
 extern _xtos_handler _xtos_exc_handler_table[];
 extern _xtos_handler _xtos_c_handler_table[];
 
-static _xtos_handler origin_exception;
+static _xtos_handler origin_exception IRAM_ATTR;
 static void dump_exception(struct exception_frame *ef, int cause)
 {
     extern int divide;
@@ -48,13 +48,7 @@ static void dump_exception(struct exception_frame *ef, int cause)
     {
         uint32_t excvaddr;
         __asm__ __volatile__ ("rsr.excvaddr %0;" : "=r"(excvaddr):: "memory");
-        static int entered = 0;
-        if (entered == 0)
-        {
-            entered = 1;
-            os_printf("%08x %08x %08x\n", ef->epc, excvaddr, ef->ps);
-            entered = 0;
-        }
+        os_printf("%08x %08x %08x\n", ef->epc, excvaddr, ef->ps);
     }
     origin_exception(ef, cause);
 }
@@ -94,7 +88,7 @@ void user_pre_init(void)
 
 void user_init(void)
 {
-    static os_event_t loop_event;
+    static os_event_t loop_event IRAM_ATTR;
     system_os_task(loop_task, USER_TASK_PRIO_1, &loop_event, 1);
     system_init_done_cb(init_down);
     hook_exception();
@@ -107,7 +101,7 @@ static void delay_end(void* timer_arg)
 
 void delay(unsigned int ms)
 {
-    static os_timer_t delay_timer;
+    static os_timer_t delay_timer IRAM_ATTR;
     if (ms)
     {
         os_timer_setfn(&delay_timer, delay_end, 0);

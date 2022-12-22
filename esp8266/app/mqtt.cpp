@@ -16,8 +16,8 @@ extern "C"
     }
 };
 
-static MQTT_Client* mqtt_client;
-static bool mqtt_connected;
+static MQTT_Client* mqtt_client IRAM_ATTR;
+static int mqtt_connected IRAM_ATTR;
 
 char* mqtt_prefix(char* pointer, const char* prefix, ...)
 {
@@ -85,7 +85,7 @@ static void mqtt_information()
 static void mqtt_loop()
 {
     // Time
-    static uint32 now_timestamp = 0;
+    static uint32 now_timestamp IRAM_ATTR = 0;
     uint32 timestamp = sntp_get_current_timestamp();
     if (now_timestamp != timestamp / 60)
     {
@@ -95,8 +95,8 @@ static void mqtt_loop()
     }
 
     // Heap
-    static uint16 now_free_heap = 0;
-    uint16 free_heap = system_get_free_heap_size();
+    static int now_free_heap IRAM_ATTR = 0;
+    int free_heap = system_get_free_heap_size();
     if (now_free_heap != free_heap)
     {
         now_free_heap = free_heap;
@@ -104,8 +104,8 @@ static void mqtt_loop()
     }
 
     // RSSI
-    static sint8 now_rssi = 0;
-    sint8 rssi = wifi_station_get_rssi();
+    static int now_rssi IRAM_ATTR = 0;
+    int rssi = wifi_station_get_rssi();
     if (now_rssi != rssi)
     {
         now_rssi = rssi;
@@ -128,7 +128,7 @@ void mqtt_setup(const char* ip, int port)
             mqtt_information();
 
             // Loop
-            static os_timer_t timer;
+            static os_timer_t timer IRAM_ATTR;
             os_timer_setfn(&timer, [](void* arg)
             {
                 mqtt_loop();

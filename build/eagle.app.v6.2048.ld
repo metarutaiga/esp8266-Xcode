@@ -149,8 +149,6 @@ SECTIONS
     *liblwip.a:igmp.o(.bss.allsystems)
     *liblwip.a:igmp.o(.bss.allrouters)
     *liblwip.a:igmp.o(.bss.igmp_group_list)
-    *liblwip.a:ip.o(.bss.current_iphdr_dest)
-    *liblwip.a:ip.o(.bss.current_iphdr_src)
     *liblwip.a:ip.o(.bss.current_netif)
     *liblwip.a:ip.o(.bss.current_header)
     *liblwip.a:tcp_in.o(.bss.iphdr)

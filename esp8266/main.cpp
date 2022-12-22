@@ -138,7 +138,7 @@ void setup(void)
     wifi(nullptr);
 
     // Debug
-    static os_timer_t timer;
+    static os_timer_t timer IRAM_ATTR;
     os_timer_setfn(&timer, [](void* arg)
     {
         char mode = 'B';
