@@ -1,7 +1,7 @@
 #include "esp8266.h"
 #include <string>
 #include "app/fs.h"
-#include "app/http.h"
+#include "app/httpd.h"
 
 bool web_system(void *arg, const char* url, int line)
 {
@@ -19,7 +19,7 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "</title>";
         html += "</head>";
         html += "<body>";
-        if (http_chunk_send(arg, 1, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 1, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
@@ -41,7 +41,7 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input type='password' name='pass' length=32>";
         html +=     "<input type='submit'>";
         html += "</form>";
-        if (http_chunk_send(arg, 2, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 2, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
@@ -83,7 +83,7 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input name='dns' length=32 value='" + dns + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
-        if (http_chunk_send(arg, 3, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 3, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
@@ -102,7 +102,7 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input name='ota' length=32 value='" + ota + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
-        if (http_chunk_send(arg, 4, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 4, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
@@ -126,7 +126,7 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input name='port' length=32 value='" + mqttPort + "'>";
         html +=     "<input type='submit'>";
         html += "</form>";
-        if (http_chunk_send(arg, 5, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 5, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
@@ -151,7 +151,7 @@ bool web_system(void *arg, const char* url, int line)
         html +=     "<input type='submit'>";
         html += "</form>";
         html += sntp_get_real_time(sntp_get_current_timestamp());
-        if (http_chunk_send(arg, 6, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 6, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
@@ -165,12 +165,12 @@ bool web_system(void *arg, const char* url, int line)
         // Tail
         html += "</body>";
         html += "</html>";
-        if (http_chunk_send(arg, 7, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 7, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
     case 7:
-        if (http_chunk_send(arg, 8, "", 0) == false)
+        if (httpd_chunk_send(arg, 8, "", 0) == false)
             return true;
         html.clear();
     default:
@@ -182,10 +182,10 @@ bool web_system(void *arg, const char* url, int line)
 
 bool web_ssid(void* arg, const char* url, int line)
 {
-    http_redirect(arg, "/");
+    httpd_redirect(arg, "/");
 
     std::string text;
-    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
         if (strcmp(key, "ssid") == 0 ||
@@ -208,10 +208,10 @@ bool web_ssid(void* arg, const char* url, int line)
 
 bool web_ip(void* arg, const char* url, int line)
 {
-    http_redirect(arg, "/");
+    httpd_redirect(arg, "/");
 
     std::string text;
-    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
         if (strcmp(key, "ip") == 0 ||
@@ -236,10 +236,10 @@ bool web_ip(void* arg, const char* url, int line)
 
 bool web_ota(void* arg, const char* url, int line)
 {
-    http_redirect(arg, "/");
+    httpd_redirect(arg, "/");
 
     std::string text;
-    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
         if (strcmp(key, "ota") == 0)
@@ -261,10 +261,10 @@ bool web_ota(void* arg, const char* url, int line)
 
 bool web_mqtt(void* arg, const char* url, int line)
 {
-    http_redirect(arg, "/");
+    httpd_redirect(arg, "/");
 
     std::string text;
-    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
         if (strcmp(key, "mqtt") == 0 ||
@@ -287,10 +287,10 @@ bool web_mqtt(void* arg, const char* url, int line)
 
 bool web_ntp(void* arg, const char* url, int line)
 {
-    http_redirect(arg, "/");
+    httpd_redirect(arg, "/");
 
     std::string text;
-    http_parameter_parse(url, [](void* context, const char* key, const char* value)
+    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
         if (strcmp(key, "name") == 0 ||
@@ -313,7 +313,7 @@ bool web_ntp(void* arg, const char* url, int line)
 
 bool web_reset(void* arg, const char* url, int line)
 {
-    http_redirect(arg, "/");
+    httpd_redirect(arg, "/");
 
     os_timer_t* timer = (os_timer_t*)os_zalloc(sizeof(os_timer_t));
     os_timer_setfn(timer, [](void* arg)

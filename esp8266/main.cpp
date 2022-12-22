@@ -1,7 +1,7 @@
 #include "esp8266.h"
 #include <string>
 #include "app/fs.h"
-#include "app/http.h"
+#include "app/httpd.h"
 #include "app/mqtt.h"
 #include "app/ota.h"
 
@@ -30,7 +30,7 @@ void wifi(System_Event_t* event)
         wifi_station_set_hostname(thisname);
 
         // HTTP
-        http_regist("/", "text/html", web_system);
+        httpd_regist("/", "text/html", web_system);
 
         // MQTT
         int fd = fs_open("mqtt", "r");
@@ -75,7 +75,7 @@ void wifi(System_Event_t* event)
         wifi_station_dhcpc_start();
 
         // HTTP
-        http_regist("/", "text/html", web_system);
+        httpd_regist("/", "text/html", web_system);
         break;
     }
 }
@@ -84,14 +84,14 @@ void setup(void)
 {
     // Component
     fs_init();
-    http_init(80);
-    http_regist("/", "text/html", web_system);
-    http_regist("/ssid", nullptr, web_ssid);
-    http_regist("/ip", nullptr, web_ip);
-    http_regist("/ota", nullptr, web_ota);
-    http_regist("/mqtt", nullptr, web_mqtt);
-    http_regist("/ntp", nullptr, web_ntp);
-    http_regist("/reset", nullptr, web_reset);
+    httpd_init(80);
+    httpd_regist("/", "text/html", web_system);
+    httpd_regist("/ssid", nullptr, web_ssid);
+    httpd_regist("/ip", nullptr, web_ip);
+    httpd_regist("/ota", nullptr, web_ota);
+    httpd_regist("/mqtt", nullptr, web_mqtt);
+    httpd_regist("/ntp", nullptr, web_ntp);
+    httpd_regist("/reset", nullptr, web_reset);
 
     // Hostname
     uint8 macaddr[6] = {};
