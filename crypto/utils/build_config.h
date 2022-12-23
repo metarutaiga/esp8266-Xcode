@@ -48,9 +48,12 @@
 #endif /* CONFIG_WIN32_DEFAULTS */
 
 #if defined(__XTENSA__)
-#define CONFIG_TLS_INTERNAL_CLIENT
-#define CONFIG_INTERNAL_LIBTOMMATH
 #define CONFIG_CRYPTO_INTERNAL
+#define CONFIG_INTERNAL_LIBTOMMATH
+#define CONFIG_NO_STDOUT_DEBUG
+#define CONFIG_SHA256
+#define CONFIG_TLSV12
+#define CONFIG_TLS_INTERNAL_CLIENT
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -69,9 +72,6 @@
 #define SHA1Init SHA1Init_unused
 #define SHA1Transform SHA1Transform_unused
 #define SHA1Update SHA1Update_unused
-#define aes_decrypt aes_decrypt_unused
-#define aes_decrypt_deinit aes_decrypt_deinit_unused
-#define aes_decrypt_init aes_decrypt_init_unused
 #define aes_unwrap aes_unwrap_unused
 #define base64_decode base64_decode_unused
 #define base64_encode base64_encode_unused
@@ -91,6 +91,10 @@
 #define Td4s Td4s_unused
 #define rcons rcons_unused
 #if defined(aes_internal_dec) || defined(aes_internal_enc)
+#define aes_decrypt aes_decrypt_unused
+#define aes_decrypt_deinit aes_decrypt_deinit_unused
+#define aes_decrypt_init aes_decrypt_init_unused
+#define aes_encrypt_init aes_encrypt_init_unused
 #undef rijndaelKeySetupDec
 #undef rijndaelKeySetupEnc
 #undef Te0

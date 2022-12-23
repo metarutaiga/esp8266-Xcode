@@ -2,8 +2,11 @@
 #include <string>
 #include "app/fs.h"
 #include "app/httpd.h"
+#include "app/https.h"
 #include "app/mqtt.h"
 #include "app/ota.h"
+
+extern "C" void ets_write_char(char c);
 
 extern bool web_system(void* arg, const char* url, int line);
 extern bool web_ssid(void* arg, const char* url, int line);
@@ -31,6 +34,15 @@ void wifi(System_Event_t* event)
 
         // HTTP
         httpd_regist("/", "text/html", web_system);
+
+        // HTTPS
+        https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](char* data, int length)
+        {
+            for (int i = 0; i < length; ++i)
+            {
+                ets_write_char(data[i]);
+            }
+        });
 
         // MQTT
         int fd = fs_open("mqtt", "r");

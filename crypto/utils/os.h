@@ -9,6 +9,16 @@
 #ifndef OS_H
 #define OS_H
 
+#if defined(__XTENSA__)
+#include "byteswap.h"
+#define __BYTE_ORDER     BYTE_ORDER
+#define __LITTLE_ENDIAN  LITTLE_ENDIAN
+#define __BIG_ENDIAN     BIG_ENDIAN
+#define bswap_16         __bswap_16
+#define bswap_32         __bswap_32
+#define bswap_64         __bswap_64
+#endif /*__XTENSA__*/
+
 typedef long os_time_t;
 
 /**
