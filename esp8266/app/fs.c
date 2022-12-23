@@ -10,7 +10,7 @@
 #define PHYS_PAGE   0x100
 #define PHYS_BLOCK  0x2000
 
-int32_t fs_hal_read(uint32_t addr, uint32_t size, uint8_t *dst)
+int32_t fs_hal_read(uint32_t addr, uint32_t size, uint8_t* dst)
 {
     uint32_t buffer[PHYS_PAGE / sizeof(uint32_t)];
     while (size)
@@ -30,7 +30,7 @@ int32_t fs_hal_read(uint32_t addr, uint32_t size, uint8_t *dst)
     return 0;
 }
 
-int32_t fs_hal_write(uint32_t addr, uint32_t size, uint8_t *src)
+int32_t fs_hal_write(uint32_t addr, uint32_t size, uint8_t* src)
 {
     uint32_t buffer[PHYS_PAGE / sizeof(uint32_t)];
     while (size)
@@ -68,26 +68,26 @@ int32_t fs_hal_erase(uint32_t addr, uint32_t size)
 
 static lfs_t fs;
 
-int lfs_flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *dst, lfs_size_t size)
+int lfs_flash_read(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, void* dst, lfs_size_t size)
 {
     uint32_t addr = PHYS_BEGIN - IROM_ADDR + (block * PHYS_BLOCK) + off;
     return fs_hal_read(addr, size, (uint8_t*)dst);
 }
 
-int lfs_flash_prog(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, const void *buffer, lfs_size_t size)
+int lfs_flash_prog(const struct lfs_config* c, lfs_block_t block, lfs_off_t off, const void* buffer, lfs_size_t size)
 {
     uint32_t addr = PHYS_BEGIN - IROM_ADDR + (block * PHYS_BLOCK) + off;
     return fs_hal_write(addr, size, (uint8_t*)buffer);
 }
 
-int lfs_flash_erase(const struct lfs_config *c, lfs_block_t block)
+int lfs_flash_erase(const struct lfs_config* c, lfs_block_t block)
 {
     uint32_t addr = PHYS_BEGIN - IROM_ADDR + (block * PHYS_BLOCK);
     uint32_t size = PHYS_BLOCK;
     return fs_hal_erase(addr, size);
 }
 
-int lfs_flash_sync(const struct lfs_config *c)
+int lfs_flash_sync(const struct lfs_config* c)
 {
     return 0;
 }

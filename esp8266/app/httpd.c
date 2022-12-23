@@ -6,38 +6,38 @@
 struct httpd_handler
 {
     struct httpd_handler* next;
-    const char *url;
-    const char *type;
-    bool (*handler)(void *arg, const char* url, int line);
+    const char* url;
+    const char* type;
+    bool (*handler)(void* arg, const char* url, int line);
 };
-struct httpd_handler* httpd_handlers;
+struct httpd_handler* httpd_handlers IRAM_ATTR;
 
-struct httpd_chunk
+struct httpd_context
 {
-    bool (*handler)(void *arg, const char* url, int line);
+    bool (*handler)(void* arg, const char* url, int line);
     char* url;
     int line;
 };
 
-void httpd_server_recv(void *arg, char *pusrdata, unsigned short length)
+void httpd_server_recv(void* arg, char* pusrdata, unsigned short length)
 {
-    struct espconn *pespconn = arg;
+    struct espconn* pespconn = arg;
 
-    char *ptr = pusrdata;
-    char *method = strsep(&ptr, " ");
-    char *url = strsep(&ptr, " ");
+    char* ptr = pusrdata;
+    char* method = strsep(&ptr, " ");
+    char* url = strsep(&ptr, " ");
 
     if (method && url && strcmp(method, "GET") == 0)
     {
-        struct httpd_handler *node = httpd_handlers;
+        struct httpd_handler* node = httpd_handlers;
         while (node)
         {
             if (strncmp(node->url, url, strlen(node->url)) == 0)
             {
-                struct httpd_chunk *chunk = pespconn->reverse = os_realloc(pespconn->reverse, sizeof(struct httpd_chunk));
-                chunk->handler = node->handler;
-                chunk->url = strdup(url);
-                chunk->line = 0;
+                struct httpd_context* context = pespconn->reverse = os_realloc(pespconn->reverse, sizeof(struct httpd_context));
+                context->handler = node->handler;
+                context->url = strdup(url);
+                context->line = 0;
 
                 if (node->type)
                 {
@@ -51,7 +51,7 @@ void httpd_server_recv(void *arg, char *pusrdata, unsigned short length)
                 }
                 else
                 {
-                    if (chunk->handler(arg, chunk->url, chunk->line))
+                    if (context->handler(arg, context->url, context->line))
                         return;
                     espconn_disconnect(pespconn);
                 }
@@ -63,32 +63,32 @@ void httpd_server_recv(void *arg, char *pusrdata, unsigned short length)
     espconn_disconnect(pespconn);
 }
 
-void httpd_server_sent(void *arg)
+void httpd_server_sent(void* arg)
 {
-    struct espconn *pespconn = arg;
+    struct espconn* pespconn = arg;
 
-    struct httpd_chunk *chunk = (struct httpd_chunk *)pespconn->reverse;
-    if (chunk->handler(arg, chunk->url, chunk->line))
+    struct httpd_context* context = pespconn->reverse;
+    if (context->handler(arg, context->url, context->line))
         return;
     espconn_disconnect(pespconn);
 }
 
-void httpd_server_discon(void *arg)
+void httpd_server_discon(void* arg)
 {
-    struct espconn *pespconn = arg;
+    struct espconn* pespconn = arg;
 
-    struct httpd_chunk *chunk = (struct httpd_chunk *)pespconn->reverse;
-    if (chunk)
+    struct httpd_context* context = pespconn->reverse;
+    if (context)
     {
-        os_free(chunk->url);
-        os_free(chunk);
+        os_free(context->url);
+        os_free(context);
         pespconn->reverse = NULL;
     }
 }
 
-void httpd_listen(void *arg)
+void httpd_listen(void* arg)
 {
-    struct espconn *pespconn = arg;
+    struct espconn* pespconn = arg;
 
     espconn_regist_recvcb(pespconn, httpd_server_recv);
     espconn_regist_disconcb(pespconn, httpd_server_discon);
@@ -110,18 +110,18 @@ void httpd_init(int port)
 
     esp_conn.type = ESPCONN_TCP;
     esp_conn.state = ESPCONN_NONE;
-    esp_conn.proto.tcp = &esptcp;
+    esp_conn.proto.tcp = &esptcp; 
     esp_conn.proto.tcp->local_port = port;
     espconn_regist_connectcb(&esp_conn, httpd_listen);
     espconn_accept(&esp_conn);
 }
 
-void httpd_regist(const char* url, const char *type, bool (*handler)(void *arg, const char* url, int line))
+void httpd_regist(const char* url, const char* type, bool (*handler)(void* arg, const char* url, int line))
 {
     if (url == NULL || handler == NULL)
         return;
 
-    struct httpd_handler *node = httpd_handlers;
+    struct httpd_handler* node = httpd_handlers;
     while (node)
     {
         if (strcmp(node->url, url) == 0)
@@ -143,7 +143,7 @@ void httpd_regist(const char* url, const char *type, bool (*handler)(void *arg, 
 
 void httpd_redirect(void* arg, const char* url)
 {
-    struct espconn *pespconn = arg;
+    struct espconn* pespconn = arg;
 
     char header[128];
     int length = os_sprintf(header,
@@ -153,9 +153,9 @@ void httpd_redirect(void* arg, const char* url)
     espconn_sent(pespconn, (uint8_t*)header, length);
 }
 
-bool httpd_chunk_send(void *arg, int line, const char *data, size_t data_length)
+bool httpd_chunk_send(void* arg, int line, const char* data, size_t data_length)
 {
-    struct espconn *pespconn = arg;
+    struct espconn* pespconn = arg;
 
     char buffer[1024];
     size_t number_length = os_sprintf(buffer, "%x", data_length);
@@ -166,8 +166,8 @@ bool httpd_chunk_send(void *arg, int line, const char *data, size_t data_length)
     {
         return false;
     }
-    struct httpd_chunk *chunk = (struct httpd_chunk *)pespconn->reverse;
-    chunk->line = line;
+    struct httpd_context* context = pespconn->reverse;
+    context->line = line;
     return true;
 }
 

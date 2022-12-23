@@ -3,7 +3,7 @@
 #include "app/fs.h"
 #include "app/httpd.h"
 
-bool web_system(void *arg, const char* url, int line)
+bool web_system(void* arg, const char* url, int line)
 {
     std::string html;
 
