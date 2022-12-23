@@ -1,13 +1,14 @@
 #include "esp8266.h"
-#include <stdio.h>
 #undef os_calloc
 #undef os_zalloc
-#define __must_check
-#include <crypto/tls.h>
+#undef os_free
+#include <crypto/utils/build_config.h>
 #include <crypto/utils/common.h>
 #include <crypto/utils/wpabuf.h>
+#include <crypto/tls.h>
 #define os_zalloc os_zalloc_iram
 #define os_calloc os_calloc_iram
+#define os_free(s) vPortFree(s, "", __LINE__)
 #include "https.h"
 
 struct https_context

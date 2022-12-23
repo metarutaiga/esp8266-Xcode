@@ -59,6 +59,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <machine/endian.h>
+#define __BYTE_ORDER BYTE_ORDER
+#define __LITTLE_ENDIAN LITTLE_ENDIAN
+#define __BIG_ENDIAN BIG_ENDIAN
+#define bswap_16 __builtin_bswap16
+#define bswap_32 __builtin_bswap32
+#define bswap_64 __builtin_bswap64
 #ifndef __cplusplus
 #define __cplusplus
 #include <c_types.h>
