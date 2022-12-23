@@ -11,6 +11,7 @@ extern "C" {
 #include <user_interface.h>
 #include <espconn.h>
 
+extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
 
 extern const char version[16];

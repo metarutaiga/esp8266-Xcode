@@ -1,6 +1,6 @@
 #include "esp8266.h"
+#include <stdlib.h>
 #include <time.h>
-#include <string>
 
 char* itoa(int value, char* str, int base)
 {
@@ -23,7 +23,7 @@ time_t mktime(struct tm *tim_p)
 
     time_t tim = 0;
     long days = 0;
-    int year, isdst=0;
+    int year = 0;
 
     /* compute hours, minutes, seconds */
     tim += tim_p->tm_sec + (tim_p->tm_min * _SEC_IN_MINUTE) + (tim_p->tm_hour * _SEC_IN_HOUR);
@@ -57,7 +57,7 @@ time_t mktime(struct tm *tim_p)
     tim += (days * _SEC_IN_DAY);
 
     /* reset isdst flag to what we have calculated */
-    tim_p->tm_isdst = isdst;
+    tim_p->tm_isdst = 0;
 
     /* compute day of the week */
     if ((tim_p->tm_wday = (days + 4) % 7) < 0)
@@ -66,37 +66,7 @@ time_t mktime(struct tm *tim_p)
     return tim;
 }
 
-extern "C" int os_mktime(int year, int month, int day, int hour, int min, int sec, time_t* t)
-{
-    if (year < 1970 || month < 1 || month > 12 || day < 1 || day > 31 ||
-        hour < 0 || hour > 23 || min < 0 || min > 59 || sec < 0 ||
-        sec > 60)
-        return -1;
-
-    struct tm tm = {};
-    tm.tm_year = year - 1900;
-    tm.tm_mon = month - 1;
-    tm.tm_mday = day;
-    tm.tm_hour = hour;
-    tm.tm_min = min;
-    tm.tm_sec = sec;
-
-    *t = (time_t) mktime(&tm);
-    return 0;
-}
-
-extern "C" int snprintf(char* str, unsigned int size, const char* format, ...)
-{
-    extern int ets_vsnprintf(char* str, unsigned int size, const char* format, va_list arg);
-
-    va_list args;
-    va_start(args, format);
-    int result = ets_vsnprintf(str, size, format, args);
-    va_end(args);
-    return result;
-}
-
-extern "C" int strcasecmp(const char* s1, const char* s2)
+int strcasecmp(const char* s1, const char* s2)
 {
     return os_strcmp(s1, s2);
 }
@@ -136,7 +106,7 @@ char* strdup(const char* str)
     return dup;
 }
 
-extern "C" size_t os_strlcpy(char* dest, const char* src, size_t siz)
+size_t os_strlcpy(char* dest, const char* src, size_t siz)
 {
     const char* s = src;
     size_t left = siz;
@@ -189,7 +159,7 @@ size_t strspn(const char* str, const char* spn)
 
 long strtol(const char* str, char** str_end, int base)
 {
-    int result = 0;
+    long result = 0;
     if (base == 16)
     {
         for (char c = 0; (c = *str); str++)
@@ -211,83 +181,3 @@ long strtol(const char* str, char** str_end, int base)
     }
     return result;
 }
-
-extern "C" void* __hide_aliasing_typecast(void* foo)
-{
-    return foo;
-}
-
-extern "C" void forced_memzero(void* ptr, size_t len)
-{
-    memset(ptr, 0, len);
-}
-
-extern "C" int os_memcmp_const(const void* a, const void* b, size_t len)
-{
-    return os_memcmp(a, b, len);
-}
-
-extern "C" void* os_memdup(const void* src, size_t len)
-{
-    char* dup = (char*)os_malloc(len);
-    os_memcpy(dup, src, len);
-    return dup;
-}
-
-extern "C" void* aes_encrypt_init(const u8* key, size_t len)
-{
-#define AES_PRIV_SIZE (4 * 4 * 15 + 4)
-#define AES_PRIV_NR_POS (4 * 15)
-    u32* rk;
-    if (len != 16)
-        return NULL;
-    rk = (u32 *)os_malloc(AES_PRIV_SIZE);
-    if (rk == NULL)
-        return NULL;
-    extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
-    rijndaelKeySetupEnc(rk, key);
-    rk[AES_PRIV_NR_POS] = 10;
-    return rk;
-}
-
-void* operator new(size_t size)
-{
-    return os_malloc(size);
-}
-
-void* operator new[](size_t size)
-{
-    return os_malloc(size);
-}
-
-void operator delete(void* ptr) noexcept
-{
-    os_free(ptr);
-}
-
-void operator delete(void* ptr, size_t size) noexcept
-{
-    os_free(ptr);
-}
-
-void operator delete[](void* ptr) noexcept
-{
-    os_free(ptr);
-}
-
-void operator delete[](void* ptr, size_t size) noexcept
-{
-    os_free(ptr);
-}
-
-#pragma clang diagnostic ignored "-Winvalid-noreturn"
-void abort()
-{
-    
-}
-
-#if defined(_LIBCPP_VERSION)
-_LIBCPP_BEGIN_NAMESPACE_STD
-    template class _LIBCPP_CLASS_TEMPLATE_INSTANTIATION_VIS basic_string<char>;
-_LIBCPP_END_NAMESPACE_STD
-#endif

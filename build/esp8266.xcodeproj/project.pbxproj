@@ -17,10 +17,12 @@
 		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
 		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
-		D69FFA6329419B4C00CC7E75 /* lost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA6229419B4C00CC7E75 /* lost.cpp */; };
 		D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA1ED0294AD2E0009EEA4C /* liblwip.a */; };
 		D6D0416A294C28CB006B09EE /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
 		D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D04184294EF255006B09EE /* liblittlefs.a */; };
+		D6D753E42955AE41007D8981 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
+		D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
+		D6D753E62955AE41007D8981 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E32955AE41007D8981 /* crypto.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +46,6 @@
 		D69FFA512941832400CC7E75 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../esp8266/init.c; sourceTree = "<group>"; };
 		D69FFA5E294185BA00CC7E75 /* mqtt_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mqtt_config.h; sourceTree = "<group>"; };
 		D69FFA5F294185BA00CC7E75 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
-		D69FFA6229419B4C00CC7E75 /* lost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = lost.cpp; path = ../esp8266/lost.cpp; sourceTree = "<group>"; };
 		D69FFA692941BBF800CC7E75 /* sntp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sntp.h; sourceTree = "<group>"; };
 		D69FFA6A2941BBF800CC7E75 /* espconn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = espconn.h; sourceTree = "<group>"; };
 		D69FFA6B2941BBF800CC7E75 /* at_custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = at_custom.h; sourceTree = "<group>"; };
@@ -74,6 +75,9 @@
 		D6CA1ED0294AD2E0009EEA4C /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D04169294C28CB006B09EE /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = system.cpp; path = ../esp8266/web/system.cpp; sourceTree = "<group>"; };
 		D6D04184294EF255006B09EE /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D753E12955AE41007D8981 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
+		D6D753E22955AE41007D8981 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
+		D6D753E32955AE41007D8981 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto.c; path = ../esp8266/lost/crypto.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,10 +121,10 @@
 			children = (
 				D69FFA672941BBEA00CC7E75 /* ESP8266_NONOS_SDK */,
 				D6D0416B294C52A4006B09EE /* app */,
+				D6D753E02955AE31007D8981 /* lost */,
 				D6D04168294C28BB006B09EE /* web */,
 				D69FFA4D2941832300CC7E75 /* esp8266.h */,
 				D69FFA512941832400CC7E75 /* init.c */,
-				D69FFA6229419B4C00CC7E75 /* lost.cpp */,
 				D69FFA4C2941832300CC7E75 /* main.cpp */,
 				D69FFA4E2941832300CC7E75 /* phy.c */,
 				CE999BD625D21EC800351116 /* Configs */,
@@ -212,6 +216,16 @@
 			name = app;
 			sourceTree = "<group>";
 		};
+		D6D753E02955AE31007D8981 /* lost */ = {
+			isa = PBXGroup;
+			children = (
+				D6D753E32955AE41007D8981 /* crypto.c */,
+				D6D753E22955AE41007D8981 /* libcpp.cpp */,
+				D6D753E12955AE41007D8981 /* lost.c */,
+			);
+			name = lost;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -291,15 +305,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6918EB72950377E00B0BE87 /* fs.c in Sources */,
+				D6918EB82950377E00B0BE87 /* httpd.c in Sources */,
+				D6918EE329544F6700B0BE87 /* https.c in Sources */,
+				D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */,
+				D6918EBC29515FB900B0BE87 /* ota.c in Sources */,
+				D6D753E62955AE41007D8981 /* crypto.c in Sources */,
+				D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */,
+				D6D753E42955AE41007D8981 /* lost.c in Sources */,
+				D6D0416A294C28CB006B09EE /* system.cpp in Sources */,
 				D69FFA542941832400CC7E75 /* init.c in Sources */,
 				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
-				D6D0416A294C28CB006B09EE /* system.cpp in Sources */,
-				D6918EB82950377E00B0BE87 /* httpd.c in Sources */,
 				D69FFA532941832400CC7E75 /* phy.c in Sources */,
-				D6918EBC29515FB900B0BE87 /* ota.c in Sources */,
-				D69FFA6329419B4C00CC7E75 /* lost.cpp in Sources */,
-				D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */,
-				D6918EE329544F6700B0BE87 /* https.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -33,18 +33,18 @@
 		D60D0A71294311830084F160 /* dh_groups.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E62942F7610084F160 /* dh_groups.c */; };
 		D60D0A72294311830084F160 /* fips_prf_internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E32942F7610084F160 /* fips_prf_internal.c */; };
 		D60D0A73294311830084F160 /* md4-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F42942F7610084F160 /* md4-internal.c */; };
-		D60D0A74294311830084F160 /* md5-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D82942F7610084F160 /* md5-internal.c */; };
-		D60D0A75294311830084F160 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C82942F7610084F160 /* md5.c */; };
+		D60D0A74294311830084F160 /* md5-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D82942F7610084F160 /* md5-internal.c */; settings = {COMPILER_FLAGS = "-Dmd5_internal"; }; };
+		D60D0A75294311830084F160 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C82942F7610084F160 /* md5.c */; settings = {COMPILER_FLAGS = "-Dmd5"; }; };
 		D60D0A76294311830084F160 /* milenage.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C72942F7610084F160 /* milenage.c */; };
 		D60D0A77294311830084F160 /* ms_funcs.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F22942F7610084F160 /* ms_funcs.c */; };
 		D60D0A78294311830084F160 /* random.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D32942F7610084F160 /* random.c */; };
-		D60D0A79294311830084F160 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09CC2942F7610084F160 /* rc4.c */; };
-		D60D0A7A294311830084F160 /* sha1-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09EF2942F7610084F160 /* sha1-internal.c */; };
-		D60D0A7B294311830084F160 /* sha1-pbkdf2.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C42942F7600084F160 /* sha1-pbkdf2.c */; };
-		D60D0A7C294311830084F160 /* sha1-prf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F32942F7610084F160 /* sha1-prf.c */; };
+		D60D0A79294311830084F160 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09CC2942F7610084F160 /* rc4.c */; settings = {COMPILER_FLAGS = "-Drc4"; }; };
+		D60D0A7A294311830084F160 /* sha1-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09EF2942F7610084F160 /* sha1-internal.c */; settings = {COMPILER_FLAGS = "-Dsha1_internal"; }; };
+		D60D0A7B294311830084F160 /* sha1-pbkdf2.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C42942F7600084F160 /* sha1-pbkdf2.c */; settings = {COMPILER_FLAGS = "-Dsha1_pbkdf2"; }; };
+		D60D0A7C294311830084F160 /* sha1-prf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F32942F7610084F160 /* sha1-prf.c */; settings = {COMPILER_FLAGS = "-Dsha1_prf"; }; };
 		D60D0A7D294311830084F160 /* sha1-tlsprf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D02942F7610084F160 /* sha1-tlsprf.c */; };
 		D60D0A7E294311830084F160 /* sha1-tprf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C52942F7610084F160 /* sha1-tprf.c */; };
-		D60D0A7F294311830084F160 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D42942F7610084F160 /* sha1.c */; };
+		D60D0A7F294311830084F160 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D42942F7610084F160 /* sha1.c */; settings = {COMPILER_FLAGS = "-Dsha1"; }; };
 		D60D0A80294311830084F160 /* sha256-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F02942F7610084F160 /* sha256-internal.c */; };
 		D60D0A81294311830084F160 /* sha256-kdf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F52942F7610084F160 /* sha256-kdf.c */; };
 		D60D0A82294311830084F160 /* sha256-prf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09EA2942F7610084F160 /* sha256-prf.c */; };
@@ -73,7 +73,7 @@
 		D6918ED92954431100B0BE87 /* tlsv1_client_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918ECD2954431100B0BE87 /* tlsv1_client_ocsp.c */; };
 		D6918EDA2954431100B0BE87 /* tlsv1_client_read.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918ECF2954431100B0BE87 /* tlsv1_client_read.c */; };
 		D6918EE02954433900B0BE87 /* tls_internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EDF2954433900B0BE87 /* tls_internal.c */; };
-		D6927FF42945B8A100C7F5A9 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D6927FF32945B75600C7F5A9 /* base64.c */; };
+		D6927FF42945B8A100C7F5A9 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D6927FF32945B75600C7F5A9 /* base64.c */; settings = {COMPILER_FLAGS = "-Dbase64"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
