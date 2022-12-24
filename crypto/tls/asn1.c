@@ -273,6 +273,7 @@ int asn1_get_next(const u8 *buf, size_t len, struct asn1_hdr *hdr)
 }
 
 
+#ifndef CONFIG_NO_WPA_MSG
 void asn1_print_hdr(const struct asn1_hdr *hdr, const char *title)
 {
 	wpa_printf(MSG_DEBUG, "%sclass %d constructed %d tag 0x%x",
@@ -285,6 +286,7 @@ void asn1_unexpected(const struct asn1_hdr *hdr, const char *title)
 	wpa_printf(MSG_DEBUG, "%s - found class %d constructed %d tag 0x%x",
 		   title, hdr->class, hdr->constructed, hdr->tag);
 }
+#endif
 
 
 int asn1_parse_oid(const u8 *buf, size_t len, struct asn1_oid *oid)

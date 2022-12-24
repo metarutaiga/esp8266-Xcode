@@ -17,40 +17,11 @@
 
 /* Insert configuration defines, e.g., #define EAP_MD5, here, if needed. */
 
-#ifdef CONFIG_WIN32_DEFAULTS
-#define CONFIG_NATIVE_WINDOWS
-#define CONFIG_ANSI_C_EXTRA
-#define CONFIG_WINPCAP
-#define IEEE8021X_EAPOL
-#define PKCS12_FUNCS
-#define PCSC_FUNCS
-#define CONFIG_CTRL_IFACE
-#define CONFIG_CTRL_IFACE_NAMED_PIPE
-#define CONFIG_DRIVER_NDIS
-#define CONFIG_NDIS_EVENTS_INTEGRATED
-#define CONFIG_DEBUG_FILE
-#define EAP_MD5
-#define EAP_TLS
-#define EAP_MSCHAPv2
-#define EAP_PEAP
-#define EAP_TTLS
-#define EAP_GTC
-#define EAP_OTP
-#define EAP_LEAP
-#define EAP_TNC
-#define _CRT_SECURE_NO_DEPRECATE
-
-#ifdef USE_INTERNAL_CRYPTO
-#define CONFIG_TLS_INTERNAL_CLIENT
-#define CONFIG_INTERNAL_LIBTOMMATH
-#define CONFIG_CRYPTO_INTERNAL
-#endif /* USE_INTERNAL_CRYPTO */
-#endif /* CONFIG_WIN32_DEFAULTS */
-
-#if defined(__XTENSA__)
 #define CONFIG_CRYPTO_INTERNAL
 #define CONFIG_INTERNAL_LIBTOMMATH
+#define CONFIG_NO_HOSTAPD_LOGGER
 #define CONFIG_NO_STDOUT_DEBUG
+#define CONFIG_NO_WPA_MSG
 #define CONFIG_SHA256
 #define CONFIG_TLSV12
 #define CONFIG_TLS_INTERNAL_CLIENT
@@ -132,7 +103,6 @@
 #if defined(sha1_prf)
 #undef sha1_prf
 #define sha1_prf sha1_prf_unused
-#endif
 #endif
 
 #endif /* BUILD_CONFIG_H */

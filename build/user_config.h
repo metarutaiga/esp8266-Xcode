@@ -34,9 +34,10 @@
 #undef __cplusplus
 #endif
 #define LFS_NAME_MAX 32
+#define LFS_NO_ASSERT
 #define LFS_NO_DEBUG
-#define LFS_NO_WARN
 #define LFS_NO_ERROR
+#define LFS_NO_WARN
 #include "littlefs/lfs.h"
 #endif
 
