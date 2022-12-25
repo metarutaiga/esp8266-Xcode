@@ -10,7 +10,7 @@ struct httpd_handler
     const char* type;
     bool (*handler)(void* arg, const char* url, int line);
 };
-struct httpd_handler* httpd_handlers IRAM_ATTR;
+static struct httpd_handler* httpd_handlers IRAM_ATTR;
 
 struct httpd_context
 {
@@ -19,7 +19,7 @@ struct httpd_context
     int line;
 };
 
-void httpd_server_recv(void* arg, char* pusrdata, unsigned short length)
+static void httpd_server_recv(void* arg, char* pusrdata, unsigned short length)
 {
     struct espconn* pespconn = arg;
 
@@ -63,7 +63,7 @@ void httpd_server_recv(void* arg, char* pusrdata, unsigned short length)
     espconn_disconnect(pespconn);
 }
 
-void httpd_server_sent(void* arg)
+static void httpd_server_sent(void* arg)
 {
     struct espconn* pespconn = arg;
 
@@ -73,7 +73,7 @@ void httpd_server_sent(void* arg)
     espconn_disconnect(pespconn);
 }
 
-void httpd_server_discon(void* arg)
+static void httpd_server_discon(void* arg)
 {
     struct espconn* pespconn = arg;
 
@@ -86,7 +86,7 @@ void httpd_server_discon(void* arg)
     }
 }
 
-void httpd_listen(void* arg)
+static void httpd_listen(void* arg)
 {
     struct espconn* pespconn = arg;
 

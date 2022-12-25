@@ -27,6 +27,7 @@ static void ota_tcp_recv(void* arg, char* pusrdata, unsigned short length)
     struct espconn* pespconn = arg;
     struct espupgrade* pupgrade = pespconn->reverse;
  
+    ETS_GPIO_INTR_DISABLE();
     if (pupgrade->offset == 0)
     {
         system_upgrade_init();
@@ -38,6 +39,7 @@ static void ota_tcp_recv(void* arg, char* pusrdata, unsigned short length)
         spi_flash_erase_sector((pupgrade->address + length) / SPI_FLASH_SEC_SIZE);
     }
     system_upgrade(pusrdata, length);
+    ETS_GPIO_INTR_ENABLE();
     pupgrade->address += length;
     pupgrade->offset += length;
     espconn_sent(pespconn, "OK", 2);

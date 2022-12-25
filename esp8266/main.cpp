@@ -5,6 +5,7 @@
 #include "app/https.h"
 #include "app/mqtt.h"
 #include "app/ota.h"
+#include "app/uart.h"
 
 extern "C" void ets_write_char(char c);
 
@@ -22,7 +23,7 @@ extern const char version[] = "1.00";
 char thisname[16] = "";
 char number[128] = "";
 
-void wifi(System_Event_t* event)
+static void wifi(System_Event_t* event)
 {
     uint32_t type = event ? event->event : EVENT_STAMODE_DISCONNECTED;
     switch (type)
@@ -144,6 +145,9 @@ void setup(void)
             espconn_dns_setserver(0, &dns);
         }
     }
+
+    // UART
+    uart_init(2, 0, 9600, 8, NULL, 1);
 
     // Initialize
     wifi_set_event_handler_cb(wifi);

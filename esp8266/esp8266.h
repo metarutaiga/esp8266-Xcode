@@ -13,6 +13,12 @@ extern "C" {
 
 extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
+inline uint32_t IRAM_ATTR esp_get_cycle_count()
+{
+    uint32_t ccount;
+    __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
+    return ccount;
+}
 
 extern const char version[16];
 extern char thisname[16];

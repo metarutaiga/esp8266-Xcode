@@ -19,26 +19,6 @@ extern "C"
 static MQTT_Client* mqtt_client IRAM_ATTR;
 static int mqtt_connected IRAM_ATTR;
 
-char* mqtt_prefix(char* pointer, const char* prefix, ...)
-{
-    va_list args;
-    va_start(args, prefix);
-    char* output = pointer;
-    pointer += os_sprintf(pointer, "%s", thisname);
-    pointer += os_sprintf(pointer, "/%s", prefix);
-    while (const char* name = va_arg(args, char*))
-    {
-        pointer += os_sprintf(pointer, "/%s", name);
-    }
-    va_end(args);
-    return output;
-}
-
-void mqtt_publish(const char* topic, const void* data, int length)
-{
-    MQTT_Publish(mqtt_client, topic, data, length, 0, 0);
-}
-
 static void mqtt_information()
 {
     MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "SDK Version", 0), system_get_sdk_version(), 0, 0, 0);
@@ -111,6 +91,26 @@ static void mqtt_loop()
         now_rssi = rssi;
         MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "RSSI", 0), itoa(rssi | 0xFFFFFF00, number + 64, 10), 0, 0, 0);
     }
+}
+
+char* mqtt_prefix(char* pointer, const char* prefix, ...)
+{
+    va_list args;
+    va_start(args, prefix);
+    char* output = pointer;
+    pointer += os_sprintf(pointer, "%s", thisname);
+    pointer += os_sprintf(pointer, "/%s", prefix);
+    while (const char* name = va_arg(args, char*))
+    {
+        pointer += os_sprintf(pointer, "/%s", name);
+    }
+    va_end(args);
+    return output;
+}
+
+void mqtt_publish(const char* topic, const void* data, int length)
+{
+    MQTT_Publish(mqtt_client, topic, data, length, 0, 0);
 }
 
 void mqtt_setup(const char* ip, int port)

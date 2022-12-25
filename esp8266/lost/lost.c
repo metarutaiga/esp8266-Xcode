@@ -11,7 +11,7 @@ char* itoa(int value, char* str, int base)
     return str;
 }
 
-time_t mktime(struct tm *tim_p)
+time_t mktime(struct tm* tim_p)
 {
     static const int _DAYS_BEFORE_MONTH[12] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
 

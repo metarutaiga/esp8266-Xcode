@@ -24,12 +24,12 @@ struct exception_frame
     uint32_t cause;
 };
 
-typedef void (*_xtos_handler)(struct exception_frame *ef, int cause);
+typedef void (*_xtos_handler)(struct exception_frame* ef, int cause);
 extern _xtos_handler _xtos_exc_handler_table[];
 extern _xtos_handler _xtos_c_handler_table[];
 
 static _xtos_handler origin_exception IRAM_ATTR;
-static void dump_exception(struct exception_frame *ef, int cause)
+static void dump_exception(struct exception_frame* ef, int cause)
 {
     extern int divide;
     if ((ef->epc & 0xffff0000) == 0x40000000)
@@ -53,7 +53,7 @@ static void dump_exception(struct exception_frame *ef, int cause)
     origin_exception(ef, cause);
 }
 
-void hook_exception(void)
+static void hook_exception(void)
 {
     origin_exception = _xtos_c_handler_table[3];
     _xtos_c_handler_table[3] = dump_exception;

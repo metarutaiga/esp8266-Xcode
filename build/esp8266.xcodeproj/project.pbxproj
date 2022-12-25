@@ -23,6 +23,8 @@
 		D6D753E42955AE41007D8981 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
 		D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
 		D6D753E62955AE41007D8981 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E32955AE41007D8981 /* crypto.c */; };
+		D6D753E929580AD6007D8981 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E729580AD6007D8981 /* uart.c */; };
+		D6D753EC29583EF8007D8981 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753EA29583EF8007D8981 /* gpio.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +80,10 @@
 		D6D753E12955AE41007D8981 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
 		D6D753E22955AE41007D8981 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
 		D6D753E32955AE41007D8981 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto.c; path = ../esp8266/lost/crypto.c; sourceTree = "<group>"; };
+		D6D753E729580AD6007D8981 /* uart.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = uart.c; path = ../esp8266/app/uart.c; sourceTree = "<group>"; };
+		D6D753E829580AD6007D8981 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uart.h; path = ../esp8266/app/uart.h; sourceTree = "<group>"; };
+		D6D753EA29583EF8007D8981 /* gpio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gpio.c; path = ../esp8266/app/gpio.c; sourceTree = "<group>"; };
+		D6D753EB29583EF8007D8981 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gpio.h; path = ../esp8266/app/gpio.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +210,8 @@
 			children = (
 				D6918EB12950377D00B0BE87 /* fs.c */,
 				D6918EB22950377D00B0BE87 /* fs.h */,
+				D6D753EA29583EF8007D8981 /* gpio.c */,
+				D6D753EB29583EF8007D8981 /* gpio.h */,
 				D6918EB32950377D00B0BE87 /* httpd.c */,
 				D6918EB42950377D00B0BE87 /* httpd.h */,
 				D6918EE229544F6700B0BE87 /* https.c */,
@@ -212,6 +220,8 @@
 				D6918EB62950377E00B0BE87 /* mqtt.h */,
 				D6918EBA29515FB900B0BE87 /* ota.c */,
 				D6918EBB29515FB900B0BE87 /* ota.h */,
+				D6D753E729580AD6007D8981 /* uart.c */,
+				D6D753E829580AD6007D8981 /* uart.h */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -295,7 +305,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\n\npython3 -m esptool elf2image libesp8266.so --version=2\n\n#PATH=$PATH:../../3rdParty/xtensa-lx106-elf/bin\n#/usr/bin/python3 ../../build/gen_appbin.py libesp8266.so 2 3 0 6 1\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=2\n#cat $PROJECT_DIR/../ESP8266_NONOS_SDK/bin/boot_v1.7.bin >libesp8266.bin\n#echo \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\c\" >>libesp8266.bin\n#cat libesp8266-0x01000.bin >>libesp8266.bin\n#rm libesp8266-0x01000.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -304,6 +314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6D753E929580AD6007D8981 /* uart.c in Sources */,
 				D6918EB72950377E00B0BE87 /* fs.c in Sources */,
 				D6918EB82950377E00B0BE87 /* httpd.c in Sources */,
 				D6918EE329544F6700B0BE87 /* https.c in Sources */,
@@ -313,6 +324,7 @@
 				D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */,
 				D6D753E42955AE41007D8981 /* lost.c in Sources */,
 				D6D0416A294C28CB006B09EE /* system.cpp in Sources */,
+				D6D753EC29583EF8007D8981 /* gpio.c in Sources */,
 				D69FFA542941832400CC7E75 /* init.c in Sources */,
 				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
 				D69FFA532941832400CC7E75 /* phy.c in Sources */,

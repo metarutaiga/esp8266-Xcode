@@ -44,7 +44,7 @@ void* aes_encrypt_init(const u8* key, size_t len)
     u32* rk;
     if (len != 16)
         return NULL;
-    rk = (u32 *)os_malloc(AES_PRIV_SIZE);
+    rk = (u32*)os_malloc(AES_PRIV_SIZE);
     if (rk == NULL)
         return NULL;
     rijndaelKeySetupEnc(rk, key);
