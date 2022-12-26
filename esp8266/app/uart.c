@@ -95,9 +95,8 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
     return context;
 }
 
-static void uart_delay(int cycle)
+static void uart_wait_until(int begin, int cycle)
 {
-    int begin = esp_get_cycle_count();
     while (esp_get_cycle_count() - begin < cycle) {}
 }
 
@@ -105,15 +104,17 @@ int uart_send(void* uart, const void* buffer, int length)
 {
     struct uart_context* context = uart;
 
+    int begin = esp_get_cycle_count();
+    int cycle = 0;
     for (int i = 0; i < length; ++i)
     {
         uint8_t c = ((uint8_t*)buffer)[i];
         GPIO_OUTPUT_SET(context->tx, 1);
-        uart_delay(context->baud_cycle);
+        uart_wait_until(begin, cycle += context->baud_cycle);
         for (int i = 0; i < 8; ++i)
         {
             GPIO_OUTPUT_SET(context->tx, c & BIT(i) ? 1 : 0);
-            uart_delay(context->baud_cycle);
+            uart_wait_until(begin, cycle += context->baud_cycle);
         }
         switch (context->parity)
         {
@@ -121,17 +122,17 @@ int uart_send(void* uart, const void* buffer, int length)
             break;
         case 'E':
             GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1 ^ 1);
-            uart_delay(context->baud_cycle);
+            uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         case 'O':
             GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1);
-            uart_delay(context->baud_cycle);
+            uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         }
         for (int i = 0; i < context->stop; ++i)
         {
             GPIO_OUTPUT_SET(context->tx, 0);
-            uart_delay(context->baud_cycle);
+            uart_wait_until(begin, cycle += context->baud_cycle);
         }
     }
 

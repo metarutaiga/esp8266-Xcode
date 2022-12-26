@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D60D09962942F1240084F160 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60D09952942F1240084F160 /* libmqtt.a */; };
-		D60D0A3A29430F8E0084F160 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60D0A3929430F8E0084F160 /* libcrypto.a */; };
 		D6918EB72950377E00B0BE87 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
 		D6918EB82950377E00B0BE87 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
 		D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
@@ -17,20 +15,20 @@
 		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
 		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
-		D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6CA1ED0294AD2E0009EEA4C /* liblwip.a */; };
 		D6D0416A294C28CB006B09EE /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
-		D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D04184294EF255006B09EE /* liblittlefs.a */; };
 		D6D753E42955AE41007D8981 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
 		D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
 		D6D753E62955AE41007D8981 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E32955AE41007D8981 /* crypto.c */; };
 		D6D753E929580AD6007D8981 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E729580AD6007D8981 /* uart.c */; };
 		D6D753EC29583EF8007D8981 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753EA29583EF8007D8981 /* gpio.c */; };
+		D6D753F62959402C007D8981 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F52959402C007D8981 /* libcrypto.a */; };
+		D6D753F82959402C007D8981 /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F72959402C007D8981 /* liblittlefs.a */; };
+		D6D753FA2959402C007D8981 /* liblwip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F92959402C007D8981 /* liblwip.a */; };
+		D6D753FC2959402C007D8981 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753FB2959402C007D8981 /* libmqtt.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
-		D60D09952942F1240084F160 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D60D0A3929430F8E0084F160 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6918EB12950377D00B0BE87 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
 		D6918EB22950377D00B0BE87 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
@@ -74,9 +72,7 @@
 		D69FFA812941BBF800CC7E75 /* smartconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smartconfig.h; sourceTree = "<group>"; };
 		D69FFA822941BBF800CC7E75 /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ping.h; sourceTree = "<group>"; };
 		D69FFA832941BBF800CC7E75 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
-		D6CA1ED0294AD2E0009EEA4C /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D04169294C28CB006B09EE /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = system.cpp; path = ../esp8266/web/system.cpp; sourceTree = "<group>"; };
-		D6D04184294EF255006B09EE /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753E12955AE41007D8981 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
 		D6D753E22955AE41007D8981 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
 		D6D753E32955AE41007D8981 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto.c; path = ../esp8266/lost/crypto.c; sourceTree = "<group>"; };
@@ -84,6 +80,10 @@
 		D6D753E829580AD6007D8981 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uart.h; path = ../esp8266/app/uart.h; sourceTree = "<group>"; };
 		D6D753EA29583EF8007D8981 /* gpio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gpio.c; path = ../esp8266/app/gpio.c; sourceTree = "<group>"; };
 		D6D753EB29583EF8007D8981 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gpio.h; path = ../esp8266/app/gpio.h; sourceTree = "<group>"; };
+		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D753FB2959402C007D8981 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,10 +91,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D60D0A3A29430F8E0084F160 /* libcrypto.a in Frameworks */,
-				D6D04185294EF255006B09EE /* liblittlefs.a in Frameworks */,
-				D6CA1ED1294AD2E0009EEA4C /* liblwip.a in Frameworks */,
-				D60D09962942F1240084F160 /* libmqtt.a in Frameworks */,
+				D6D753F62959402C007D8981 /* libcrypto.a in Frameworks */,
+				D6D753F82959402C007D8981 /* liblittlefs.a in Frameworks */,
+				D6D753FA2959402C007D8981 /* liblwip.a in Frameworks */,
+				D6D753FC2959402C007D8981 /* libmqtt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,10 +104,10 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D60D0A3929430F8E0084F160 /* libcrypto.a */,
-				D6D04184294EF255006B09EE /* liblittlefs.a */,
-				D6CA1ED0294AD2E0009EEA4C /* liblwip.a */,
-				D60D09952942F1240084F160 /* libmqtt.a */,
+				D6D753F52959402C007D8981 /* libcrypto.a */,
+				D6D753F72959402C007D8981 /* liblittlefs.a */,
+				D6D753F92959402C007D8981 /* liblwip.a */,
+				D6D753FB2959402C007D8981 /* libmqtt.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -381,7 +381,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
@@ -447,7 +446,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
@@ -472,6 +470,7 @@
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OBJROOT = ../build/temp;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = esp8266;
 				SKIP_INSTALL = YES;
 				SYMROOT = ../bin;

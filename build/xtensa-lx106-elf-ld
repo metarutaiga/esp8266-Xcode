@@ -1,0 +1,23 @@
+#!/bin/bash
+
+ARGS=""
+while [[ $# > 0 ]] ; do
+    case $1 in
+        -dead_strip*)
+        ;;
+        -F*)
+        ;;
+        -filelist*)
+        while read -r line; do
+            ARGS=$ARGS" "$line
+        done < $2
+        shift ;;
+        *)
+        ARGS=$ARGS" "$1
+        ;;
+    esac
+    shift
+done
+
+echo xtensa-lx106-elf/bin/xtensa-lx106-elf-ld $ARGS
+xtensa-lx106-elf/bin/xtensa-lx106-elf-ld $ARGS

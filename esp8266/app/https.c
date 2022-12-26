@@ -167,7 +167,7 @@ void https_connect(const char* url, void (*recv)(char* pusrdata, int length))
         struct espconn* esp_conn = os_zalloc(sizeof(struct espconn));
         esp_conn->type = ESPCONN_TCP;
         esp_conn->state = ESPCONN_NONE;
-        
+
         struct https_context* context = esp_conn->reverse = os_zalloc(sizeof(struct https_context));
         context->recv = recv;
         context->host = strdup(host);
