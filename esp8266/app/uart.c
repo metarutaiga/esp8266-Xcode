@@ -10,8 +10,8 @@ struct uart_context
     int parity;
     int stop;
     int frame;
-    int baud_cycle;
-    int last_cycle;
+    uint32_t baud_cycle;
+    uint32_t last_cycle;
     uint8_t buffer[128];
 };
 
@@ -19,9 +19,8 @@ static void IRAM_ATTR uart_rx(void* arg, int up)
 {
     struct uart_context* context = arg;
 
-    int cycle = esp_get_cycle_count();
-    int previous_cycle = cycle - context->baud_cycle;
-    int delta_cycle = cycle - context->last_cycle;
+    uint32_t cycle = esp_get_cycle_count();
+    uint32_t delta_cycle = cycle - context->last_cycle;
     if (delta_cycle > context->baud_cycle * 16)
     {
         context->bit = -1;
@@ -29,7 +28,11 @@ static void IRAM_ATTR uart_rx(void* arg, int up)
         context->last_cycle = cycle - context->baud_cycle / 2;
     }
 
-    while (context->last_cycle < cycle)
+    int last_cycle;
+    int previous_cycle;
+    cycle = cycle - context->last_cycle;
+    previous_cycle = cycle - context->baud_cycle;
+    for (last_cycle = 0; last_cycle < cycle; last_cycle += context->baud_cycle)
     {
         if (context->bit == -1)
         {
@@ -38,7 +41,7 @@ static void IRAM_ATTR uart_rx(void* arg, int up)
         else if (context->bit < 8)
         {
             int space;
-            if (context->last_cycle < previous_cycle)
+            if (last_cycle < previous_cycle)
             {
                 space = up ^ BIT0;
             }
@@ -57,8 +60,8 @@ static void IRAM_ATTR uart_rx(void* arg, int up)
             context->bit = -1;
             context->offset++;
         }
-        context->last_cycle += context->baud_cycle;
     }
+    context->last_cycle += last_cycle;
 }
 
 static void uart_debug(void* arg)

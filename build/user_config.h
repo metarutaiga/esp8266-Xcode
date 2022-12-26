@@ -79,6 +79,9 @@
 #undef ICACHE_FLASH_ATTR
 #undef ICACHE_RODATA_ATTR
 #undef PROGMEM
+#undef IRAM_ATTR
+#define __STRINGIZE_NX(A) #A
+#define __STRINGIZE(A) __STRINGIZE_NX(A)
 #define ICACHE_FLASH_ATTR   __attribute__((section(".irom0.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define ICACHE_RODATA_ATTR  __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define PROGMEM             __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
