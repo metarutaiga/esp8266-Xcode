@@ -470,7 +470,6 @@
 				MACH_O_TYPE = mh_execute;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OBJROOT = ../build/temp;
-				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = esp8266;
 				SKIP_INSTALL = YES;
 				SYMROOT = ../bin;
