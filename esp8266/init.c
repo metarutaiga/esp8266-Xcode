@@ -66,11 +66,13 @@ static void init_down(void)
     system_os_post(USER_TASK_PRIO_1, 0, 0);
 }
 
+#ifdef LOOP
 static void loop_task(os_event_t* event)
 {
     loop();
     system_os_post(USER_TASK_PRIO_1, 0, 0);
 }
+#endif
 
 void user_pre_init(void)
 {
@@ -88,8 +90,8 @@ void user_pre_init(void)
 
 void user_init(void)
 {
-    static os_event_t loop_event IRAM_ATTR;
 #ifdef LOOP
+    static os_event_t loop_event IRAM_ATTR;
     system_os_task(loop_task, USER_TASK_PRIO_1, &loop_event, 1);
 #endif
     system_init_done_cb(init_down);

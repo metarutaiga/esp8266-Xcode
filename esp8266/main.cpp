@@ -30,7 +30,7 @@ static void wifi(System_Event_t* event)
     {
     case EVENT_STAMODE_GOT_IP:
     {
-        wifi_set_opmode_current(STATION_MODE);
+        wifi_set_opmode(STATION_MODE);
         wifi_station_set_hostname(thisname);
 
         // HTTP
@@ -82,7 +82,7 @@ static void wifi(System_Event_t* event)
     case EVENT_STAMODE_CONNECTED:
     case EVENT_STAMODE_DISCONNECTED:
     case EVENT_STAMODE_DHCP_TIMEOUT:
-        wifi_set_opmode_current(STATIONAP_MODE);
+        wifi_set_opmode(STATIONAP_MODE);
         wifi_station_set_hostname(thisname);
         wifi_station_connect();
         wifi_station_dhcpc_start();
@@ -113,10 +113,14 @@ void setup(void)
 
     // Soft AP
     struct softap_config config = {};
-    wifi_softap_get_config_default(&config);
     config.ssid_len = os_sprintf((char*)config.ssid, wifi_format, macaddr[3], macaddr[4], macaddr[5]);
     os_sprintf((char*)config.password, pass_format, macaddr[3], macaddr[4], macaddr[5]);
-    wifi_softap_set_config_current(&config);
+    config.channel = 1;
+    config.authmode = AUTH_WPA_WPA2_PSK;
+    config.ssid_hidden = 0;
+    config.max_connection = 4;
+    config.beacon_interval = 100;
+    wifi_softap_set_config(&config);
 
     // SSID
     int fd = fs_open("ssid", "r");
@@ -127,8 +131,7 @@ void setup(void)
         os_strcpy((char*)config.ssid, fs_gets(number, 128, fd));
         os_strcpy((char*)config.password, fs_gets(number, 128, fd));
         fs_close(fd);
-
-        wifi_station_set_config_current(&config);
+        wifi_station_set_config(&config);
 
         // Static IP
         fd = fs_open("ip", "r");

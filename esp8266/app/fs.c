@@ -160,10 +160,18 @@ char* fs_gets(char* buffer, int length, int fd)
     for (int i = 0; i < length; ++i)
     {
         char c = buffer[i];
-        if (c == 0 || c == '\n')
+        if (c == 0 || c == '\r' || c == '\n')
         {
+            buffer[i] = '\0';
+            if (c && (i + 1) < length)
+            {
+                c = buffer[i + 1];
+                if (c == '\r' || c == '\n')
+                {
+                    ++i;
+                }
+            }
             lfs_file_seek(&fs, (lfs_file_t*)fd, pos + i + 1, LFS_SEEK_SET);
-            buffer[i] = 0;
             break;
         }
     }
