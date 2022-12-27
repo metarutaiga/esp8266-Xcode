@@ -138,6 +138,7 @@ int uart_send(void* uart, const void* buffer, int length)
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
     }
+    GPIO_DIS_OUTPUT(context->tx);
 
     return length;
 }

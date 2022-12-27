@@ -17,6 +17,7 @@ extern bool web_ota(void* arg, const char* url, int line);
 extern bool web_mqtt(void* arg, const char* url, int line);
 extern bool web_ntp(void* arg, const char* url, int line);
 extern bool web_reset(void* arg, const char* url, int line);
+extern bool web_rtc(void* arg, const char* url, int line);
 
 static const char wifi_format[] = "ESP8266_%02X%02X%02X";
 static const char pass_format[] = "8266ESP_%02X%02X%02X";
@@ -35,7 +36,7 @@ static void wifi(System_Event_t* event)
         wifi_station_set_hostname(thisname);
 
         // HTTP
-        httpd_regist("/", "text/html", web_system);
+        httpd_regist("/setup", "text/html", web_system);
 #ifdef DEMO
         // HTTPS
         https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](char* data, int length)
@@ -106,6 +107,7 @@ void setup(void)
     httpd_regist("/mqtt", nullptr, web_mqtt);
     httpd_regist("/ntp", nullptr, web_ntp);
     httpd_regist("/reset", nullptr, web_reset);
+    httpd_regist("/rtc", "text/plain; charset=utf-8", web_rtc);
     rtc_begin();
 
     // MAC

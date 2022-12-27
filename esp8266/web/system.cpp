@@ -324,3 +324,14 @@ bool web_reset(void* arg, const char* url, int line)
 
     return false;
 }
+
+bool web_rtc(void* arg, const char* url, int stage) {
+    if (stage < 192)
+    {
+        uint32_t data = 0;
+        system_rtc_mem_read(stage, &data, sizeof(uint32_t));
+        httpd_chunk_send(arg, stage + 1, number, os_sprintf(number, "%-3d:%08X\n", stage - 64, data));
+        return true;
+    }
+    return false;
+}

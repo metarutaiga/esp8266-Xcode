@@ -16,6 +16,21 @@ char* itoa(int value, char* str, int base)
     return str;
 }
 
+void* memchr(const void* src_void, int c, size_t length)
+{
+    const unsigned char *src = src_void;
+    unsigned char d = c;
+
+    while (length--)
+    {
+        if (*src == d)
+          return (void*)src;
+        src++;
+    }
+
+    return NULL;
+}
+
 time_t mktime(struct tm* tim_p)
 {
     static const int _DAYS_BEFORE_MONTH[12] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 };
