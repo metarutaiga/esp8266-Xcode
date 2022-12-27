@@ -16,6 +16,7 @@ extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
 extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
 extern uint64_t system_get_time64();
+extern uint32_t system_get_time_ms();
 extern struct tm* sntp_localtime(const time_t* tim_p);
 inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
 {

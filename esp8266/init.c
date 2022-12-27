@@ -110,6 +110,11 @@ uint64_t IRAM_FLASH_ATTR system_get_time64()
     return (uint64_t)high << 32 | low;
 }
 
+uint32_t IRAM_FLASH_ATTR system_get_time_ms()
+{
+    return (uint32_t)(system_get_time64() / 1000);
+}
+
 void user_init(void)
 {
 #ifdef LOOP
