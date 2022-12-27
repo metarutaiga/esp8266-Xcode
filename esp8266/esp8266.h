@@ -12,7 +12,7 @@ extern "C" {
 #include <user_interface.h>
 #include <espconn.h>
 
-extern uint32_t crc32(const void* data, size_t length, uint32_t crc);
+extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
 extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
 extern uint64_t system_get_time64();
