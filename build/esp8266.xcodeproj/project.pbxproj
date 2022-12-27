@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D627776F295B33890092DFB5 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
+		D6277770295B33890092DFB5 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753EA29583EF8007D8981 /* gpio.c */; };
+		D6277771295B33890092DFB5 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
+		D6277772295B33890092DFB5 /* https.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EE229544F6700B0BE87 /* https.c */; };
+		D6277773295B33890092DFB5 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
+		D6277774295B33890092DFB5 /* ota.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBA29515FB900B0BE87 /* ota.c */; };
+		D6277775295B33890092DFB5 /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D75426295AE75D007D8981 /* rtc.c */; };
+		D6277776295B33890092DFB5 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E729580AD6007D8981 /* uart.c */; };
+		D6277777295B33890092DFB5 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E32955AE41007D8981 /* crypto.c */; };
+		D6277778295B33890092DFB5 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
+		D6277779295B33890092DFB5 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
+		D627777A295B33890092DFB5 /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
+		D627777B295B33890092DFB5 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
+		D627777C295B33890092DFB5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
+		D627777D295B33890092DFB5 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D6918EB72950377E00B0BE87 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
 		D6918EB82950377E00B0BE87 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
 		D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
@@ -30,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6918EB12950377D00B0BE87 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
 		D6918EB22950377D00B0BE87 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
@@ -101,6 +117,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D6277769295B33050092DFB5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -146,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				30A9A7BB25ADC792000FA104 /* libesp8266.so */,
+				D627776B295B33050092DFB5 /* libeagle.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -261,6 +285,22 @@
 			productReference = 30A9A7BB25ADC792000FA104 /* libesp8266.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		D627776A295B33050092DFB5 /* eagle */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle" */;
+			buildPhases = (
+				D6277768295B33050092DFB5 /* Sources */,
+				D6277769295B33050092DFB5 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = eagle;
+			productName = eagle;
+			productReference = D627776B295B33050092DFB5 /* libeagle.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -271,6 +311,9 @@
 				TargetAttributes = {
 					30A9A7BA25ADC792000FA104 = {
 						CreatedOnToolsVersion = 12.3;
+					};
+					D627776A295B33050092DFB5 = {
+						CreatedOnToolsVersion = 14.0;
 					};
 				};
 			};
@@ -288,6 +331,7 @@
 			projectRoot = "";
 			targets = (
 				30A9A7BA25ADC792000FA104 /* esp8266 */,
+				D627776A295B33050092DFB5 /* eagle */,
 			);
 		};
 /* End PBXProject section */
@@ -337,6 +381,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D6277768295B33050092DFB5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D627776F295B33890092DFB5 /* fs.c in Sources */,
+				D6277770295B33890092DFB5 /* gpio.c in Sources */,
+				D6277771295B33890092DFB5 /* httpd.c in Sources */,
+				D6277772295B33890092DFB5 /* https.c in Sources */,
+				D6277773295B33890092DFB5 /* mqtt.cpp in Sources */,
+				D6277774295B33890092DFB5 /* ota.c in Sources */,
+				D6277775295B33890092DFB5 /* rtc.c in Sources */,
+				D6277776295B33890092DFB5 /* uart.c in Sources */,
+				D6277777295B33890092DFB5 /* crypto.c in Sources */,
+				D6277778295B33890092DFB5 /* libcpp.cpp in Sources */,
+				D6277779295B33890092DFB5 /* lost.c in Sources */,
+				D627777A295B33890092DFB5 /* system.cpp in Sources */,
+				D627777B295B33890092DFB5 /* init.c in Sources */,
+				D627777C295B33890092DFB5 /* main.cpp in Sources */,
+				D627777D295B33890092DFB5 /* phy.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
@@ -344,7 +410,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEMO,
+					"$(inherited)",
+				);
 			};
 			name = Debug;
 		};
@@ -352,7 +421,32 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					DEMO,
+					"$(inherited)",
+				);
+			};
+			name = Release;
+		};
+		D627776C295B33050092DFB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */;
+			buildSettings = {
+				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D627776D295B33050092DFB5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */;
+			buildSettings = {
+				EXECUTABLE_EXTENSION = a;
+				EXECUTABLE_PREFIX = lib;
+				MACH_O_TYPE = staticlib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
 		};
@@ -491,6 +585,15 @@
 			buildConfigurations = (
 				30A9A7BC25ADC792000FA104 /* Debug */,
 				30A9A7BD25ADC792000FA104 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D627776C295B33050092DFB5 /* Debug */,
+				D627776D295B33050092DFB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

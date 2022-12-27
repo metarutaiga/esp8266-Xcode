@@ -37,7 +37,6 @@ OTHER_CFLAGS = $(inherited) -Wno-strict-prototypes
 OTHER_CFLAGS = $(inherited) -Wno-switch
 OTHER_CFLAGS = $(inherited) -Wno-writable-strings
 
-OTHER_CFLAGS = $(inherited) -DDEMO
 OTHER_CFLAGS = $(inherited) -DICACHE_FLASH
 OTHER_CFLAGS = $(inherited) -DLFS_CONFIG=user_config.h
 //OTHER_CFLAGS = $(inherited) -DLOOP

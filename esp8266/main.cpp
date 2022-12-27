@@ -19,13 +19,18 @@ extern bool web_ntp(void* arg, const char* url, int line);
 extern bool web_reset(void* arg, const char* url, int line);
 extern bool web_rtc(void* arg, const char* url, int line);
 
-static const char wifi_format[] = "ESP8266_%02X%02X%02X";
-static const char pass_format[] = "8266ESP_%02X%02X%02X";
+extern const char version[] __attribute__((weak));
+extern const char wifi_format[] __attribute__((weak));
+extern const char pass_format[] __attribute__((weak));
 extern const char version[] = "1.00";
+extern const char wifi_format[] = "ESP8266_%02X%02X%02X";
+extern const char pass_format[] = "8266ESP_%02X%02X%02X";
 char thisname[16] = "";
 char number[128] = "";
 
-static void wifi(System_Event_t* event)
+extern "C" void app_wifi(System_Event_t* event) __attribute__((weak));
+extern "C" void app_wifi(System_Event_t* event) {}
+void wifi(System_Event_t* event)
 {
     uint32_t type = event ? event->event : EVENT_STAMODE_DISCONNECTED;
     switch (type)
@@ -93,8 +98,11 @@ static void wifi(System_Event_t* event)
         httpd_regist("/", "text/html", web_system);
         break;
     }
+    app_wifi(event);
 }
 
+extern "C" void app_setup() __attribute__((weak));
+extern "C" void app_setup() {}
 void setup(void)
 {
     // Component
@@ -179,6 +187,7 @@ void setup(void)
     }, &timer);
     os_timer_arm(&timer, 1000, true);
 #endif
+    app_setup();
 }
 
 #ifdef LOOP

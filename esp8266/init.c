@@ -1,5 +1,6 @@
 #include "esp8266.h"
 
+#ifdef DEMO
 struct exception_frame
 {
     uint32_t epc;
@@ -58,6 +59,7 @@ static void hook_exception(void)
     origin_exception = _xtos_c_handler_table[3];
     _xtos_c_handler_table[3] = dump_exception;
 }
+#endif
 
 static void init_down(void)
 {
