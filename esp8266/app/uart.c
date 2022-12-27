@@ -146,6 +146,9 @@ int uart_recv(void* uart, void* buffer, int length)
 {
     struct uart_context* context = uart;
 
-    memcpy(buffer, context->buffer, context->offset);
+    if (buffer)
+    {
+        os_memcpy(buffer, context->buffer, context->offset);
+    }
     return context->offset;
 }

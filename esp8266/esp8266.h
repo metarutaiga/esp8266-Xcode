@@ -13,6 +13,7 @@ extern "C" {
 
 extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
+extern uint64_t system_get_time64();
 inline uint32_t IRAM_ATTR esp_get_cycle_count()
 {
     uint32_t ccount;

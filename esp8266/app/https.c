@@ -137,7 +137,7 @@ static void https_dns_found(const char* name, ip_addr_t* ipaddr, void* arg)
     if (ipaddr)
     {
         pespconn->proto.tcp = os_zalloc(sizeof(esp_tcp));
-        memcpy(pespconn->proto.tcp->remote_ip, ipaddr, 4);
+        os_memcpy(pespconn->proto.tcp->remote_ip, ipaddr, 4);
         pespconn->proto.tcp->remote_port = 443;
         espconn_regist_connectcb(pespconn, https_tls_connect);
         espconn_regist_disconcb(pespconn, https_discon);

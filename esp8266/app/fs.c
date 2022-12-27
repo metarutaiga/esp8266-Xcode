@@ -23,7 +23,7 @@ static int32_t fs_hal_read(uint32_t addr, uint32_t size, uint8_t* dst)
             os_printf("%d = %s(%p, %p, %d)\n", result, "spi_flash_read", (char*)addr, (char*)buffer, length_aligned);
             return -1;
         }
-        memcpy(dst, buffer, length);
+        os_memcpy(dst, buffer, length);
         addr += length;
         size -= length;
     }
@@ -37,7 +37,7 @@ static int32_t fs_hal_write(uint32_t addr, uint32_t size, uint8_t* src)
     {
         int length = size < PHYS_PAGE ? size : PHYS_PAGE;
         int length_aligned = (length + 3) & ~3;
-        memcpy(buffer, src, length);
+        os_memcpy(buffer, src, length);
         SpiFlashOpResult result = spi_flash_write(addr, buffer, length_aligned);
         if (result != SPI_FLASH_RESULT_OK)
         {

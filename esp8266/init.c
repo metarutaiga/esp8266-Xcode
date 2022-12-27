@@ -88,12 +88,35 @@ void user_pre_init(void)
     system_partition_table_regist(at_partition_table, sizeof(at_partition_table) / sizeof(at_partition_table[0]), system_get_flash_size_map());
 }
 
+static uint32_t system_get_time_overflow_last = 0;
+static uint32_t system_get_time_overflow_count = 0;
+
+void system_get_time_overflow_callback(void* arg)
+{
+    uint32_t time = system_get_time();
+    if (time < system_get_time_overflow_last)
+    {
+        system_get_time_overflow_count++;
+    }
+    system_get_time_overflow_last = time;
+}
+
+uint64_t IRAM_ATTR system_get_time64()
+{
+    uint32_t low = system_get_time();
+    uint32_t high = system_get_time_overflow_count + ((low < system_get_time_overflow_last) ? 1 : 0);
+    return (uint64_t)high << 32 | low;
+}
+
 void user_init(void)
 {
 #ifdef LOOP
     static os_event_t loop_event IRAM_ATTR;
     system_os_task(loop_task, USER_TASK_PRIO_1, &loop_event, 1);
 #endif
+    static os_timer_t system_get_time_overflow_timer IRAM_ATTR;
+    os_timer_setfn(&system_get_time_overflow_timer, system_get_time_overflow_callback, 0);
+    os_timer_arm(&system_get_time_overflow_timer, 60000, true);
     system_init_done_cb(init_down);
 #ifdef DEMO
     hook_exception();

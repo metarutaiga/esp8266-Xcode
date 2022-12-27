@@ -106,15 +106,16 @@ void setup(void)
     httpd_regist("/ntp", nullptr, web_ntp);
     httpd_regist("/reset", nullptr, web_reset);
 
-    // Hostname
+    // MAC
     uint8 macaddr[6] = {};
     wifi_get_macaddr(STATION_IF, macaddr);
-    os_sprintf(thisname, wifi_format, macaddr[3], macaddr[4], macaddr[5]);
 
     // Soft AP
     struct softap_config config = {};
-    config.ssid_len = os_sprintf((char*)config.ssid, wifi_format, macaddr[3], macaddr[4], macaddr[5]);
+    os_sprintf((char*)config.ssid, wifi_format, macaddr[3], macaddr[4], macaddr[5]);
     os_sprintf((char*)config.password, pass_format, macaddr[3], macaddr[4], macaddr[5]);
+    os_strcpy(thisname, (char*)config.ssid);
+    config.ssid_len = os_strlen((char*)config.ssid);
     config.channel = 1;
     config.authmode = AUTH_WPA_WPA2_PSK;
     config.ssid_hidden = 0;
@@ -167,7 +168,10 @@ void setup(void)
         case PHY_MODE_11G: mode = 'G'; break;
         case PHY_MODE_11N: mode = 'N'; break;
         }
-        os_printf("[%10d] RAM : %d %c\n", system_get_time(), system_get_free_heap_size(), mode);
+        os_printf("[%6d.%04d] RAM : %d %c\n",
+                  uint32_t(system_get_time64() / 1000000),
+                  uint32_t(system_get_time64() % 1000000),
+                  system_get_free_heap_size(), mode);
     }, &timer);
     os_timer_arm(&timer, 1000, true);
 #endif

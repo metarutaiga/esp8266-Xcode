@@ -83,7 +83,7 @@ static void ota_tcp_init(char ip[4], int port, int size)
     esp_conn->type = ESPCONN_TCP;
     esp_conn->state = ESPCONN_NONE;
     esp_conn->proto.tcp = os_zalloc(sizeof(esp_tcp));
-    memcpy(esp_conn->proto.tcp->remote_ip, ip, 4);
+    os_memcpy(esp_conn->proto.tcp->remote_ip, ip, 4);
     esp_conn->proto.tcp->remote_port = port;
     esp_conn->reverse = pupgrade;
     partition_item_t partition_item = {};
@@ -116,7 +116,7 @@ void ota_udp_recv(void* arg, char* pusrdata, unsigned short length)
         remot_info* remote = NULL;
         if (espconn_get_connection_info(pespconn, &remote, 0) == 0)
         {
-            memcpy(pespconn->proto.udp->remote_ip, remote->remote_ip, 4);
+            os_memcpy(pespconn->proto.udp->remote_ip, remote->remote_ip, 4);
             pespconn->proto.udp->remote_port = remote->remote_port;
             espconn_sent(pespconn, "OK", 2);
 
