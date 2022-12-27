@@ -1,23 +1,6 @@
 #include "esp8266.h"
 #include <time.h>
 
-void* __hide_aliasing_typecast(void* foo)
-{
-    return foo;
-}
-
-void forced_memzero(void* ptr, size_t len)
-{
-    memset(ptr, 0, len);
-}
-
-void* os_memdup(const void* src, size_t len)
-{
-    char* dup = (char*)os_malloc(len);
-    os_memcpy(dup, src, len);
-    return dup;
-}
-
 int os_mktime(int year, int month, int day, int hour, int min, int sec, time_t* t)
 {
     if (year < 1970 || month < 1 || month > 12 || day < 1 || day > 31 ||

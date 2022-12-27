@@ -48,7 +48,13 @@
 #undef os_realloc
 #undef os_free
 #include "mem.h"
+#include "common.h"
+#undef aliasing_hide_typecast
+#define aliasing_hide_typecast(a, t) (t*)(a)
+#define forced_memzero os_bzero
 #define os_memcmp_const memcmp
+#define os_memdup(src, len) os_memcpy(os_malloc(len), src, len)
+#define os_strlcpy(dest, src, siz) os_strlen(os_strncpy(dest, src, siz))
 #define aes_unwrap aes_unwrap_unused
 #define rijndaelKeySetupDec rijndaelKeySetupDec_unused
 #define rijndaelKeySetupEnc rijndaelKeySetupEnc_unused

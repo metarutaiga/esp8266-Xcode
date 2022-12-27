@@ -106,30 +106,6 @@ char* strdup(const char* str)
     return dup;
 }
 
-size_t os_strlcpy(char* dest, const char* src, size_t siz)
-{
-    const char* s = src;
-    size_t left = siz;
-
-    if (left) {
-        /* Copy string up to the maximum size of the dest buffer */
-        while (--left != 0) {
-            if ((*dest++ = pgm_read_byte(s++)) == '\0')
-                break;
-        }
-    }
-
-    if (left == 0) {
-        /* Not enough room for the string; force NUL-termination */
-        if (siz != 0)
-            *dest = '\0';
-        while (pgm_read_byte(s++))
-            ; /* determine total src string length */
-    }
-
-    return s - src - 1;
-}
-
 char* strsep(char** sp, const char* sep)
 {
     if (sp == 0 || *sp == 0 || **sp == '\0')
