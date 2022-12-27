@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+int atoi(const char* str)
+{
+    return strtol(str, NULL, 10);
+}
+
 char* itoa(int value, char* str, int base)
 {
     if (base == 16)

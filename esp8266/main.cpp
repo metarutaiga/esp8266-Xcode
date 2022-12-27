@@ -4,6 +4,7 @@
 #include "app/httpd.h"
 #include "app/https.h"
 #include "app/mqtt.h"
+#include "app/rtc.h"
 #include "app/ota.h"
 #include "app/uart.h"
 
@@ -105,6 +106,7 @@ void setup(void)
     httpd_regist("/mqtt", nullptr, web_mqtt);
     httpd_regist("/ntp", nullptr, web_ntp);
     httpd_regist("/reset", nullptr, web_reset);
+    rtc_begin();
 
     // MAC
     uint8 macaddr[6] = {};

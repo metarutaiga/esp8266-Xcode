@@ -25,6 +25,7 @@
 		D6D753F82959402C007D8981 /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F72959402C007D8981 /* liblittlefs.a */; };
 		D6D753FA2959402C007D8981 /* liblwip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F92959402C007D8981 /* liblwip.a */; };
 		D6D753FC2959402C007D8981 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753FB2959402C007D8981 /* libmqtt.a */; };
+		D6D75428295AE75D007D8981 /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D75426295AE75D007D8981 /* rtc.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -84,6 +85,8 @@
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753FB2959402C007D8981 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6D75426295AE75D007D8981 /* rtc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rtc.c; path = ../esp8266/app/rtc.c; sourceTree = "<group>"; };
+		D6D75427295AE75D007D8981 /* rtc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rtc.h; path = ../esp8266/app/rtc.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -220,6 +223,8 @@
 				D6918EB62950377E00B0BE87 /* mqtt.h */,
 				D6918EBA29515FB900B0BE87 /* ota.c */,
 				D6918EBB29515FB900B0BE87 /* ota.h */,
+				D6D75426295AE75D007D8981 /* rtc.c */,
+				D6D75427295AE75D007D8981 /* rtc.h */,
 				D6D753E729580AD6007D8981 /* uart.c */,
 				D6D753E829580AD6007D8981 /* uart.h */,
 			);
@@ -328,6 +333,7 @@
 				D69FFA542941832400CC7E75 /* init.c in Sources */,
 				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
 				D69FFA532941832400CC7E75 /* phy.c in Sources */,
+				D6D75428295AE75D007D8981 /* rtc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

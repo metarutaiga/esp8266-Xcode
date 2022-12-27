@@ -88,8 +88,8 @@ void user_pre_init(void)
     system_partition_table_regist(at_partition_table, sizeof(at_partition_table) / sizeof(at_partition_table[0]), system_get_flash_size_map());
 }
 
-static uint32_t system_get_time_overflow_last = 0;
-static uint32_t system_get_time_overflow_count = 0;
+static uint32_t system_get_time_overflow_last IRAM_ATTR = 0;
+static uint32_t system_get_time_overflow_count IRAM_ATTR = 0;
 
 void system_get_time_overflow_callback(void* arg)
 {
