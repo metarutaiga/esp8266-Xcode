@@ -143,6 +143,14 @@ void fs_close(int fd)
     os_free((lfs_file_t*)fd);
 }
 
+int fs_getc(int fd)
+{
+    uint8_t c;
+    if (lfs_file_read(&fs, (lfs_file_t*)fd, &c, 1) != 1)
+        return -1;
+    return c;
+}
+
 char* fs_gets(char* buffer, int length, int fd)
 {
     int pos = lfs_file_tell(&fs, (lfs_file_t*)fd);

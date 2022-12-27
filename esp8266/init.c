@@ -89,9 +89,13 @@ void user_pre_init(void)
 void user_init(void)
 {
     static os_event_t loop_event IRAM_ATTR;
+#ifdef LOOP
     system_os_task(loop_task, USER_TASK_PRIO_1, &loop_event, 1);
+#endif
     system_init_done_cb(init_down);
+#ifdef DEMO
     hook_exception();
+#endif
 }
 
 static void delay_end(void* timer_arg)

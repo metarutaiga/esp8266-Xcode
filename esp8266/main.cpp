@@ -35,7 +35,7 @@ static void wifi(System_Event_t* event)
 
         // HTTP
         httpd_regist("/", "text/html", web_system);
-
+#ifdef DEMO
         // HTTPS
         https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](char* data, int length)
         {
@@ -44,7 +44,7 @@ static void wifi(System_Event_t* event)
                 ets_write_char(data[i]);
             }
         });
-
+#endif
         // MQTT
         int fd = fs_open("mqtt", "r");
         if (fd >= 0)
@@ -145,14 +145,14 @@ void setup(void)
             espconn_dns_setserver(0, &dns);
         }
     }
-
+#ifdef DEMO
     // UART
     uart_init(2, 0, 9600, 8, NULL, 1);
-
+#endif
     // Initialize
     wifi_set_event_handler_cb(wifi);
     wifi(nullptr);
-
+#ifdef DEMO
     // Debug
     static os_timer_t timer IRAM_ATTR;
     os_timer_setfn(&timer, [](void* arg)
@@ -167,9 +167,12 @@ void setup(void)
         os_printf("[%10d] RAM : %d %c\n", system_get_time(), system_get_free_heap_size(), mode);
     }, &timer);
     os_timer_arm(&timer, 1000, true);
+#endif
 }
 
+#ifdef LOOP
 void loop(void)
 {
     delay(100);
 }
+#endif
