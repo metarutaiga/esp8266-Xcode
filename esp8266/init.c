@@ -101,7 +101,7 @@ void system_get_time_overflow_callback(void* arg)
     system_get_time_overflow_last = time;
 }
 
-uint64_t IRAM_ATTR system_get_time64()
+uint64_t IRAM_FLASH_ATTR system_get_time64()
 {
     uint32_t low = system_get_time();
     uint32_t high = system_get_time_overflow_count + ((low < system_get_time_overflow_last) ? 1 : 0);

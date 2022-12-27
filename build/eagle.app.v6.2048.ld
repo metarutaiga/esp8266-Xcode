@@ -114,6 +114,7 @@ SECTIONS
     *libmain.a:(.literal .text .literal.* .text.*)
     *libphy.a:(.literal .text .literal.* .text.*)
     *libpp.a:(.literal .text .literal.* .text.*)
+    *(*.iram0.text*)
     *(*.iram.text*)
     *libcrypto.a:random.o(.bss.entropy)
     *libcrypto.a:random.o(.bss.input_rotate)

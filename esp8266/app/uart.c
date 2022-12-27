@@ -15,7 +15,7 @@ struct uart_context
     uint8_t buffer[128];
 };
 
-static void IRAM_ATTR uart_rx(void* arg, int up)
+static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
 {
     struct uart_context* context = arg;
 

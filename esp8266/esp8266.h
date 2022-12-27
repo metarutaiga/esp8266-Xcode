@@ -17,7 +17,7 @@ extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
 extern uint64_t system_get_time64();
 extern struct tm* sntp_localtime(const time_t* tim_p);
-inline uint32_t IRAM_ATTR esp_get_cycle_count()
+inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
 {
     uint32_t ccount;
     __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));

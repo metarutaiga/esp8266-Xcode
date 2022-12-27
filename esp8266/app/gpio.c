@@ -7,7 +7,7 @@ struct gpio_handler
 };
 static struct gpio_handler handlers[16] IRAM_ATTR;
 
-static void IRAM_ATTR gpio_handler(void* arg)
+static void IRAM_FLASH_ATTR gpio_handler(void* arg)
 {
     uint32 gpio_status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
     if (gpio_status == 0)
