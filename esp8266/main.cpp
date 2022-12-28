@@ -25,7 +25,6 @@ extern const char pass_format[] __attribute__((weak));
 extern const char version[] = "1.00";
 extern const char wifi_format[] = "ESP8266_%02X%02X%02X";
 extern const char pass_format[] = "8266ESP_%02X%02X%02X";
-char thisname[16] = "";
 char number[128] = "";
 
 extern "C" void app_wifi(System_Event_t* event) __attribute__((weak));
@@ -38,7 +37,6 @@ void wifi(System_Event_t* event)
     case EVENT_STAMODE_GOT_IP:
     {
         wifi_set_opmode(STATION_MODE);
-        wifi_station_set_hostname(thisname);
 
         // HTTP
         httpd_regist("/setup", "text/html", web_system);
@@ -90,7 +88,6 @@ void wifi(System_Event_t* event)
     case EVENT_STAMODE_DISCONNECTED:
     case EVENT_STAMODE_DHCP_TIMEOUT:
         wifi_set_opmode(STATIONAP_MODE);
-        wifi_station_set_hostname(thisname);
         wifi_station_connect();
         wifi_station_dhcpc_start();
 
@@ -98,6 +95,12 @@ void wifi(System_Event_t* event)
         httpd_regist("/", "text/html", web_system);
         break;
     }
+
+    // Hostname
+    struct softap_config config = {};
+    wifi_softap_get_config(&config);
+    wifi_station_set_hostname((char*)config.ssid);
+
     app_wifi(event);
 }
 
@@ -126,7 +129,6 @@ void setup(void)
     struct softap_config config = {};
     os_sprintf((char*)config.ssid, wifi_format, macaddr[3], macaddr[4], macaddr[5]);
     os_sprintf((char*)config.password, pass_format, macaddr[3], macaddr[4], macaddr[5]);
-    os_strcpy(thisname, (char*)config.ssid);
     config.ssid_len = os_strlen((char*)config.ssid);
     config.channel = 1;
     config.authmode = AUTH_WPA_WPA2_PSK;

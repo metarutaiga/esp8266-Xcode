@@ -26,7 +26,6 @@ inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
 }
 
 extern const char version[16];
-extern char thisname[16];
 extern char number[128];
 
 void setup(void);

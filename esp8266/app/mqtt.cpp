@@ -98,7 +98,7 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
     va_list args;
     va_start(args, prefix);
     char* output = pointer;
-    pointer += os_sprintf(pointer, "%s", thisname);
+    pointer += os_sprintf(pointer, "%s", wifi_station_get_hostname());
     pointer += os_sprintf(pointer, "/%s", prefix);
     while (const char* name = va_arg(args, char*))
     {
@@ -119,7 +119,7 @@ void mqtt_setup(const char* ip, int port)
     {
         mqtt_client = (MQTT_Client*)calloc(1, sizeof(MQTT_Client));
         MQTT_InitConnection(mqtt_client, ip, port, 0);
-        MQTT_InitClient(mqtt_client, thisname, 0, 0, 120, 1);
+        MQTT_InitClient(mqtt_client, wifi_station_get_hostname(), 0, 0, 120, 1);
         MQTT_InitLWT(mqtt_client, mqtt_prefix(number, "connected", 0), "false", 0, 1);
         MQTT_OnConnected(mqtt_client, [](uint32_t* args)
         {
