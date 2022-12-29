@@ -114,12 +114,12 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
     return output;
 }
 
-void mqtt_publish(const char* topic, const void* data, int length)
+void mqtt_publish(const char* topic, const void* data, int length, int retain)
 {
     if (mqtt_connected == false)
         return;
 
-    MQTT_Publish(mqtt_client, topic, data, length, 0, 0);
+    MQTT_Publish(mqtt_client, topic, data, length, 0, retain);
 }
 
 void mqtt_setup(const char* ip, int port)

@@ -19,11 +19,11 @@ static void IRAM_FLASH_ATTR gpio_handler(void* arg)
         {
             if (handlers[i].handler)
             {
-                handlers[i].handler(handlers[i].arg, GPIO_INPUT_GET(i));
+                handlers[i].handler(handlers[i].arg, GPIO_REG_READ(GPIO_IN_ADDRESS) & BIT(i) ? 1 : 0);
             }
-            GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, BIT(i));
         }
     }
+    GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status);
     ETS_GPIO_INTR_ENABLE();
 }
 
@@ -89,7 +89,7 @@ void gpio_regist(int gpio, void (*handler)(void* arg, int up), void* arg)
     ETS_GPIO_INTR_ATTACH(gpio_handler, NULL);
 
     GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, BIT(gpio));
-    gpio_pin_intr_state_set(gpio, GPIO_PIN_INTR_ANYEDGE);
+    gpio_pin_intr_state_set(gpio, handler ? GPIO_PIN_INTR_ANYEDGE : GPIO_PIN_INTR_DISABLE);
 
     ETS_GPIO_INTR_ENABLE();
 }

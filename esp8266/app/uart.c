@@ -1,6 +1,21 @@
 #include "esp8266.h"
 #include "gpio.h"
 
+#define DIRECT 1
+#define GPIO_EN_OUTPUT(gpio)
+#if DIRECT
+#undef GPIO_EN_OUTPUT
+#undef GPIO_DIS_OUTPUT
+#undef GPIO_OUTPUT_SET
+#define GPIO_EN_OUTPUT(gpio)        GPIO_REG_WRITE(GPIO_ENABLE_W1TS_ADDRESS, BIT(gpio))
+#define GPIO_DIS_OUTPUT(gpio)       GPIO_REG_WRITE(GPIO_ENABLE_W1TC_ADDRESS, BIT(gpio))
+#define GPIO_OUTPUT_SET(gpio, set)  \
+{ \
+    uint32_t address = (set) ? GPIO_OUT_W1TS_ADDRESS : GPIO_OUT_W1TC_ADDRESS; \
+    GPIO_REG_WRITE(address, BIT(gpio)); \
+}
+#endif
+
 struct uart_context
 {
     int bit;
@@ -29,14 +44,18 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
     }
 
     int last_cycle;
-    int previous_cycle;
-    cycle = cycle - context->last_cycle;
-    previous_cycle = cycle - context->baud_cycle;
-    for (last_cycle = 0; last_cycle < cycle; last_cycle += context->baud_cycle)
+    int current_cycle = cycle - context->last_cycle;
+    int previous_cycle = current_cycle - context->baud_cycle;
+    for (last_cycle = 0; last_cycle < current_cycle; last_cycle += context->baud_cycle)
     {
         if (context->bit == -1)
         {
             context->buffer[context->offset] = 0;
+
+            cycle = esp_get_cycle_count();
+            context->last_cycle = cycle - context->baud_cycle / 2;
+            current_cycle = cycle - context->last_cycle;
+            previous_cycle = current_cycle - context->baud_cycle;
         }
         else if (context->bit < 8)
         {
@@ -103,7 +122,10 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
 
 static void uart_wait_until(int begin, int cycle)
 {
-    while (esp_get_cycle_count() - begin < cycle) {}
+    while (esp_get_cycle_count() - begin < cycle)
+    {
+        delay(0);
+    }
 }
 
 int uart_send(void* uart, const void* buffer, int length)
@@ -112,10 +134,11 @@ int uart_send(void* uart, const void* buffer, int length)
 
     int begin = esp_get_cycle_count();
     int cycle = 0;
+    GPIO_EN_OUTPUT(context->tx);
     for (int i = 0; i < length; ++i)
     {
         uint8_t c = ((uint8_t*)buffer)[i];
-        GPIO_OUTPUT_SET(context->tx, 1);
+        GPIO_OUTPUT_SET(context->tx, 0);
         uart_wait_until(begin, cycle += context->baud_cycle);
         for (int i = 0; i < 8; ++i)
         {
@@ -137,9 +160,10 @@ int uart_send(void* uart, const void* buffer, int length)
         }
         for (int i = 0; i < context->stop; ++i)
         {
-            GPIO_OUTPUT_SET(context->tx, 0);
+            GPIO_OUTPUT_SET(context->tx, 1);
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
+        uart_wait_until(begin, cycle += context->baud_cycle);
     }
     GPIO_DIS_OUTPUT(context->tx);
 
@@ -152,7 +176,14 @@ int uart_recv(void* uart, void* buffer, int length)
 
     if (buffer)
     {
-        os_memcpy(buffer, context->buffer, context->offset);
+        length = length < context->offset ? length : context->offset;
+        os_memcpy(buffer, context->buffer, length);
+        context->offset -= length;
+        os_memmove(context->buffer, context->buffer + length, context->offset);
     }
-    return context->offset;
+    else
+    {
+        length = context->offset;
+    }
+    return length;
 }
