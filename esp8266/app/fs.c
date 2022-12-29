@@ -179,6 +179,16 @@ char* fs_gets(char* buffer, int length, int fd)
     return buffer;
 }
 
+void fs_seek(int pos, int fd)
+{
+    lfs_file_seek(&fs, (lfs_file_t*)fd, pos, LFS_SEEK_SET);
+}
+
+int fs_tell(int fd)
+{
+    return lfs_file_tell(&fs, (lfs_file_t*)fd);
+}
+
 int fs_read(void* buffer, int length, int fd)
 {
     return lfs_file_read(&fs, (lfs_file_t*)fd, buffer, length);

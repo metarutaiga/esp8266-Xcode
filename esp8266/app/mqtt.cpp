@@ -17,6 +17,7 @@ extern "C"
 };
 
 static MQTT_Client* mqtt_client IRAM_ATTR;
+static void (*mqtt_receive_callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length) IRAM_ATTR;
 static int mqtt_connected IRAM_ATTR;
 
 static void mqtt_information()
@@ -122,6 +123,11 @@ void mqtt_publish(const char* topic, const void* data, int length, int retain)
     MQTT_Publish(mqtt_client, topic, data, length, 0, retain);
 }
 
+void mqtt_receive(void (*callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length))
+{
+    mqtt_receive_callback = callback;
+}
+
 void mqtt_setup(const char* ip, int port)
 {
     if (mqtt_client == nullptr)
@@ -151,7 +157,8 @@ void mqtt_setup(const char* ip, int port)
         });
         MQTT_OnData(mqtt_client, [](uint32_t* args, const char* topic, uint32_t topic_len, const char* data, uint32_t length)
         {
-            
+            if (mqtt_receive_callback)
+                mqtt_receive_callback(topic, topic_len, data, length);
         });
     }
     MQTT_Connect(mqtt_client);
