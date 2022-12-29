@@ -5,14 +5,14 @@ extern "C"
 {
 #   define BOOL bool
 #   define uint8_t const char
-#   include "../mqtt/include/mqtt.h"
+#   include <mqtt/include/mqtt.h>
 #   undef BOOL
 #   undef uint8_t
-#   define MQTT_Publish(client, topic, data_, data_length_, qos, retain) \
+#   define MQTT_Publish(client, topic, data, data_length, qos, retain) \
     { \
-        const char* data = data_; \
-        int data_length = data_length_ ? data_length_ : os_strlen(data); \
-        MQTT_Publish(client, topic, data, data_length, qos, retain); \
+        const char* data_ = (char*)data; \
+        int data_length_ = data_length ? data_length : os_strlen(data_); \
+        MQTT_Publish(client, topic, data_, data_length_, qos, retain); \
     }
 };
 
@@ -21,6 +21,9 @@ static int mqtt_connected IRAM_ATTR;
 
 static void mqtt_information()
 {
+    if (mqtt_connected == false)
+        return;
+
     MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "SDK Version", 0), system_get_sdk_version(), 0, 0, 0);
     MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(system_get_cpu_freq(), number + 64, 10), 0, 0, 0);
 
@@ -64,6 +67,9 @@ static void mqtt_information()
 
 static void mqtt_loop()
 {
+    if (mqtt_connected == false)
+        return;
+
     // Time
     static uint32 now_timestamp IRAM_ATTR = 0;
     uint32 timestamp = sntp_get_current_timestamp();
@@ -110,6 +116,9 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
 
 void mqtt_publish(const char* topic, const void* data, int length)
 {
+    if (mqtt_connected == false)
+        return;
+
     MQTT_Publish(mqtt_client, topic, data, length, 0, 0);
 }
 

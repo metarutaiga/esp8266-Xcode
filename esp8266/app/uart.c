@@ -64,6 +64,7 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
     context->last_cycle += last_cycle;
 }
 
+#ifdef DEMO
 static void uart_debug(void* arg)
 {
     struct uart_context* context = arg;
@@ -73,6 +74,7 @@ static void uart_debug(void* arg)
         os_printf("%02x", context->buffer[i]);
     }
 }
+#endif
 
 void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
 {
@@ -90,11 +92,12 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
     gpio_regist(rx, uart_rx, context);
     gpio_regist(tx, NULL, NULL);
 
+#ifdef DEMO
     // Debug
     static os_timer_t timer IRAM_ATTR;
     os_timer_setfn(&timer, uart_debug, context);
     os_timer_arm(&timer, 1000, true);
-
+#endif
     return context;
 }
 
