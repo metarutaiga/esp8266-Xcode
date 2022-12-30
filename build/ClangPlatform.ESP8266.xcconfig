@@ -10,8 +10,8 @@ EXECUTABLE_PREFIX = lib
 
 CC = $PROJECT_DIR/xtensa-lx106-elf-clang
 CXX = $PROJECT_DIR/xtensa-lx106-elf-clang++
-//LD = $PROJECT_DIR/xtensa-lx106-elf-clang
-//LDPLUSPLUS = $PROJECT_DIR/xtensa-lx106-elf-clang++
+LD = $PROJECT_DIR/xtensa-lx106-elf-clang
+LDPLUSPLUS = $PROJECT_DIR/xtensa-lx106-elf-clang++
 LD_DEPENDENCY_INFO_FILE =
 LD_LTO_OBJECT_FILE =
 LIBTOOL = $PROJECT_DIR/xtensa-lx106-elf-ar

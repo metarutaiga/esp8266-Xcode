@@ -1,21 +1,6 @@
 #include "esp8266.h"
 #include "gpio.h"
 
-#define DIRECT 1
-#define GPIO_EN_OUTPUT(gpio)
-#if DIRECT
-#undef GPIO_EN_OUTPUT
-#undef GPIO_DIS_OUTPUT
-#undef GPIO_OUTPUT_SET
-#define GPIO_EN_OUTPUT(gpio)        GPIO_REG_WRITE(GPIO_ENABLE_W1TS_ADDRESS, BIT(gpio))
-#define GPIO_DIS_OUTPUT(gpio)       GPIO_REG_WRITE(GPIO_ENABLE_W1TC_ADDRESS, BIT(gpio))
-#define GPIO_OUTPUT_SET(gpio, set)  \
-{ \
-    uint32_t address = (set) ? GPIO_OUT_W1TS_ADDRESS : GPIO_OUT_W1TC_ADDRESS; \
-    GPIO_REG_WRITE(address, BIT(gpio)); \
-}
-#endif
-
 struct uart_context
 {
     int bit;

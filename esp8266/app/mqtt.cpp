@@ -28,7 +28,7 @@ static void mqtt_information()
     MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "SDK Version", 0), system_get_sdk_version(), 0, 0, 0);
     MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(system_get_cpu_freq(), number + 64, 10), 0, 0, 0);
 
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Build", 0), __DATE__ " " __TIME__, 0, 0, 0);
+    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Build", 0), build_date, 0, 0, 0);
     MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Version", 0), version, 0, 0, 1);
     struct ip_info ip_info = {};
     if (wifi_get_ip_info(STATION_IF, &ip_info))

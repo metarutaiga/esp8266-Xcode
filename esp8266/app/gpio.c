@@ -13,17 +13,17 @@ static void IRAM_FLASH_ATTR gpio_handler(void* arg)
     if (gpio_status == 0)
         return;
     ETS_GPIO_INTR_DISABLE();
+    GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status);
     for (int i = 0; i < 16; ++i)
     {
         if (gpio_status & BIT(i))
         {
             if (handlers[i].handler)
             {
-                handlers[i].handler(handlers[i].arg, GPIO_REG_READ(GPIO_IN_ADDRESS) & BIT(i) ? 1 : 0);
+                handlers[i].handler(handlers[i].arg, GPIO_INPUT_GET(i));
             }
         }
     }
-    GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status);
     ETS_GPIO_INTR_ENABLE();
 }
 
