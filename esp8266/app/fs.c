@@ -139,12 +139,16 @@ int fs_open(const char* name, const char* mode)
 
 void fs_close(int fd)
 {
+    if (fd < 0)
+        return;
     lfs_file_close(&fs, (lfs_file_t*)fd);
     os_free((lfs_file_t*)fd);
 }
 
 int fs_getc(int fd)
 {
+    if (fd < 0)
+        return -1;
     uint8_t c;
     if (lfs_file_read(&fs, (lfs_file_t*)fd, &c, 1) != 1)
         return -1;
@@ -153,6 +157,9 @@ int fs_getc(int fd)
 
 char* fs_gets(char* buffer, int length, int fd)
 {
+    if (fd < 0)
+        return "";
+
     int pos = lfs_file_tell(&fs, (lfs_file_t*)fd);
     length = lfs_file_read(&fs, (lfs_file_t*)fd, buffer, length - 1);
     buffer[length] = 0;
@@ -181,20 +188,28 @@ char* fs_gets(char* buffer, int length, int fd)
 
 void fs_seek(int pos, int fd)
 {
+    if (fd < 0)
+        return;
     lfs_file_seek(&fs, (lfs_file_t*)fd, pos, LFS_SEEK_SET);
 }
 
 int fs_tell(int fd)
 {
+    if (fd < 0)
+        return 0;
     return lfs_file_tell(&fs, (lfs_file_t*)fd);
 }
 
 int fs_read(void* buffer, int length, int fd)
 {
+    if (fd < 0)
+        return 0;
     return lfs_file_read(&fs, (lfs_file_t*)fd, buffer, length);
 }
 
 int fs_write(const void* buffer, int length, int fd)
 {
+    if (fd < 0)
+        return 0;
     return lfs_file_write(&fs, (lfs_file_t*)fd, (void*)buffer, length);
 }
