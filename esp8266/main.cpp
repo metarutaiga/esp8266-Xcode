@@ -108,6 +108,7 @@ extern "C" void app_setup() {}
 void setup(void)
 {
     // Component
+    gpio_init();
     fs_init();
     httpd_init(80);
     httpd_regist("/", "text/html", web_system);

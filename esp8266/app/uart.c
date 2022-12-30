@@ -95,6 +95,10 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
 
     gpio_regist(rx, uart_rx, context);
     gpio_regist(tx, NULL, NULL);
+    GPIO_DIS_OUTPUT(rx);
+    GPIO_EN_OUTPUT(tx);
+    gpio_pullup(rx, true);
+    gpio_pullup(tx, true);
 
 #ifdef DEMO
     // Debug
@@ -119,7 +123,6 @@ int uart_send(void* uart, const void* buffer, int length)
 
     int begin = esp_get_cycle_count();
     int cycle = 0;
-    GPIO_EN_OUTPUT(context->tx);
     for (int i = 0; i < length; ++i)
     {
         uint8_t c = ((uint8_t*)buffer)[i];
@@ -150,7 +153,6 @@ int uart_send(void* uart, const void* buffer, int length)
         }
         uart_wait_until(begin, cycle += context->baud_cycle);
     }
-    GPIO_DIS_OUTPUT(context->tx);
 
     return length;
 }
