@@ -46,13 +46,13 @@ void wifi(System_Event_t* event)
         httpd_regist("/setup", "text/html", web_system);
 #ifdef DEMO
         // HTTPS
-        https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](char* data, int length)
+        https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](void* arg, char* data, int length)
         {
             for (int i = 0; i < length; ++i)
             {
                 ets_write_char(data[i]);
             }
-        });
+        }, nullptr);
 #endif
         // MQTT
         int fd = fs_open("mqtt", "r");

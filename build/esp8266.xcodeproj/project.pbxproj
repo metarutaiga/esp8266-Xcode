@@ -22,6 +22,8 @@
 		D627777B295B33890092DFB5 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
 		D627777C295B33890092DFB5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
 		D627777D295B33890092DFB5 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
+		D62777AD295FF65D0092DFB5 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D62777AB295FF65D0092DFB5 /* fota.cpp */; };
+		D62777AE2961369F0092DFB5 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D62777AB295FF65D0092DFB5 /* fota.cpp */; };
 		D6918EB72950377E00B0BE87 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
 		D6918EB82950377E00B0BE87 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
 		D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
@@ -46,6 +48,8 @@
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D62777AB295FF65D0092DFB5 /* fota.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fota.cpp; path = ../esp8266/app/fota.cpp; sourceTree = "<group>"; };
+		D62777AC295FF65D0092DFB5 /* fota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fota.h; path = ../esp8266/app/fota.h; sourceTree = "<group>"; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6918EB12950377D00B0BE87 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
 		D6918EB22950377D00B0BE87 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
@@ -235,6 +239,8 @@
 		D6D0416B294C52A4006B09EE /* app */ = {
 			isa = PBXGroup;
 			children = (
+				D62777AB295FF65D0092DFB5 /* fota.cpp */,
+				D62777AC295FF65D0092DFB5 /* fota.h */,
 				D6918EB12950377D00B0BE87 /* fs.c */,
 				D6918EB22950377D00B0BE87 /* fs.h */,
 				D6D753EA29583EF8007D8981 /* gpio.c */,
@@ -354,7 +360,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\n#cat $PROJECT_DIR/../ESP8266_NONOS_SDK/bin/boot_v1.7.bin >libesp8266.bin\n#printf '\\x02\\x60' | dd of=libesp8266.bin bs=1 seek=2 count=2 conv=notrunc\n#echo \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\c\" >>libesp8266.bin\n#cat libesp8266-0x01000.bin >>libesp8266.bin\n#rm libesp8266-0x01000.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\ncat $PROJECT_DIR/../ESP8266_NONOS_SDK/bin/boot_v1.7.bin >libesp8266.bin\nprintf '\\x02\\x60' | dd of=libesp8266.bin bs=1 seek=2 count=2 conv=notrunc\necho \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\c\" >>libesp8266.bin\ncat libesp8266-0x01000.bin >>libesp8266.bin\nrm libesp8266-0x01000.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -363,21 +369,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D753E929580AD6007D8981 /* uart.c in Sources */,
+				D62777AD295FF65D0092DFB5 /* fota.cpp in Sources */,
 				D6918EB72950377E00B0BE87 /* fs.c in Sources */,
+				D6D753EC29583EF8007D8981 /* gpio.c in Sources */,
 				D6918EB82950377E00B0BE87 /* httpd.c in Sources */,
 				D6918EE329544F6700B0BE87 /* https.c in Sources */,
 				D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */,
 				D6918EBC29515FB900B0BE87 /* ota.c in Sources */,
+				D6D75428295AE75D007D8981 /* rtc.c in Sources */,
+				D6D753E929580AD6007D8981 /* uart.c in Sources */,
 				D6D753E62955AE41007D8981 /* crypto.c in Sources */,
 				D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */,
 				D6D753E42955AE41007D8981 /* lost.c in Sources */,
 				D6D0416A294C28CB006B09EE /* system.cpp in Sources */,
-				D6D753EC29583EF8007D8981 /* gpio.c in Sources */,
 				D69FFA542941832400CC7E75 /* init.c in Sources */,
 				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
 				D69FFA532941832400CC7E75 /* phy.c in Sources */,
-				D6D75428295AE75D007D8981 /* rtc.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +392,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D62777AE2961369F0092DFB5 /* fota.cpp in Sources */,
 				D627776F295B33890092DFB5 /* fs.c in Sources */,
 				D6277770295B33890092DFB5 /* gpio.c in Sources */,
 				D6277771295B33890092DFB5 /* httpd.c in Sources */,

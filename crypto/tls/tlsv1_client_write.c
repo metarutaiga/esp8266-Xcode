@@ -116,6 +116,14 @@ u8 * tls_send_client_hello(struct tlsv1_client *conn, size_t *out_len)
 	ext_start = pos;
 	pos += 2;
 
+	/* Maximum Fragment Length Negotiation */
+	WPA_PUT_BE16(pos, TLS_EXT_MAX_FRAGMENT_LENGTH);
+	pos += 2;
+	WPA_PUT_BE16(pos, 1);
+	pos += 2;
+	/* 4096 */
+	*pos++ = 4;
+
 #ifdef CONFIG_TLSV12
 	if (conn->rl.tls_version >= TLS_VERSION_1_2) {
 		/*

@@ -13,7 +13,9 @@
 
 struct https_context
 {
-    void (*recv)(char* pusrdata, int length);
+    void* reverse;
+    void (*disconn)(void* arg);
+    void (*recv)(void* arg, char* pusrdata, int length);
     char* host;
     char* path;
     struct ip_addr ip;
@@ -29,6 +31,10 @@ static void https_discon(void* arg)
 
     if (context)
     {
+        if (context->disconn)
+        {
+            context->disconn(arg);
+        }
         if (context->tls)
         {
             if (context->conn)
@@ -56,7 +62,7 @@ static void https_recv(void* arg, char* pusrdata, unsigned short length)
     struct wpabuf* out = tls_connection_decrypt2(context->tls, context->conn, &in, &context->need_more_data);
     if (out)
     {
-        context->recv(wpabuf_mhead_u8(out), wpabuf_len(out));
+        context->recv(arg, wpabuf_mhead_u8(out), wpabuf_len(out));
         wpabuf_free(out);
     }
 }
@@ -95,7 +101,6 @@ static void https_tls_recv(void* arg, char* pusrdata, unsigned short length)
             char buffer[256];
             wpabuf_set(&in, buffer, os_sprintf(buffer,
                                                "GET /%s HTTP/1.1\r\n"
-                                               "Connection: close\r\n"
                                                "Host: %s\r\n"
                                                "\r\n", context->path, context->host));
             out = tls_connection_encrypt(context->tls, context->conn, &in);
@@ -149,7 +154,7 @@ static void https_dns_found(const char* name, ip_addr_t* ipaddr, void* arg)
     https_discon(pespconn);
 }
 
-void https_connect(const char* url, void (*recv)(char* pusrdata, int length))
+void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int length), void (*disconn)(void* arg))
 {
     char* buffer = strdup(url);
     if (buffer == NULL)
@@ -169,6 +174,7 @@ void https_connect(const char* url, void (*recv)(char* pusrdata, int length))
         esp_conn->state = ESPCONN_NONE;
 
         struct https_context* context = esp_conn->reverse = os_zalloc(sizeof(struct https_context));
+        context->disconn = disconn;
         context->recv = recv;
         context->host = strdup(host);
         context->path = strdup(path);
@@ -176,4 +182,18 @@ void https_connect(const char* url, void (*recv)(char* pusrdata, int length))
     }
 
     os_free(buffer);
+}
+
+void https_disconnect(void* arg)
+{
+    struct espconn* pespconn = arg;
+
+    espconn_disconnect(pespconn);
+}
+
+void https_send(void* arg, const void* data, int length)
+{
+    struct espconn* pespconn = arg;
+
+    espconn_sent(pespconn, (uint8_t*)data, length);
 }

@@ -160,19 +160,24 @@ long strtol(const char* str, char** str_end, int base)
     {
         for (char c = 0; (c = *str); str++)
         {
-            if (c >= 'a')
+            if (c >= 'a' && c <= 'f')
                 result = result * 16 + c - 'a' + 10;
-            else if (c >= 'A')
+            else if (c >= 'A' && c <= 'F')
                 result = result * 16 + c - 'A' + 10;
-            else
+            else if (c >= '0' && c <= '9')
                 result = result * 16 + c - '0';
+            else
+                break;
         }
     }
     else
     {
         for (char c = 0; (c = *str); str++)
         {
-            result = result * 10 + c - '0';
+            if (c >= '0' && c <= '9')
+                result = result * 10 + c - '0';
+            else
+                break;
         }
     }
     return result;

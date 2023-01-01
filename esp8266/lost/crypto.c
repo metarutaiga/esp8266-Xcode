@@ -34,3 +34,35 @@ void* aes_encrypt_init(const u8* key, size_t len)
     rk[AES_PRIV_NR_POS] = 10;
     return rk;
 }
+
+void wpa_printf(int level, const char* fmt, ...)
+{
+    extern int ets_putc(int);
+    extern int ets_vprintf(int(*putc)(int), const char* fmt, va_list ap);
+    va_list args;
+    va_start(args, fmt);
+    ets_vprintf(ets_putc, fmt, args);
+    va_end(args);
+    ets_putc('\r');
+    ets_putc('\n');
+}
+
+void wpa_hexdump(int level, const char* title, const void* buf, size_t len)
+{
+    
+}
+
+void wpa_hexdump_key(int level, const char* title, const void* buf, size_t len)
+{
+    
+}
+
+void wpa_hexdump_ascii(int level, const char* title, const void* buf, size_t len)
+{
+    
+}
+
+void wpa_hexdump_ascii_key(int level, const char* title, const void* buf, size_t len)
+{
+    
+}
