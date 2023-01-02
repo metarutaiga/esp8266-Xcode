@@ -123,9 +123,24 @@ int fs_stat(const char* name)
 
 int fs_open(const char* name, const char* mode)
 {
+    int flags = 0;
+    switch (pgm_read_byte(mode))
+    {
+    case 'a':
+        flags = LFS_O_WRONLY | LFS_O_CREAT | LFS_O_APPEND;
+        break;
+    case 'r':
+        flags = LFS_O_RDONLY;
+        break;
+    case 'w':
+        flags = LFS_O_WRONLY | LFS_O_CREAT | LFS_O_TRUNC;
+        break;
+    default:
+        break;
+    }
     char* temp = strdup(name);
     lfs_file_t* fd = os_zalloc(sizeof(lfs_file_t));
-    int result = lfs_file_open(&fs, fd, temp, pgm_read_byte(mode) == 'w' ? LFS_O_CREAT | LFS_O_WRONLY : LFS_O_RDONLY);
+    int result = lfs_file_open(&fs, fd, temp, flags);
     if (result != LFS_ERR_OK)
     {
         os_printf("%d = %s(%p, %p, %s, %s)\n", result, "lfs_file_open", &fs, fd, name, mode);
@@ -212,4 +227,9 @@ int fs_write(const void* buffer, int length, int fd)
     if (fd < 0)
         return 0;
     return lfs_file_write(&fs, (lfs_file_t*)fd, (void*)buffer, length);
+}
+
+int fs_mkdir(const char* name)
+{
+    return lfs_mkdir(&fs, name);
 }

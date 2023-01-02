@@ -62,7 +62,10 @@ static void https_recv(void* arg, char* pusrdata, unsigned short length)
     struct wpabuf* out = tls_connection_decrypt2(context->tls, context->conn, &in, &context->need_more_data);
     if (out)
     {
-        context->recv(arg, wpabuf_mhead_u8(out), wpabuf_len(out));
+        if (wpabuf_len(out) != 0)
+        {
+            context->recv(arg, wpabuf_mhead_u8(out), wpabuf_len(out));
+        }
         wpabuf_free(out);
     }
 }
@@ -99,14 +102,11 @@ static void https_tls_recv(void* arg, char* pusrdata, unsigned short length)
             wpabuf_free(out);
 
             char buffer[256];
-            wpabuf_set(&in, buffer, os_sprintf(buffer,
-                                               "GET /%s HTTP/1.1\r\n"
-                                               "Host: %s\r\n"
-                                               "\r\n", context->path, context->host));
-            out = tls_connection_encrypt(context->tls, context->conn, &in);
+            https_send(pespconn, buffer, os_sprintf(buffer,
+                                                    "GET /%s HTTP/1.1\r\n"
+                                                    "Host: %s\r\n"
+                                                    "\r\n", context->path, context->host));
             espconn_regist_recvcb(pespconn, https_recv);
-            espconn_sent(pespconn, wpabuf_mhead_u8(out), wpabuf_len(out));
-            wpabuf_free(out);
             return;
         }
         espconn_regist_recvcb(pespconn, https_tls_recv);
@@ -194,6 +194,11 @@ void https_disconnect(void* arg)
 void https_send(void* arg, const void* data, int length)
 {
     struct espconn* pespconn = arg;
+    struct https_context* context = pespconn->reverse;
 
-    espconn_sent(pespconn, (uint8_t*)data, length);
+    struct wpabuf in;
+    wpabuf_set(&in, data, length);
+    struct wpabuf* out = tls_connection_encrypt(context->tls, context->conn, &in);
+    espconn_sent(pespconn, wpabuf_mhead_u8(out), wpabuf_len(out));
+    wpabuf_free(out);
 }

@@ -19,14 +19,14 @@ extern bool web_ntp(void* arg, const char* url, int line);
 extern bool web_reset(void* arg, const char* url, int line);
 extern bool web_rtc(void* arg, const char* url, int line);
 
-extern const char version[] __attribute__((weak));
-extern const char build_date[] __attribute__((weak));
-extern const char wifi_format[] __attribute__((weak));
-extern const char pass_format[] __attribute__((weak));
-extern const char version[] = "1.00";
-extern const char build_date[] = __DATE__ __TIME__;
-extern const char wifi_format[] = "ESP8266_%02X%02X%02X";
-extern const char pass_format[] = "8266ESP_%02X%02X%02X";
+extern const char* version __attribute__((weak));
+extern const char* build_date __attribute__((weak));
+extern const char* wifi_format __attribute__((weak));
+extern const char* pass_format __attribute__((weak));
+const char* version = "1.00";
+const char* build_date = __DATE__ " " __TIME__;
+const char* wifi_format = "ESP8266_%02X%02X%02X";
+const char* pass_format = "8266ESP_%02X%02X%02X";
 char thisname[16] = "";
 char number[128] = "";
 

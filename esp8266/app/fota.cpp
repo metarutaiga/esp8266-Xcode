@@ -54,6 +54,8 @@ static void fota_recv(void* arg, char* pusrdata, int length)
             return;
         }
         context->header = std::string();
+        if (length == 0)
+            return;
     }
 
     ETS_GPIO_INTR_DISABLE();

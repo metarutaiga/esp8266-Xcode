@@ -18,6 +18,8 @@ int fs_tell(int fd);
 int fs_read(void* buffer, int length, int fd);
 int fs_write(const void* buffer, int length, int fd);
 
+int fs_mkdir(const char* name);
+
 #ifdef __cplusplus
 }
 #endif

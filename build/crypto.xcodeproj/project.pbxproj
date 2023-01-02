@@ -488,6 +488,10 @@
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = a;
+				OTHER_CFLAGS = (
+					"-mtext-section-literals",
+					"$(inherited)",
+				);
 			};
 			name = Debug;
 		};
@@ -496,6 +500,10 @@
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = a;
+				OTHER_CFLAGS = (
+					"-mtext-section-literals",
+					"$(inherited)",
+				);
 			};
 			name = Release;
 		};
