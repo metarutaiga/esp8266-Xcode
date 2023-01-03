@@ -42,8 +42,8 @@ inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
     return ccount;
 }
 
-extern const char* version;
-extern const char* build_date;
+extern const char version[];
+extern const char build_date[];
 extern char number[128];
 
 void setup(void);

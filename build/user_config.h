@@ -50,8 +50,12 @@
 #pragma clang diagnostic ignored "-Wunused-function"
 #pragma clang diagnostic ignored "-Wunused-value"
 #pragma clang diagnostic ignored "-Wunused-variable"
+#undef DNS_MAX_NAME_LENGTH
+#undef DNS_TABLE_SIZE
 #undef TCP_MSS
 #undef _TIME_T_
+#define DNS_MAX_NAME_LENGTH 32
+#define DNS_TABLE_SIZE 2
 #define EBUF_LWIP
 #define PBUF_RSV_FOR_WLAN
 #define TCP_MSS 536
