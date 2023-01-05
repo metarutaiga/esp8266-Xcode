@@ -12,7 +12,8 @@ struct uart_context
     int frame;
     uint32_t baud_cycle;
     uint32_t last_cycle;
-    uint8_t buffer[256];
+    int buffer_size;
+    uint8_t buffer[1];
 };
 
 static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
@@ -56,7 +57,7 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
         {
             context->bit = -1;
             context->offset++;
-            if (context->offset >= 256)
+            if (context->offset >= context->buffer_size)
             {
                 context->offset = 0;
             }
@@ -77,9 +78,9 @@ static void uart_debug(void* arg)
 }
 #endif
 
-void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
+void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int buffer_size)
 {
-    struct uart_context* context = os_zalloc(sizeof(struct uart_context));
+    struct uart_context* context = os_zalloc(sizeof(struct uart_context) + buffer_size - 1);
     context->bit = -1;
     context->offset = 0;
     context->rx = rx;
@@ -89,6 +90,7 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop)
     context->frame = data + (parity == 'O' || parity == 'E' ? 1 : 0) + stop;
     context->baud_cycle = (system_get_cpu_freq() * 1000 * 1000 + baud / 2) / baud;
     context->last_cycle = esp_get_cycle_count() - context->baud_cycle / 2;
+    context->buffer_size = buffer_size;
 
     gpio_regist(rx, uart_rx, context);
     gpio_regist(tx, NULL, NULL);
