@@ -63,7 +63,6 @@ static void fota_recv(void* arg, char* pusrdata, int length)
     {
         system_upgrade_init();
         system_upgrade_flag_set(UPGRADE_FLAG_START);
-        spi_flash_erase_sector(context->address / SPI_FLASH_SEC_SIZE);
     }
     if (context->offset < 0x1000 && context->offset + length >= 0x1000)
     {
