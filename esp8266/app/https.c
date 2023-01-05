@@ -167,7 +167,7 @@ void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int 
     char* host = strsep(&token, ":/");
     char* path = token;
 
-    if (strncmp(https, "https", 5) == 0)
+    if (os_strncmp(https, "https", 5) == 0)
     {
         struct espconn* esp_conn = os_zalloc(sizeof(struct espconn));
         esp_conn->type = ESPCONN_TCP;

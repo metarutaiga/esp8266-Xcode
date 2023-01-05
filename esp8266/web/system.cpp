@@ -261,8 +261,8 @@ bool web_ssid(void* arg, const char* url, int line)
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
-        if (strcmp(key, "ssid") == 0 ||
-            strcmp(key, "pass") == 0)
+        if (os_strcmp(key, "ssid") == 0 ||
+            os_strcmp(key, "pass") == 0)
         {
             text += value;
             text += '\n';
@@ -287,10 +287,10 @@ bool web_ip(void* arg, const char* url, int line)
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
-        if (strcmp(key, "ip") == 0 ||
-            strcmp(key, "gateway") == 0 ||
-            strcmp(key, "subnet") == 0 ||
-            strcmp(key, "dns") == 0)
+        if (os_strcmp(key, "ip") == 0 ||
+            os_strcmp(key, "gateway") == 0 ||
+            os_strcmp(key, "subnet") == 0 ||
+            os_strcmp(key, "dns") == 0)
         {
             text += value;
             text += '\n';
@@ -315,7 +315,7 @@ bool web_ota(void* arg, const char* url, int line)
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
-        if (strcmp(key, "ota") == 0)
+        if (os_strcmp(key, "ota") == 0)
         {
             text += value;
             text += '\n';
@@ -340,8 +340,8 @@ bool web_mqtt(void* arg, const char* url, int line)
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
-        if (strcmp(key, "mqtt") == 0 ||
-            strcmp(key, "port") == 0)
+        if (os_strcmp(key, "mqtt") == 0 ||
+            os_strcmp(key, "port") == 0)
         {
             text += value;
             text += '\n';
@@ -366,8 +366,8 @@ bool web_ntp(void* arg, const char* url, int line)
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
         std::string& text = *(std::string*)context;
-        if (strcmp(key, "name") == 0 ||
-            strcmp(key, "zone") == 0)
+        if (os_strcmp(key, "name") == 0 ||
+            os_strcmp(key, "zone") == 0)
         {
             text += value;
             text += '\n';

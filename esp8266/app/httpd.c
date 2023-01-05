@@ -33,7 +33,7 @@ static void httpd_server_recv(void* arg, char* pusrdata, unsigned short length)
         struct httpd_handler* node = httpd_handlers;
         while (node)
         {
-            if (strncmp(node->url, url, strlen(node->url)) == 0)
+            if (os_strncmp(node->url, url, strlen(node->url)) == 0)
             {
                 struct httpd_context* context = pespconn->reverse = os_realloc(pespconn->reverse, sizeof(struct httpd_context));
                 context->handler = node->handler;
@@ -125,7 +125,7 @@ void httpd_regist(const char* url, const char* type, bool (*handler)(void* arg, 
     struct httpd_handler* node = httpd_handlers;
     while (node)
     {
-        if (strcmp(node->url, url) == 0)
+        if (os_strcmp(node->url, url) == 0)
         {
             node->url = url;
             node->type = type;

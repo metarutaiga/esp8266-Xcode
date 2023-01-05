@@ -82,7 +82,7 @@ void wifi(System_Event_t* event)
         fd = fs_open("ota", "r");
         if (fd >= 0)
         {
-            if (strcmp(fs_gets(number, 128, fd), "YES") == 0)
+            if (os_strcmp(fs_gets(number, 128, fd), "YES") == 0)
                 ota_init(8266);
             fs_close(fd);
         }
