@@ -12,7 +12,7 @@ struct uart_context
     int frame;
     uint32_t baud_cycle;
     uint32_t last_cycle;
-    uint8_t buffer[128];
+    uint8_t buffer[256];
 };
 
 static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
@@ -20,14 +20,6 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
     struct uart_context* context = arg;
 
     uint32_t cycle = esp_get_cycle_count();
-    uint32_t delta_cycle = cycle - context->last_cycle;
-    if (delta_cycle > context->baud_cycle * 16)
-    {
-        context->bit = -1;
-        context->offset = 0;
-        context->last_cycle = cycle - context->baud_cycle / 2;
-    }
-
     int last_cycle;
     int current_cycle = cycle - context->last_cycle;
     int previous_cycle = current_cycle - context->baud_cycle;
@@ -35,10 +27,11 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
     {
         if (context->bit == -1)
         {
-            context->buffer[context->offset] = 0;
+            context->buffer[context->offset] = 0xFF;
 
-            cycle = esp_get_cycle_count();
+            uint32_t cycle = esp_get_cycle_count();
             context->last_cycle = cycle - context->baud_cycle / 2;
+            last_cycle = 0;
             current_cycle = cycle - context->last_cycle;
             previous_cycle = current_cycle - context->baud_cycle;
         }
@@ -53,9 +46,9 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
             {
                 space = up;
             }
-            if (space)
+            if (space == 0)
             {
-                context->buffer[context->offset] |= BIT(context->bit);
+                context->buffer[context->offset] ^= BIT(context->bit);
             }
         }
         context->bit++;
@@ -63,6 +56,10 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
         {
             context->bit = -1;
             context->offset++;
+            if (context->offset >= 256)
+            {
+                context->offset = 0;
+            }
         }
     }
     context->last_cycle += last_cycle;
@@ -151,7 +148,7 @@ int uart_send(void* uart, const void* buffer, int length)
             GPIO_OUTPUT_SET(context->tx, 1);
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
-        uart_wait_until(begin, cycle += context->baud_cycle);
+        uart_wait_until(begin, cycle += context->baud_cycle / 2);
     }
 
     return length;
@@ -161,16 +158,29 @@ int uart_recv(void* uart, void* buffer, int length)
 {
     struct uart_context* context = uart;
 
+    int recv = 0;
     if (buffer)
     {
-        length = length < context->offset ? length : context->offset;
-        os_memcpy(buffer, context->buffer, length);
-        context->offset -= length;
-        os_memmove(context->buffer, context->buffer + length, context->offset);
+        recv = length < context->offset ? length : context->offset;
+        if (recv)
+        {
+            os_memcpy(buffer, context->buffer, recv);
+            context->offset -= recv;
+            os_memmove(context->buffer, context->buffer + recv, context->offset + 1);
+            if (context->offset == 0)
+            {
+                if (context->bit > 0 && length > recv)
+                {
+                    os_memcpy(buffer + recv, context->buffer, 1);
+                    recv++;
+                }
+                context->bit = -1;
+            }
+        }
     }
     else
     {
-        length = context->offset;
+        recv = context->offset;
     }
-    return length;
+    return recv;
 }

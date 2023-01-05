@@ -185,10 +185,10 @@ char* fs_gets(char* buffer, int length, int fd)
         if (c == 0 || c == '\r' || c == '\n')
         {
             buffer[i] = '\0';
-            if (c && (i + 1) < length)
+            if (c == '\r' && (i + 1) < length)
             {
                 c = buffer[i + 1];
-                if (c == '\r' || c == '\n')
+                if (c == '\n')
                 {
                     ++i;
                 }

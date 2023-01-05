@@ -1,4 +1,5 @@
 #include "esp8266.h"
+#include <stdlib.h>
 #include "httpd.h"
 
 #define httpd_COPY 0
@@ -185,7 +186,29 @@ void httpd_parameter_parse(const char* url, void (*parser)(void* context, const 
             if (key == NULL)
                 break;
             if (value == NULL)
+            {
                 value = "";
+            }
+            else
+            {
+                int l = 0;
+                int r = 0;
+                for (;;)
+                {
+                    char c = value[r++];
+                    if (c == '%')
+                    {
+                        char temp[3] = { value[r], value[r + 1] };
+                        c = strtol(temp, 0, 16);
+                        r += 2;
+                    }
+                    value[l++] = c;
+                    if (c == 0)
+                    {
+                        break;
+                    }
+                }
+            }
             parser(context, key, value);
         }
         os_free(buffer);

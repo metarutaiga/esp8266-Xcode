@@ -140,6 +140,7 @@ void mqtt_setup(const char* ip, int port)
         {
             mqtt_connected = true;
             MQTT_Publish(mqtt_client, mqtt_prefix(number, "connected", 0), "true", 0, 0, 1);
+            MQTT_Subscribe(mqtt_client, mqtt_prefix(number, "set", "#", 0), 0);
             mqtt_information();
 
             // Loop
