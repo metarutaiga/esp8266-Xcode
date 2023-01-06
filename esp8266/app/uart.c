@@ -160,6 +160,29 @@ int uart_recv(void* uart, void* buffer, int length)
 {
     struct uart_context* context = uart;
 
+    if (context->bit != -1)
+    {
+        int bit_count = 0;
+
+        uint32_t cycle = esp_get_cycle_count();
+        int last_cycle;
+        int current_cycle = cycle - context->last_cycle;
+        for (last_cycle = 0; last_cycle < current_cycle; last_cycle += context->baud_cycle)
+        {
+            bit_count++;
+        }
+
+        if ((context->bit + bit_count) >= context->frame)
+        {
+            context->bit = -1;
+            context->offset++;
+            if (context->offset >= context->buffer_size)
+            {
+                context->offset = 0;
+            }
+        }
+    }
+
     int recv = 0;
     if (buffer)
     {
@@ -168,21 +191,13 @@ int uart_recv(void* uart, void* buffer, int length)
         {
             os_memcpy(buffer, context->buffer, recv);
             context->offset -= recv;
-            os_memmove(context->buffer, context->buffer + recv, context->offset + 1);
-            if (context->offset == 0)
-            {
-                if (context->bit > 0 && length > recv)
-                {
-                    os_memcpy(buffer + recv, context->buffer, 1);
-                    recv++;
-                }
-                context->bit = -1;
-            }
+            os_memmove(context->buffer, context->buffer + recv, context->offset);
         }
     }
     else
     {
         recv = context->offset;
     }
+
     return recv;
 }
