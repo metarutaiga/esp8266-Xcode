@@ -12,8 +12,8 @@ static void IRAM_FLASH_ATTR gpio_handler(void* arg)
     uint32 gpio_status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
     if (gpio_status == 0)
         return;
-    ETS_GPIO_INTR_DISABLE();
     GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status);
+    ETS_GPIO_INTR_DISABLE();
     for (int i = 0; i < 16; ++i)
     {
         if (gpio_status & BIT(i))

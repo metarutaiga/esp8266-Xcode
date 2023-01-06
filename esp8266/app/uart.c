@@ -4,7 +4,8 @@
 struct uart_context
 {
     int bit;
-    int offset;
+    int head;
+    int tail;
     int rx;
     int tx;
     int parity;
@@ -28,38 +29,35 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
     {
         if (context->bit == -1)
         {
-            context->buffer[context->offset] = 0xFF;
-
-            uint32_t cycle = esp_get_cycle_count();
-            context->last_cycle = cycle - context->baud_cycle / 2;
-            last_cycle = 0;
-            current_cycle = cycle - context->last_cycle;
-            previous_cycle = current_cycle - context->baud_cycle;
+            context->bit = 0;
+            context->last_cycle = cycle + context->baud_cycle / 2;
+            context->buffer[context->head] = 0xFF;
+            return;
         }
-        else if (context->bit < 8)
+        if (context->bit < 8)
         {
             int space;
             if (last_cycle < previous_cycle)
             {
-                space = up ^ BIT0;
+                space = up;
             }
             else
             {
-                space = up;
+                space = up ^ 1;
             }
-            if (space == 0)
+            if (space)
             {
-                context->buffer[context->offset] ^= BIT(context->bit);
+                context->buffer[context->head] ^= BIT(context->bit);
             }
         }
         context->bit++;
         if (context->bit >= context->frame)
         {
             context->bit = -1;
-            context->offset++;
-            if (context->offset >= context->buffer_size)
+            context->head++;
+            if (context->head >= context->buffer_size)
             {
-                context->offset = 0;
+                context->head = 0;
             }
         }
     }
@@ -82,7 +80,8 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
 {
     struct uart_context* context = os_zalloc(sizeof(struct uart_context) + buffer_size - 1);
     context->bit = -1;
-    context->offset = 0;
+    context->head = 0;
+    context->tail = 0;
     context->rx = rx;
     context->tx = tx;
     context->parity = parity;
@@ -166,41 +165,54 @@ int uart_recv(void* uart, void* buffer, int length)
 
         uint32_t cycle = esp_get_cycle_count();
         int last_cycle;
-        int current_cycle = cycle - context->last_cycle;
+        int current_cycle = cycle - context->last_cycle - context->baud_cycle * 16;
         for (last_cycle = 0; last_cycle < current_cycle; last_cycle += context->baud_cycle)
         {
             bit_count++;
-            if (bit_count >= 8)
+            if ((context->bit + bit_count) >= context->frame)
             {
+                context->bit = -1;
+                context->head++;
+                if (context->head >= context->buffer_size)
+                {
+                    context->head = 0;
+                }
                 break;
             }
         }
+    }
 
-        if ((context->bit + bit_count) >= context->frame)
-        {
-            context->bit = -1;
-            context->offset++;
-            if (context->offset >= context->buffer_size)
-            {
-                context->offset = 0;
-            }
-        }
+    int available;
+    if (context->head >= context->tail)
+    {
+        available = context->head - context->tail;
+    }
+    else
+    {
+        available = context->head + context->buffer_size - context->tail;
     }
 
     int recv = 0;
     if (buffer)
     {
-        recv = length < context->offset ? length : context->offset;
+        recv = length < available ? length : available;
         if (recv)
         {
-            os_memcpy(buffer, context->buffer, recv);
-            context->offset -= recv;
-            os_memmove(context->buffer, context->buffer + recv, context->offset);
+            char* output = buffer;
+            for (int i = 0; i < recv; ++i)
+            {
+                output[i] = context->buffer[context->tail];
+                context->tail++;
+                if (context->tail >= context->buffer_size)
+                {
+                    context->tail = 0;
+                }
+            }
         }
     }
     else
     {
-        recv = context->offset;
+        recv = available;
     }
 
     return recv;
