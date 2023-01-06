@@ -170,6 +170,10 @@ int uart_recv(void* uart, void* buffer, int length)
         for (last_cycle = 0; last_cycle < current_cycle; last_cycle += context->baud_cycle)
         {
             bit_count++;
+            if (bit_count >= 8)
+            {
+                break;
+            }
         }
 
         if ((context->bit + bit_count) >= context->frame)
