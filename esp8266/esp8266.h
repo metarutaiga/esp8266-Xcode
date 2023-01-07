@@ -55,3 +55,31 @@ void delay(unsigned int ms);
 #endif
 
 #include <stdarg.h>
+
+#ifdef __cplusplus
+#include <string>
+class string : public std::string
+{
+public:
+    using std::string::string;
+    string(std::string&& __str) : std::string(std::move(__str)) {}
+    string(const std::string& __str) : std::string(__str) {}
+    string(const char* __s) { append(__s); }
+    string(const char* __s, size_t __n) { append(__s, __n); }
+    using std::string::append;
+    string& append(const char* __s) { return append(__s, SIZE_MAX); }
+    string& append(const char* __s, size_t __n)
+    {
+        for (size_t i = 0; i < __n; ++i)
+        {
+            char c = pgm_read_byte(__s + i);
+            if (c == 0)
+                break;
+            std::string::push_back(c);
+        }
+        return *this;
+    }
+    using std::string::operator+=;
+    string& operator+=(const char* __s) { return append(__s); }
+};
+#endif

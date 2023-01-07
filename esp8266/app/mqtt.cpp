@@ -8,33 +8,27 @@ extern "C"
 #   include <mqtt/include/mqtt.h>
 #   undef BOOL
 #   undef uint8_t
-#   define MQTT_Publish(client, topic, data, data_length, qos, retain) \
-    { \
-        const char* data_ = (char*)data; \
-        int data_length_ = data_length ? data_length : os_strlen(data_); \
-        MQTT_Publish(client, topic, data_, data_length_, qos, retain); \
-    }
 };
 
 static MQTT_Client* mqtt_client IRAM_ATTR;
 static void (*mqtt_receive_callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length) IRAM_ATTR;
-static int mqtt_connected IRAM_ATTR;
+static void* mqtt_connected IRAM_ATTR;
 
 static void mqtt_information()
 {
-    if (mqtt_connected == false)
+    if (mqtt_connected == NULL)
         return;
 
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "SDK Version", 0), system_get_sdk_version(), 0, 0, 0);
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(system_get_cpu_freq(), number + 64, 10), 0, 0, 0);
+    mqtt_publish(mqtt_prefix(number, "ESP", "SDK Version", 0), system_get_sdk_version(), 0, 0);
+    mqtt_publish(mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(system_get_cpu_freq(), number + 64, 10), 0, 0);
 
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Build", 0), build_date, 0, 0, 0);
-    MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Version", 0), version, 0, 0, 1);
+    mqtt_publish(mqtt_prefix(number, "ESP", "Build", 0), build_date, 0, 0);
+    mqtt_publish(mqtt_prefix(number, "ESP", "Version", 0), version, 0, 1);
     struct ip_info ip_info = {};
     if (wifi_get_ip_info(STATION_IF, &ip_info))
     {
         os_sprintf(number + 64, IPSTR, IP2STR(&ip_info.ip));
-        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "IP", 0), number + 64, 0, 0, 1);
+        mqtt_publish(mqtt_prefix(number, "ESP", "IP", 0), number + 64, 0, 1);
     }
 
     if (struct rst_info* info = system_get_rst_info())
@@ -51,24 +45,24 @@ static void mqtt_information()
             case REASON_EXT_SYS_RST:        reason = "External System";     break;
             default:                        reason = "Unknown";             break;
         }
-        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "ResetReason", 0), reason, 0, 0, 0);
+        mqtt_publish(mqtt_prefix(number, "ESP", "ResetReason", 0), reason, 0, 0);
 
         if (info->reason >= REASON_WDT_RST && info->reason <= REASON_SOFT_WDT_RST)
         {
             char buff[256];
             os_sprintf(buff, "Exception:%d flag:%d epc1:0x%08x epc2:0x%08x epc3:0x%08x excvaddr:0x%08x depc:0x%08x", info->exccause, info->reason, info->epc1, info->epc2, info->epc3, info->excvaddr, info->depc);
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "ResetInfo", 0), buff, 0, 0, 0);
+            mqtt_publish(mqtt_prefix(number, "ESP", "ResetInfo", 0), buff, 0, 0);
         }
         else
         {
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "ResetInfo", 0), reason, 0, 0, 0);
+            mqtt_publish(mqtt_prefix(number, "ESP", "ResetInfo", 0), reason, 0, 0);
         }
     }
 }
 
 static void mqtt_loop()
 {
-    if (mqtt_connected == false)
+    if (mqtt_connected == NULL)
         return;
 
     // Time
@@ -78,7 +72,7 @@ static void mqtt_loop()
     {
         now_timestamp = timestamp / 60;
         os_sprintf(number + 64, "%d:%d", timestamp / 3600 % 24, timestamp / 60 % 60);
-        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "Time", 0), number + 64, 0, 0, 0);
+        mqtt_publish(mqtt_prefix(number, "ESP", "Time", 0), number + 64, 0, 0);
     }
 
     // Heap
@@ -87,7 +81,7 @@ static void mqtt_loop()
     if (now_free_heap != free_heap)
     {
         now_free_heap = free_heap;
-        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "FreeHeap", 0), itoa(free_heap, number + 64, 10), 0, 0, 0);
+        mqtt_publish(mqtt_prefix(number, "ESP", "FreeHeap", 0), itoa(free_heap, number + 64, 10), 0, 0);
     }
 
     // RSSI
@@ -96,7 +90,7 @@ static void mqtt_loop()
     if (now_rssi != rssi)
     {
         now_rssi = rssi;
-        MQTT_Publish(mqtt_client, mqtt_prefix(number, "ESP", "RSSI", 0), itoa(rssi | 0xFFFFFF00, number + 64, 10), 0, 0, 0);
+        mqtt_publish(mqtt_prefix(number, "ESP", "RSSI", 0), itoa(rssi | 0xFFFFFF00, number + 64, 10), 0, 0);
     }
 }
 
@@ -117,10 +111,33 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
 
 void mqtt_publish(const char* topic, const void* data, int length, int retain)
 {
-    if (mqtt_connected == false)
+    if (mqtt_connected == NULL)
         return;
 
-    MQTT_Publish(mqtt_client, topic, data, length, 0, retain);
+    char* temp_topic = NULL;
+    char* temp_data = NULL;
+    if ((uint32_t)topic >= 0x40000000)
+    {
+        temp_topic = strdup(topic);
+        topic = temp_topic;
+    }
+    if (length == 0)
+    {
+        for (char c; (c = pgm_read_byte((char*)data + length)); ++length);
+    }
+    if ((uint32_t)data >= 0x40000000)
+    {
+        temp_data = (char*)os_malloc(length + 1);
+        for (int i = 0; i < length; ++i)
+        {
+            temp_data[i] = pgm_read_byte((char*)data + i);
+        }
+        temp_data[length] = 0;
+        data = temp_data;
+    }
+    MQTT_Publish(mqtt_client, topic, (char*)data, length, 0, retain);
+    os_free(temp_topic);
+    os_free(temp_data);
 }
 
 void mqtt_receive(void (*callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length))
@@ -138,7 +155,7 @@ void mqtt_setup(const char* ip, int port)
         MQTT_InitLWT(mqtt_client, mqtt_prefix(number, "connected", 0), "false", 0, 1);
         MQTT_OnConnected(mqtt_client, [](uint32_t* args)
         {
-            mqtt_connected = true;
+            mqtt_connected = mqtt_client;
             MQTT_Publish(mqtt_client, mqtt_prefix(number, "connected", 0), "true", 0, 0, 1);
             MQTT_Subscribe(mqtt_client, mqtt_prefix(number, "set", "#", 0), 0);
             mqtt_information();
@@ -154,7 +171,7 @@ void mqtt_setup(const char* ip, int port)
         });
         MQTT_OnDisconnected(mqtt_client, [](uint32_t* args)
         {
-            mqtt_connected = false;
+            mqtt_connected = NULL;
         });
         MQTT_OnData(mqtt_client, [](uint32_t* args, const char* topic, uint32_t topic_len, const char* data, uint32_t length)
         {

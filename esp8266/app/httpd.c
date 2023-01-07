@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "httpd.h"
 
-#define httpd_COPY 0
+#define HTTP_COPY 0
 
 struct httpd_handler
 {
@@ -93,13 +93,14 @@ static void httpd_listen(void* arg)
 
     espconn_regist_recvcb(pespconn, httpd_server_recv);
     espconn_regist_disconcb(pespconn, httpd_server_discon);
-    if (httpd_COPY)
+    if (HTTP_COPY)
     {
-        espconn_set_opt(pespconn, ESPCONN_COPY);
+        espconn_set_opt(pespconn, ESPCONN_COPY | ESPCONN_NODELAY);
         espconn_regist_write_finish(pespconn, httpd_server_sent);
     }
     else
     {
+        espconn_set_opt(pespconn, ESPCONN_NODELAY);
         espconn_regist_sentcb(pespconn, httpd_server_sent);
     }
 }

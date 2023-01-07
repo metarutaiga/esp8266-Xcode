@@ -58,15 +58,15 @@ void wifi(System_Event_t* event)
         int fd = fs_open("mqtt", "r");
         if (fd >= 0)
         {
-            std::string mqtt = fs_gets(number, 128, fd);
-            std::string port = fs_gets(number, 128, fd);
+            string mqtt = fs_gets(number, 128, fd);
+            string port = fs_gets(number, 128, fd);
             mqtt_setup(mqtt.c_str(), strtol(port.c_str(), nullptr, 10));
             fs_close(fd);
         }
 
         // NTP
-        std::string ntp = "pool.ntp.org";
-        std::string zone = "8";
+        string ntp = "pool.ntp.org";
+        string zone = "8";
         fd = fs_open("ntp", "r");
         if (fd >= 0)
         {
@@ -166,7 +166,7 @@ void setup(void)
     }
 #ifdef DEMO
     // UART
-    uart_init(2, 0, 9600, 8, NULL, 1);
+    uart_init(2, 0, 9600, 8, NULL, 1, 256);
 #endif
     // Initialize
     wifi_set_event_handler_cb(wifi);

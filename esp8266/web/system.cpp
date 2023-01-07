@@ -8,7 +8,7 @@ const char* web_css = "";
 
 bool web_system(void* arg, const char* url, int line)
 {
-    std::string html;
+    string html;
 
     switch (line)
     {
@@ -31,7 +31,7 @@ bool web_system(void* arg, const char* url, int line)
     case 1:
     {
         // SSID
-        std::string ssid;
+        string ssid;
         int fd = fs_open("ssid", "r");
         if (fd >= 0)
         {
@@ -70,10 +70,10 @@ bool web_system(void* arg, const char* url, int line)
         ip_addr_t dns_server = espconn_dns_getserver(0);
 
         // IP
-        std::string ip;
-        std::string gateway;
-        std::string subnet;
-        std::string dns;
+        string ip;
+        string gateway;
+        string subnet;
+        string dns;
         os_sprintf(number, IPSTR, IP2STR(&info.ip)); ip = number;
         os_sprintf(number, IPSTR, IP2STR(&info.gw)); gateway = number;
         os_sprintf(number, IPSTR, IP2STR(&info.netmask)); subnet = number;
@@ -131,7 +131,7 @@ bool web_system(void* arg, const char* url, int line)
     case 3:
     {
         // OTA
-        std::string ota;
+        string ota;
         int fd = fs_open("ota", "r");
         if (fd >= 0)
         {
@@ -158,8 +158,8 @@ bool web_system(void* arg, const char* url, int line)
     case 4:
     {
         // MQTT
-        std::string mqtt;
-        std::string mqttPort = "1883";
+        string mqtt;
+        string mqttPort = "1883";
         int fd = fs_open("mqtt", "r");
         if (fd >= 0)
         {
@@ -195,8 +195,8 @@ bool web_system(void* arg, const char* url, int line)
     case 5:
     {
         // NTP
-        std::string ntp = "pool.ntp.org";
-        std::string ntpZone = "8";
+        string ntp = "pool.ntp.org";
+        string ntpZone = "8";
         int fd = fs_open("ntp", "r");
         if (fd >= 0)
         {
@@ -257,10 +257,10 @@ bool web_ssid(void* arg, const char* url, int line)
 {
     httpd_redirect(arg, "/");
 
-    std::string text;
+    string text;
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
-        std::string& text = *(std::string*)context;
+        string& text = *(string*)context;
         if (os_strcmp(key, "ssid") == 0 ||
             os_strcmp(key, "pass") == 0)
         {
@@ -283,10 +283,10 @@ bool web_ip(void* arg, const char* url, int line)
 {
     httpd_redirect(arg, "/");
 
-    std::string text;
+    string text;
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
-        std::string& text = *(std::string*)context;
+        string& text = *(string*)context;
         if (os_strcmp(key, "ip") == 0 ||
             os_strcmp(key, "gateway") == 0 ||
             os_strcmp(key, "subnet") == 0 ||
@@ -311,10 +311,10 @@ bool web_ota(void* arg, const char* url, int line)
 {
     httpd_redirect(arg, "/");
 
-    std::string text;
+    string text;
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
-        std::string& text = *(std::string*)context;
+        string& text = *(string*)context;
         if (os_strcmp(key, "ota") == 0)
         {
             text += value;
@@ -336,10 +336,10 @@ bool web_mqtt(void* arg, const char* url, int line)
 {
     httpd_redirect(arg, "/");
 
-    std::string text;
+    string text;
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
-        std::string& text = *(std::string*)context;
+        string& text = *(string*)context;
         if (os_strcmp(key, "mqtt") == 0 ||
             os_strcmp(key, "port") == 0)
         {
@@ -362,10 +362,10 @@ bool web_ntp(void* arg, const char* url, int line)
 {
     httpd_redirect(arg, "/");
 
-    std::string text;
+    string text;
     httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
     {
-        std::string& text = *(std::string*)context;
+        string& text = *(string*)context;
         if (os_strcmp(key, "name") == 0 ||
             os_strcmp(key, "zone") == 0)
         {

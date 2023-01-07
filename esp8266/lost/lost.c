@@ -23,8 +23,8 @@ void* memchr(const void* src_void, int c, size_t length)
 
     while (length--)
     {
-        if (*src == d)
-          return (void*)src;
+        if (pgm_read_byte(src) == d)
+            return (void*)src;
         src++;
     }
 
@@ -93,23 +93,24 @@ int strcasecmp(const char* s1, const char* s2)
 
 char* strchr(const char* str, int chr)
 {
-    const unsigned char* s = (const unsigned char*)str;
+    unsigned char b;
     unsigned char c = chr;
-    while (*s && *s != c)
-        s++;
-    if (*s == c)
-        return (char*)s;
+    while ((b = pgm_read_byte(str)) && b != c)
+        str++;
+    if (b == c)
+        return (char*)str;
     return NULL;
 }
 
 size_t strcspn(const char* str, const char* spn)
 {
     const char* s = str;
+    char b;
     char c;
 
-    while (*str)
+    while ((b = pgm_read_byte(str)))
     {
-        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (*str == c) break;
+        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (b == c) break;
         if (c) break;
         str++;
     }
@@ -121,7 +122,8 @@ char* strdup(const char* str)
 {
     int len = os_strlen(str);
     char* dup = (char*)os_malloc(len + 1);
-    os_memcpy(dup, str, len);
+    for (int i = 0; i < len; ++i)
+        dup[i] = pgm_read_byte(str + i);
     dup[len] = 0;
     return dup;
 }
@@ -141,11 +143,12 @@ char* strsep(char** sp, const char* sep)
 size_t strspn(const char* str, const char* spn)
 {
     const char* s = str;
+    char b;
     char c;
 
-    while (*str)
+    while ((b = pgm_read_byte(str)))
     {
-        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (*str == c) break;
+        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (b == c) break;
         if (c == '\0') break;
         str++;
     }

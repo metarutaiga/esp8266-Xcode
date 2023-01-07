@@ -12,7 +12,7 @@ struct fota_context
     int address;
     int offset;
     int size;
-    std::string header;
+    string header;
 };
 
 static void fota_recv(void* arg, char* pusrdata, int length)
@@ -36,9 +36,9 @@ static void fota_recv(void* arg, char* pusrdata, int length)
 
     if (context->size == 0)
     {
-        context->header += std::string(pusrdata, length);
+        context->header += string(pusrdata, length);
         size_t pos = context->header.find("\r\n\r\n");
-        if (pos == std::string::npos)
+        if (pos == string::npos)
             return;
         int skip = length - (context->header.length() - (pos + 4));
         pusrdata += skip;
@@ -46,14 +46,14 @@ static void fota_recv(void* arg, char* pusrdata, int length)
 
         // Content-Length:
         pos = context->header.find("Content-Length: ");
-        if (pos != std::string::npos)
+        if (pos != string::npos)
             context->size = strtol(context->header.data() + pos + sizeof("Content-Length: ") - 1, 0, 10);
         if (context->size == 0)
         {
             espconn_disconnect(pespconn);
             return;
         }
-        context->header = std::string();
+        context->header = string();
         if (length == 0)
             return;
     }
