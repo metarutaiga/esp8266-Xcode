@@ -31,7 +31,6 @@
 #endif /* __linux__ */
 
 #include "utils/common.h"
-#include "utils/eloop.h"
 #include "crypto/crypto.h"
 #include "sha1.h"
 #include "random.h"

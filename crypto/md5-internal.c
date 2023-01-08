@@ -14,7 +14,7 @@
 #include "crypto.h"
 
 
-void MD5Transform(u32 buf[4], u32 const in[16]);
+static void MD5Transform(u32 buf[4], u32 const in[16]);
 
 
 typedef struct MD5Context MD5_CTX;
@@ -43,7 +43,6 @@ int md5_vector(size_t num_elem, const u8 *addr[], const size_t *len, u8 *mac)
 	return 0;
 }
 
-#ifndef __XTENSA__
 
 /* ===== start - public domain MD5 implementation ===== */
 /*
@@ -289,5 +288,3 @@ static void MD5Transform(u32 buf[4], u32 const in[16])
     buf[3] += d;
 }
 /* ===== end - public domain MD5 implementation ===== */
-
-#endif

@@ -16,7 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30A9A7BB25ADC792000FA104 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30A9A7BB25ADC792000FA104 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69FFA2D293F8A1800CC7E75 /* mqtt_msg.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mqtt_msg.c; path = ../mqtt/mqtt_msg.c; sourceTree = "<group>"; };
 		D69FFA2E293F8A1800CC7E75 /* queue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = queue.c; path = ../mqtt/queue.c; sourceTree = "<group>"; };
 		D69FFA2F293F8A1800CC7E75 /* utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = utils.c; path = ../mqtt/utils.c; sourceTree = "<group>"; };
@@ -110,9 +110,9 @@
 			dependencies = (
 			);
 			name = mqtt;
-			productName = "mqtt (Android)";
+			productName = mqtt;
 			productReference = 30A9A7BB25ADC792000FA104 /* libmqtt.a */;
-			productType = "com.apple.product-type.library.dynamic";
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -166,7 +166,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_EXTENSION = a;
 			};
 			name = Debug;
@@ -175,7 +174,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_EXTENSION = a;
 			};
 			name = Release;

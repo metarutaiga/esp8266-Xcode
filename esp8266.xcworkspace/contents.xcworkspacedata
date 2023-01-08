@@ -11,6 +11,12 @@
       location = "container:build/esp-homekit.xcodeproj">
    </FileRef>
    <FileRef
+      location = "container:build/littlefs.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:build/lwip.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:build/mqtt.xcodeproj">
    </FileRef>
 </Workspace>

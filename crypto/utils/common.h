@@ -11,16 +11,6 @@
 
 #include "os.h"
 
-#if defined(__XTENSA__)
-#include "byteswap.h"
-#define __BYTE_ORDER     BYTE_ORDER
-#define __LITTLE_ENDIAN  LITTLE_ENDIAN
-#define __BIG_ENDIAN     BIG_ENDIAN
-#define bswap_16         __bswap_16
-#define bswap_32         __bswap_32
-#define bswap_64         __bswap_64
-#endif /*__XTENSA__*/
-
 #if defined(__linux__) || defined(__GLIBC__)
 #include <endian.h>
 #include <byteswap.h>
@@ -585,7 +575,6 @@ u8 rssi_to_rcpi(int rssi);
 char * get_param(const char *cmd, const char *param);
 
 void forced_memzero(void *ptr, size_t len);
-#define forced_memzero(ptr, len) os_memset(ptr, 0, len)
 
 /*
  * gcc 4.4 ends up generating strict-aliasing warnings about some very common
@@ -597,7 +586,7 @@ void forced_memzero(void *ptr, size_t len);
  * in the future to handle these cases.
  */
 void * __hide_aliasing_typecast(void *foo);
-#define aliasing_hide_typecast(a,t) (t *) (a)
+#define aliasing_hide_typecast(a,t) (t *) __hide_aliasing_typecast((a))
 
 #ifdef CONFIG_VALGRIND
 #include <valgrind/memcheck.h>

@@ -1,19 +1,22 @@
 CODE_SIGNING_ALLOWED = NO
-COMPILER_INDEX_STORE_ENABLE = NO
+//COMPILER_INDEX_STORE_ENABLE = NO
+DEAD_CODE_STRIPPING = NO
 DEBUG_INFORMATION_FORMAT =
+DYLIB_COMPATIBILITY_VERSION =
+DYLIB_CURRENT_VERSION =
 EFFECTIVE_PLATFORM_NAME = -esp8266
 EXECUTABLE_EXTENSION = so
 EXECUTABLE_PREFIX = lib
 
-CC = esp-clang/bin/clang
-CXX = esp-clang/bin/clang++
-LD = esp-clang/bin/clang
-LDPLUSPLUS = esp-clang/bin/clang++
+CC = $PROJECT_DIR/xtensa-lx106-elf-clang
+CXX = $PROJECT_DIR/xtensa-lx106-elf-clang++
+LD = $PROJECT_DIR/xtensa-lx106-elf-clang
+LDPLUSPLUS = $PROJECT_DIR/xtensa-lx106-elf-clang++
 LD_DEPENDENCY_INFO_FILE =
 LD_LTO_OBJECT_FILE =
-LIBTOOL = $PROJECT_DIR/ar-wrapper 
+LIBTOOL = $PROJECT_DIR/xtensa-lx106-elf-ar
 LIBTOOL_DEPENDENCY_INFO_FILE =
-ALTERNATE_LINKER = $PROJECT_DIR/lld-wrapper
+ALTERNATE_LINKER = $PROJECT_DIR/xtensa-lx106-elf-ld
 
 HEADER_SEARCH_PATHS = $(inherited) .
 HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_NONOS_SDK/include
@@ -22,10 +25,10 @@ LIBRARY_SEARCH_PATHS = $(inherited) ../ESP8266_NONOS_SDK/lib
 OTHER_CFLAGS = $(inherited) -fdata-sections
 OTHER_CFLAGS = $(inherited) -ffunction-sections
 OTHER_CFLAGS = $(inherited) -fno-builtin-printf
-OTHER_CFLAGS = $(inherited) -fno-inline-functions
-OTHER_CFLAGS = $(inherited) -fno-jump-tables
+//OTHER_CFLAGS = $(inherited) -fno-inline-functions
+//OTHER_CFLAGS = $(inherited) -fno-jump-tables
 //OTHER_CFLAGS = $(inherited) -fno-unique-section-names
-OTHER_CFLAGS = $(inherited) -fsigned-char
+//OTHER_CFLAGS = $(inherited) -fsigned-char
 //OTHER_CFLAGS = $(inherited) -mtext-section-literals
 OTHER_CFLAGS = $(inherited) -nostdlib
 OTHER_CFLAGS = $(inherited) -Wno-comment
@@ -34,37 +37,48 @@ OTHER_CFLAGS = $(inherited) -Wno-strict-prototypes
 OTHER_CFLAGS = $(inherited) -Wno-switch
 OTHER_CFLAGS = $(inherited) -Wno-writable-strings
 
-OTHER_CFLAGS = $(inherited) -DESP_NONOS -DICACHE_FLASH -DUSE_OPTIMIZE_PRINTF
-OTHER_CFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf -isysroot esp-clang/xtensa-lx106-elf -mcpu=esp8266
+OTHER_CFLAGS = $(inherited) -DESP_NONOS
+OTHER_CFLAGS = $(inherited) -DICACHE_FLASH
+OTHER_CFLAGS = $(inherited) -DLFS_CONFIG=user_config.h
+//OTHER_CFLAGS = $(inherited) -DLOOP
+OTHER_CFLAGS = $(inherited) -isysroot esp-clang/xtensa-lx106-elf
+OTHER_CFLAGS = $(inherited) --sysroot esp-clang/xtensa-lx106-elf
+//OTHER_CFLAGS = $(inherited) -target xtensa-lx106-elf -mcpu=esp8266
+OTHER_CPLUSPLUSFLAGS = $(inherited) -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1
+OTHER_CPLUSPLUSFLAGS = $(inherited) -D_LIBCPP_DISABLE_EXTERN_TEMPLATE
 OTHER_CPLUSPLUSFLAGS = $(inherited) -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS
+OTHER_CPLUSPLUSFLAGS = $(inherited) -D_LIBCPP_HAS_NO_THREADS
 
 OTHER_LDFLAGS = $(inherited) -nostdlib -Wl,-static
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -target xtensa-lx106-elf -isysroot esp-clang/xtensa-lx106-elf -mcpu=esp8266
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -u call_user_start
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -T eagle.app.v6.2048.ld
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-Map,$(TARGET_BUILD_DIR)/$(EXECUTABLE_NAME).map
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,--start-group
-//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lairkiss
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lc
-//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lcrypto
-//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lespnow
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lgcc
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -llwip_536
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lmain
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lnet80211
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lphy
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lpp
-//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lsmartconfig
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa
-//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwpa2
-//OTHER_LDFLAGS[arch=esp8266] = $(inherited) -lwps
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,--end-group
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-wrap,spi_flash_read
-OTHER_LDFLAGS[arch=esp8266] = $(inherited) -Wl,-wrap,spi_flash_write
+OTHER_LDFLAGS = $(inherited) -isysroot esp-clang/xtensa-lx106-elf
+OTHER_LDFLAGS = $(inherited) --sysroot esp-clang/xtensa-lx106-elf
+//OTHER_LDFLAGS = $(inherited) -target xtensa-lx106-elf -mcpu=esp8266
+OTHER_LDFLAGS = $(inherited) -u call_user_start
+OTHER_LDFLAGS = $(inherited) -T eagle.app.v6.2048.ld
+OTHER_LDFLAGS = $(inherited) -Wl,-Map,$(TARGET_BUILD_DIR)/$(EXECUTABLE_NAME).map
+OTHER_LDFLAGS = $(inherited) -Wl,--start-group
+//OTHER_LDFLAGS = $(inherited) -lairkiss
+//OTHER_LDFLAGS = $(inherited) -lc
+//OTHER_LDFLAGS = $(inherited) -lcrypto
+//OTHER_LDFLAGS = $(inherited) -lespnow
+OTHER_LDFLAGS = $(inherited) -lgcc
+//OTHER_LDFLAGS] = $(inherited) -llwip_536
+OTHER_LDFLAGS = $(inherited) -lmain
+OTHER_LDFLAGS = $(inherited) -lnet80211
+OTHER_LDFLAGS = $(inherited) -lphy
+OTHER_LDFLAGS = $(inherited) -lpp
+//OTHER_LDFLAGS = $(inherited) -lsmartconfig
+OTHER_LDFLAGS = $(inherited) -lupgrade
+OTHER_LDFLAGS = $(inherited) -lwpa
+//OTHER_LDFLAGS = $(inherited) -lwpa2
+//OTHER_LDFLAGS = $(inherited) -lwps
+//OTHER_LDFLAGS = $(inherited) -Wl,--end-group
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,spi_flash_read
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,spi_flash_write
 
 OTHER_LDFLAGS[config=Release] = $(inherited) -Wl,--gc-sections
 
-ARCHS = esp8266
-ARCHS_STANDARD = esp8266
-VALID_ARCHS = esp8266
+ARCHS = riscv32
+ARCHS_STANDARD = riscv32
+VALID_ARCHS = riscv32
 EXCLUDED_ARCHS =

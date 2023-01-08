@@ -19,8 +19,8 @@
 		D60D0A61294311830084F160 /* aes-eax.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B02942F69E0084F160 /* aes-eax.c */; };
 		D60D0A62294311830084F160 /* aes-encblock.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09AC2942F69D0084F160 /* aes-encblock.c */; };
 		D60D0A63294311830084F160 /* aes-gcm.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09A82942F69D0084F160 /* aes-gcm.c */; };
-		D60D0A64294311830084F160 /* aes-internal-dec.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B32942F69E0084F160 /* aes-internal-dec.c */; };
-		D60D0A65294311830084F160 /* aes-internal-enc.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B12942F69E0084F160 /* aes-internal-enc.c */; };
+		D60D0A64294311830084F160 /* aes-internal-dec.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B32942F69E0084F160 /* aes-internal-dec.c */; settings = {COMPILER_FLAGS = "-Daes_internal_dec"; }; };
+		D60D0A65294311830084F160 /* aes-internal-enc.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B12942F69E0084F160 /* aes-internal-enc.c */; settings = {COMPILER_FLAGS = "-Daes_internal_enc"; }; };
 		D60D0A66294311830084F160 /* aes-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09AA2942F69D0084F160 /* aes-internal.c */; };
 		D60D0A67294311830084F160 /* aes-omac1.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09AE2942F69E0084F160 /* aes-omac1.c */; };
 		D60D0A68294311830084F160 /* aes-siv.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09B42942F69E0084F160 /* aes-siv.c */; };
@@ -33,18 +33,18 @@
 		D60D0A71294311830084F160 /* dh_groups.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E62942F7610084F160 /* dh_groups.c */; };
 		D60D0A72294311830084F160 /* fips_prf_internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E32942F7610084F160 /* fips_prf_internal.c */; };
 		D60D0A73294311830084F160 /* md4-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F42942F7610084F160 /* md4-internal.c */; };
-		D60D0A74294311830084F160 /* md5-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D82942F7610084F160 /* md5-internal.c */; };
-		D60D0A75294311830084F160 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C82942F7610084F160 /* md5.c */; };
+		D60D0A74294311830084F160 /* md5-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D82942F7610084F160 /* md5-internal.c */; settings = {COMPILER_FLAGS = "-Dmd5_internal"; }; };
+		D60D0A75294311830084F160 /* md5.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C82942F7610084F160 /* md5.c */; settings = {COMPILER_FLAGS = "-Dmd5"; }; };
 		D60D0A76294311830084F160 /* milenage.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C72942F7610084F160 /* milenage.c */; };
 		D60D0A77294311830084F160 /* ms_funcs.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F22942F7610084F160 /* ms_funcs.c */; };
 		D60D0A78294311830084F160 /* random.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D32942F7610084F160 /* random.c */; };
-		D60D0A79294311830084F160 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09CC2942F7610084F160 /* rc4.c */; };
-		D60D0A7A294311830084F160 /* sha1-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09EF2942F7610084F160 /* sha1-internal.c */; };
-		D60D0A7B294311830084F160 /* sha1-pbkdf2.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C42942F7600084F160 /* sha1-pbkdf2.c */; };
-		D60D0A7C294311830084F160 /* sha1-prf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F32942F7610084F160 /* sha1-prf.c */; };
+		D60D0A79294311830084F160 /* rc4.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09CC2942F7610084F160 /* rc4.c */; settings = {COMPILER_FLAGS = "-Drc4"; }; };
+		D60D0A7A294311830084F160 /* sha1-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09EF2942F7610084F160 /* sha1-internal.c */; settings = {COMPILER_FLAGS = "-Dsha1_internal"; }; };
+		D60D0A7B294311830084F160 /* sha1-pbkdf2.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C42942F7600084F160 /* sha1-pbkdf2.c */; settings = {COMPILER_FLAGS = "-Dsha1_pbkdf2"; }; };
+		D60D0A7C294311830084F160 /* sha1-prf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F32942F7610084F160 /* sha1-prf.c */; settings = {COMPILER_FLAGS = "-Dsha1_prf"; }; };
 		D60D0A7D294311830084F160 /* sha1-tlsprf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D02942F7610084F160 /* sha1-tlsprf.c */; };
 		D60D0A7E294311830084F160 /* sha1-tprf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09C52942F7610084F160 /* sha1-tprf.c */; };
-		D60D0A7F294311830084F160 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D42942F7610084F160 /* sha1.c */; };
+		D60D0A7F294311830084F160 /* sha1.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09D42942F7610084F160 /* sha1.c */; settings = {COMPILER_FLAGS = "-Dsha1"; }; };
 		D60D0A80294311830084F160 /* sha256-internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F02942F7610084F160 /* sha256-internal.c */; };
 		D60D0A81294311830084F160 /* sha256-kdf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09F52942F7610084F160 /* sha256-kdf.c */; };
 		D60D0A82294311830084F160 /* sha256-prf.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09EA2942F7610084F160 /* sha256-prf.c */; };
@@ -61,11 +61,23 @@
 		D60D0A8D294311830084F160 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E02942F7610084F160 /* sha512.c */; };
 		D60D0A90294313A30084F160 /* aes-wrap.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D0A8E294313A30084F160 /* aes-wrap.c */; };
 		D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D0A8F294313A30084F160 /* aes-unwrap.c */; };
-		D6927FF42945B8A100C7F5A9 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D6927FF32945B75600C7F5A9 /* base64.c */; };
+		D6918ED02954431100B0BE87 /* x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBD2954431000B0BE87 /* x509v3.c */; };
+		D6918ED12954431100B0BE87 /* tlsv1_common.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBE2954431000B0BE87 /* tlsv1_common.c */; };
+		D6918ED22954431100B0BE87 /* tlsv1_client_write.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EC12954431000B0BE87 /* tlsv1_client_write.c */; };
+		D6918ED32954431100B0BE87 /* tlsv1_server_write.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EC32954431100B0BE87 /* tlsv1_server_write.c */; };
+		D6918ED42954431100B0BE87 /* tlsv1_record.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EC42954431100B0BE87 /* tlsv1_record.c */; };
+		D6918ED52954431100B0BE87 /* tlsv1_client.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EC52954431100B0BE87 /* tlsv1_client.c */; };
+		D6918ED62954431100B0BE87 /* tlsv1_server_read.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EC92954431100B0BE87 /* tlsv1_server_read.c */; };
+		D6918ED72954431100B0BE87 /* tlsv1_server.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918ECA2954431100B0BE87 /* tlsv1_server.c */; };
+		D6918ED82954431100B0BE87 /* tlsv1_cred.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918ECC2954431100B0BE87 /* tlsv1_cred.c */; };
+		D6918ED92954431100B0BE87 /* tlsv1_client_ocsp.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918ECD2954431100B0BE87 /* tlsv1_client_ocsp.c */; };
+		D6918EDA2954431100B0BE87 /* tlsv1_client_read.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918ECF2954431100B0BE87 /* tlsv1_client_read.c */; };
+		D6918EE02954433900B0BE87 /* tls_internal.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EDF2954433900B0BE87 /* tls_internal.c */; };
+		D6927FF42945B8A100C7F5A9 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = D6927FF32945B75600C7F5A9 /* base64.c */; settings = {COMPILER_FLAGS = "-Dbase64"; }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30A9A7BB25ADC792000FA104 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30A9A7BB25ADC792000FA104 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D60D09982942F2FF0084F160 /* aes_wrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aes_wrap.h; path = ../crypto/aes_wrap.h; sourceTree = "<group>"; };
 		D60D099A2942F2FF0084F160 /* aes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = aes.h; path = ../crypto/aes.h; sourceTree = "<group>"; };
 		D60D09A22942F69D0084F160 /* wpabuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wpabuf.h; sourceTree = "<group>"; };
@@ -139,8 +151,6 @@
 		D60D09F42942F7610084F160 /* md4-internal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "md4-internal.c"; path = "../crypto/md4-internal.c"; sourceTree = "<group>"; };
 		D60D09F52942F7610084F160 /* sha256-kdf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "sha256-kdf.c"; path = "../crypto/sha256-kdf.c"; sourceTree = "<group>"; };
 		D60D09F62942F7620084F160 /* crypto_internal-modexp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "crypto_internal-modexp.c"; path = "../crypto/crypto_internal-modexp.c"; sourceTree = "<group>"; };
-		D60D0A1B2942F8F30084F160 /* eloop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eloop.h; sourceTree = "<group>"; };
-		D60D0A1C2942F8F30084F160 /* byteswap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = byteswap.h; sourceTree = "<group>"; };
 		D60D0A1E2942F9E80084F160 /* bignum.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = bignum.c; path = ../crypto/tls/bignum.c; sourceTree = "<group>"; };
 		D60D0A1F2942F9E80084F160 /* rsa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rsa.c; path = ../crypto/tls/rsa.c; sourceTree = "<group>"; };
 		D60D0A202942F9E80084F160 /* pkcs5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pkcs5.h; path = ../crypto/tls/pkcs5.h; sourceTree = "<group>"; };
@@ -155,6 +165,28 @@
 		D60D0A2B2942F9E90084F160 /* asn1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn1.c; path = ../crypto/tls/asn1.c; sourceTree = "<group>"; };
 		D60D0A8E294313A30084F160 /* aes-wrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-wrap.c"; path = "../crypto/aes-wrap.c"; sourceTree = "<group>"; };
 		D60D0A8F294313A30084F160 /* aes-unwrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-unwrap.c"; path = "../crypto/aes-unwrap.c"; sourceTree = "<group>"; };
+		D6918EBD2954431000B0BE87 /* x509v3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = x509v3.c; path = ../crypto/tls/x509v3.c; sourceTree = "<group>"; };
+		D6918EBE2954431000B0BE87 /* tlsv1_common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_common.c; path = ../crypto/tls/tlsv1_common.c; sourceTree = "<group>"; };
+		D6918EBF2954431000B0BE87 /* tlsv1_server_i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_server_i.h; path = ../crypto/tls/tlsv1_server_i.h; sourceTree = "<group>"; };
+		D6918EC02954431000B0BE87 /* x509v3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = x509v3.h; path = ../crypto/tls/x509v3.h; sourceTree = "<group>"; };
+		D6918EC12954431000B0BE87 /* tlsv1_client_write.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_client_write.c; path = ../crypto/tls/tlsv1_client_write.c; sourceTree = "<group>"; };
+		D6918EC22954431000B0BE87 /* tlsv1_client_i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_client_i.h; path = ../crypto/tls/tlsv1_client_i.h; sourceTree = "<group>"; };
+		D6918EC32954431100B0BE87 /* tlsv1_server_write.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_server_write.c; path = ../crypto/tls/tlsv1_server_write.c; sourceTree = "<group>"; };
+		D6918EC42954431100B0BE87 /* tlsv1_record.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_record.c; path = ../crypto/tls/tlsv1_record.c; sourceTree = "<group>"; };
+		D6918EC52954431100B0BE87 /* tlsv1_client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_client.c; path = ../crypto/tls/tlsv1_client.c; sourceTree = "<group>"; usesTabs = 1; };
+		D6918EC62954431100B0BE87 /* tlsv1_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_server.h; path = ../crypto/tls/tlsv1_server.h; sourceTree = "<group>"; };
+		D6918EC72954431100B0BE87 /* tlsv1_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_common.h; path = ../crypto/tls/tlsv1_common.h; sourceTree = "<group>"; };
+		D6918EC82954431100B0BE87 /* tlsv1_record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_record.h; path = ../crypto/tls/tlsv1_record.h; sourceTree = "<group>"; };
+		D6918EC92954431100B0BE87 /* tlsv1_server_read.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_server_read.c; path = ../crypto/tls/tlsv1_server_read.c; sourceTree = "<group>"; };
+		D6918ECA2954431100B0BE87 /* tlsv1_server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_server.c; path = ../crypto/tls/tlsv1_server.c; sourceTree = "<group>"; };
+		D6918ECB2954431100B0BE87 /* tlsv1_cred.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_cred.h; path = ../crypto/tls/tlsv1_cred.h; sourceTree = "<group>"; };
+		D6918ECC2954431100B0BE87 /* tlsv1_cred.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_cred.c; path = ../crypto/tls/tlsv1_cred.c; sourceTree = "<group>"; };
+		D6918ECD2954431100B0BE87 /* tlsv1_client_ocsp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_client_ocsp.c; path = ../crypto/tls/tlsv1_client_ocsp.c; sourceTree = "<group>"; };
+		D6918ECE2954431100B0BE87 /* tlsv1_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_client.h; path = ../crypto/tls/tlsv1_client.h; sourceTree = "<group>"; };
+		D6918ECF2954431100B0BE87 /* tlsv1_client_read.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_client_read.c; path = ../crypto/tls/tlsv1_client_read.c; sourceTree = "<group>"; };
+		D6918EDB2954431F00B0BE87 /* libtommath.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = libtommath.c; path = ../crypto/tls/libtommath.c; sourceTree = "<group>"; };
+		D6918EDE2954433900B0BE87 /* tls.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tls.h; path = ../crypto/tls.h; sourceTree = "<group>"; };
+		D6918EDF2954433900B0BE87 /* tls_internal.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tls_internal.c; path = ../crypto/tls_internal.c; sourceTree = "<group>"; };
 		D6927FF22945B75600C7F5A9 /* base64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		D6927FF32945B75600C7F5A9 /* base64.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
 		D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
@@ -185,9 +217,7 @@
 				D6927FF32945B75600C7F5A9 /* base64.c */,
 				D6927FF22945B75600C7F5A9 /* base64.h */,
 				D60D09A32942F69D0084F160 /* build_config.h */,
-				D60D0A1C2942F8F30084F160 /* byteswap.h */,
 				D60D09A62942F69D0084F160 /* common.h */,
-				D60D0A1B2942F8F30084F160 /* eloop.h */,
 				D60D09A72942F69D0084F160 /* includes.h */,
 				D60D09A42942F69D0084F160 /* os.h */,
 				D60D09A52942F69D0084F160 /* wpa_debug.h */,
@@ -204,6 +234,7 @@
 				D60D0A222942F9E80084F160 /* asn1.h */,
 				D60D0A1E2942F9E80084F160 /* bignum.c */,
 				D60D0A252942F9E90084F160 /* bignum.h */,
+				D6918EDB2954431F00B0BE87 /* libtommath.c */,
 				D60D0A212942F9E80084F160 /* pkcs1.c */,
 				D60D0A232942F9E80084F160 /* pkcs1.h */,
 				D60D0A2A2942F9E90084F160 /* pkcs5.c */,
@@ -212,6 +243,25 @@
 				D60D0A282942F9E90084F160 /* pkcs8.h */,
 				D60D0A1F2942F9E80084F160 /* rsa.c */,
 				D60D0A272942F9E90084F160 /* rsa.h */,
+				D6918EC22954431000B0BE87 /* tlsv1_client_i.h */,
+				D6918ECD2954431100B0BE87 /* tlsv1_client_ocsp.c */,
+				D6918ECF2954431100B0BE87 /* tlsv1_client_read.c */,
+				D6918EC12954431000B0BE87 /* tlsv1_client_write.c */,
+				D6918EC52954431100B0BE87 /* tlsv1_client.c */,
+				D6918ECE2954431100B0BE87 /* tlsv1_client.h */,
+				D6918EBE2954431000B0BE87 /* tlsv1_common.c */,
+				D6918EC72954431100B0BE87 /* tlsv1_common.h */,
+				D6918ECC2954431100B0BE87 /* tlsv1_cred.c */,
+				D6918ECB2954431100B0BE87 /* tlsv1_cred.h */,
+				D6918EC42954431100B0BE87 /* tlsv1_record.c */,
+				D6918EC82954431100B0BE87 /* tlsv1_record.h */,
+				D6918EBF2954431000B0BE87 /* tlsv1_server_i.h */,
+				D6918EC92954431100B0BE87 /* tlsv1_server_read.c */,
+				D6918EC32954431100B0BE87 /* tlsv1_server_write.c */,
+				D6918ECA2954431100B0BE87 /* tlsv1_server.c */,
+				D6918EC62954431100B0BE87 /* tlsv1_server.h */,
+				D6918EBD2954431000B0BE87 /* x509v3.c */,
+				D6918EC02954431000B0BE87 /* x509v3.h */,
 			);
 			name = tls;
 			sourceTree = "<group>";
@@ -290,6 +340,8 @@
 				D60D09CA2942F7610084F160 /* sha512-prf.c */,
 				D60D09E02942F7610084F160 /* sha512.c */,
 				D60D09D72942F7610084F160 /* sha512.h */,
+				D6918EDF2954433900B0BE87 /* tls_internal.c */,
+				D6918EDE2954433900B0BE87 /* tls.h */,
 				CE999BD625D21EC800351116 /* Configs */,
 				D644A042231ED82900B75B77 /* Products */,
 			);
@@ -318,9 +370,9 @@
 			dependencies = (
 			);
 			name = crypto;
-			productName = "crypto (Android)";
+			productName = crypto;
 			productReference = 30A9A7BB25ADC792000FA104 /* libcrypto.a */;
-			productType = "com.apple.product-type.library.dynamic";
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -358,6 +410,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6918ED02954431100B0BE87 /* x509v3.c in Sources */,
 				D60D0A58294311830084F160 /* asn1.c in Sources */,
 				D60D0A59294311830084F160 /* bignum.c in Sources */,
 				D60D0A5A294311830084F160 /* pkcs1.c in Sources */,
@@ -372,24 +425,32 @@
 				D60D0A62294311830084F160 /* aes-encblock.c in Sources */,
 				D60D0A63294311830084F160 /* aes-gcm.c in Sources */,
 				D60D0A64294311830084F160 /* aes-internal-dec.c in Sources */,
-				D60D0A90294313A30084F160 /* aes-wrap.c in Sources */,
 				D60D0A65294311830084F160 /* aes-internal-enc.c in Sources */,
 				D60D0A66294311830084F160 /* aes-internal.c in Sources */,
 				D60D0A67294311830084F160 /* aes-omac1.c in Sources */,
+				D6918ED72954431100B0BE87 /* tlsv1_server.c in Sources */,
 				D60D0A68294311830084F160 /* aes-siv.c in Sources */,
+				D6918ED82954431100B0BE87 /* tlsv1_cred.c in Sources */,
+				D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */,
+				D60D0A90294313A30084F160 /* aes-wrap.c in Sources */,
 				D60D0A6B294311830084F160 /* crypto_internal-cipher.c in Sources */,
 				D60D0A6C294311830084F160 /* crypto_internal-modexp.c in Sources */,
 				D60D0A6D294311830084F160 /* crypto_internal-rsa.c in Sources */,
 				D60D0A6E294311830084F160 /* crypto_internal.c in Sources */,
+				D6918ED22954431100B0BE87 /* tlsv1_client_write.c in Sources */,
 				D60D0A6F294311830084F160 /* des-internal.c in Sources */,
 				D60D0A70294311830084F160 /* dh_group5.c in Sources */,
-				D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */,
+				D6918EDA2954431100B0BE87 /* tlsv1_client_read.c in Sources */,
 				D60D0A71294311830084F160 /* dh_groups.c in Sources */,
 				D60D0A72294311830084F160 /* fips_prf_internal.c in Sources */,
 				D60D0A73294311830084F160 /* md4-internal.c in Sources */,
+				D6918ED62954431100B0BE87 /* tlsv1_server_read.c in Sources */,
 				D60D0A74294311830084F160 /* md5-internal.c in Sources */,
+				D6918ED32954431100B0BE87 /* tlsv1_server_write.c in Sources */,
 				D60D0A75294311830084F160 /* md5.c in Sources */,
 				D60D0A76294311830084F160 /* milenage.c in Sources */,
+				D6918ED52954431100B0BE87 /* tlsv1_client.c in Sources */,
+				D6918ED42954431100B0BE87 /* tlsv1_record.c in Sources */,
 				D60D0A77294311830084F160 /* ms_funcs.c in Sources */,
 				D60D0A78294311830084F160 /* random.c in Sources */,
 				D60D0A79294311830084F160 /* rc4.c in Sources */,
@@ -410,6 +471,9 @@
 				D60D0A88294311830084F160 /* sha384-tlsprf.c in Sources */,
 				D60D0A89294311830084F160 /* sha384.c in Sources */,
 				D60D0A8A294311830084F160 /* sha512-internal.c in Sources */,
+				D6918EE02954433900B0BE87 /* tls_internal.c in Sources */,
+				D6918ED12954431100B0BE87 /* tlsv1_common.c in Sources */,
+				D6918ED92954431100B0BE87 /* tlsv1_client_ocsp.c in Sources */,
 				D60D0A8B294311830084F160 /* sha512-kdf.c in Sources */,
 				D60D0A8C294311830084F160 /* sha512-prf.c in Sources */,
 				D60D0A8D294311830084F160 /* sha512.c in Sources */,
@@ -423,8 +487,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_EXTENSION = a;
+				OTHER_CFLAGS = (
+					"-mtext-section-literals",
+					"$(inherited)",
+				);
 			};
 			name = Debug;
 		};
@@ -432,8 +499,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_EXTENSION = a;
+				OTHER_CFLAGS = (
+					"-mtext-section-literals",
+					"$(inherited)",
+				);
 			};
 			name = Release;
 		};

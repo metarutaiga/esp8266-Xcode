@@ -13,6 +13,12 @@ if [ ! -d "esp-clang/xtensa-lx106-elf" ]; then
   ln -s ../xtensa-lx106-elf/xtensa-lx106-elf esp-clang/xtensa-lx106-elf
 fi
 
+if [ ! -d "../lwip" ]; then
+  mkdir ../lwip
+  ln -s ../ESP8266_NONOS_SDK/third_party/include ../lwip/include
+  ln -s ../ESP8266_NONOS_SDK/third_party/lwip ../lwip/src
+fi
+
 if [ ! -d "../mqtt" ]; then
   ln -s ESP8266_NONOS_SDK/examples/esp_mqtt_proj/mqtt ../mqtt
 fi

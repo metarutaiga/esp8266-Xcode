@@ -9,9 +9,6 @@
 #ifndef WPABUF_H
 #define WPABUF_H
 
-/* wpabuf::buf is a pointer to external data */
-#define WPABUF_FLAG_EXT_DATA BIT(0)
-
 /*
  * Internal data structure for wpabuf. Please do not touch this directly from
  * elsewhere. This is only defined in header file to allow inline functions
@@ -20,8 +17,8 @@
 struct wpabuf {
 	size_t size; /* total size of the allocated buffer */
 	size_t used; /* length of data in the buffer */
-	u8 *buf; /* pointer to the head of the buffer */
-	unsigned int flags;
+	u8 *ext_data; /* pointer to external data; NULL if data follows
+				   * struct wpabuf */
 	/* optionally followed by the allocated buffer */
 };
 
@@ -71,28 +68,15 @@ static inline size_t wpabuf_tailroom(const struct wpabuf *buf)
 }
 
 /**
- * wpabuf_cmp - Check if two buffers contain the same data
- * @a: wpabuf buffer
- * @b: wpabuf buffer
- * Returns: 0 if the two buffers contain the same data and non-zero otherwise
- */
-static inline int wpabuf_cmp(const struct wpabuf *a, const struct wpabuf *b)
-{
-	if (!a && !b)
-		return 0;
-	if (a && b && wpabuf_size(a) == wpabuf_size(b))
-		return os_memcmp(a->buf, b->buf, wpabuf_size(a));
-	return -1;
-}
-
-/**
  * wpabuf_head - Get pointer to the head of the buffer data
  * @buf: wpabuf buffer
  * Returns: Pointer to the head of the buffer data
  */
 static inline const void * wpabuf_head(const struct wpabuf *buf)
 {
-	return buf->buf;
+	if (buf->ext_data)
+		return buf->ext_data;
+	return buf + 1;
 }
 
 static inline const u8 * wpabuf_head_u8(const struct wpabuf *buf)
@@ -107,12 +91,29 @@ static inline const u8 * wpabuf_head_u8(const struct wpabuf *buf)
  */
 static inline void * wpabuf_mhead(struct wpabuf *buf)
 {
-	return buf->buf;
+	if (buf->ext_data)
+		return buf->ext_data;
+	return buf + 1;
 }
 
 static inline u8 * wpabuf_mhead_u8(struct wpabuf *buf)
 {
 	return (u8 *) wpabuf_mhead(buf);
+}
+
+/**
+ * wpabuf_cmp - Check if two buffers contain the same data
+ * @a: wpabuf buffer
+ * @b: wpabuf buffer
+ * Returns: 0 if the two buffers contain the same data and non-zero otherwise
+ */
+static inline int wpabuf_cmp(const struct wpabuf *a, const struct wpabuf *b)
+{
+	if (!a && !b)
+		return 0;
+	if (a && b && wpabuf_size(a) == wpabuf_size(b))
+		return os_memcmp(wpabuf_head(a), wpabuf_head(b), wpabuf_size(a));
+	return -1;
 }
 
 static inline void wpabuf_put_u8(struct wpabuf *buf, u8 data)
@@ -178,8 +179,7 @@ static inline void wpabuf_put_buf(struct wpabuf *dst,
 
 static inline void wpabuf_set(struct wpabuf *buf, const void *data, size_t len)
 {
-	buf->buf = (u8 *) data;
-	buf->flags = WPABUF_FLAG_EXT_DATA;
+	buf->ext_data = (u8 *) data;
 	buf->size = buf->used = len;
 }
 

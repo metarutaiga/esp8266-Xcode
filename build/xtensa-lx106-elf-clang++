@@ -1,0 +1,17 @@
+#!/bin/bash
+
+ARGS=""
+while [[ $# > 0 ]] ; do
+    case $1 in
+        -F*)
+        ;;
+        *)
+        ARGS=$ARGS" "$1
+        ;;
+    esac
+    shift
+done
+ARGS=$ARGS" -target xtensa-lx106-elf -mcpu=esp8266"
+
+echo esp-clang/bin/clang++ $ARGS
+esp-clang/bin/clang++ $ARGS
