@@ -58,6 +58,9 @@ void delay(unsigned int ms);
 
 #ifdef __cplusplus
 #include <string>
+#if 0
+typedef std::string string;
+#else
 class string : public std::string
 {
 public:
@@ -65,16 +68,11 @@ public:
     string(std::string&& __str) : std::string(std::move(__str)) {}
     string(const std::string& __str) : std::string(__str) {}
     string(const char* __s) { append(__s); }
-    string(const char* __s, size_t __n) { append(__s, __n); }
     using std::string::append;
-    string& append(const char* __s) { return append(__s, SIZE_MAX); }
-    string& append(const char* __s, size_t __n)
+    string& append(const char* __s)
     {
-        for (size_t i = 0; i < __n; ++i)
+        for (char c; (c = pgm_read_byte(__s)); ++__s)
         {
-            char c = pgm_read_byte(__s + i);
-            if (c == 0)
-                break;
             std::string::push_back(c);
         }
         return *this;
@@ -82,4 +80,5 @@ public:
     using std::string::operator+=;
     string& operator+=(const char* __s) { return append(__s); }
 };
+#endif
 #endif

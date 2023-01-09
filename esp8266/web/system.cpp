@@ -3,8 +3,8 @@
 #include "app/fs.h"
 #include "app/httpd.h"
 
-extern const char* web_css IRAM_ATTR __attribute__((weak));
-const char* web_css IRAM_ATTR = "";
+extern const char* const web_css __attribute__((weak));
+const char* const web_css = "";
 
 bool web_system(void* arg, const char* url, int line)
 {

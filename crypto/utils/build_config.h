@@ -111,9 +111,9 @@
 #define sha1_prf sha1_prf_unused
 #endif
 
-/* Free 0x3FFFEA80 - 0x3FFFEB30 */
-#undef aes_unwrap
-#undef aes_decrypt_deinit
-#undef aes_decrypt_init
+// Free 0x3FFFEA80 - 0x3FFFEB30
+// #undef aes_unwrap
+// #undef aes_decrypt_deinit
+// #undef aes_decrypt_init
 
 #endif /* BUILD_CONFIG_H */

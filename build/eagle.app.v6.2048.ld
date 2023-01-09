@@ -110,6 +110,7 @@ SECTIONS
     *liblwip.a:tcp.o(.data.tcp_next_iss.iss)
     *libcJSON.a:cJSON.o(.data.global_hooks)
     *libesp-homekit.a:server.o(.data.homekit_http_parser_settings)
+    *homekit.o(.data..compoundliteral*)
     *libnet80211.a:wl_chm.o(.text)
     *libnet80211.a:ieee80211_action.o(.data)
     *libc.a:(.literal .literal.*)

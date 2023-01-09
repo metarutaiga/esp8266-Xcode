@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30A9A7BB25ADC792000FA104 /* libesp-homekit.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libesp-homekit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		30A9A7BB25ADC792000FA104 /* libesp-homekit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libesp-homekit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6ECC01D29443A08000AC65D /* json.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = json.c; sourceTree = "<group>"; };
 		D6ECC01F29443A08000AC65D /* bitset.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bitset.h; sourceTree = "<group>"; };
@@ -152,9 +152,9 @@
 			dependencies = (
 			);
 			name = "esp-homekit";
-			productName = "esp-homekit (Android)";
+			productName = "esp-homekit";
 			productReference = 30A9A7BB25ADC792000FA104 /* libesp-homekit.a */;
-			productType = "com.apple.product-type.library.dynamic";
+			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
 
@@ -212,7 +212,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_EXTENSION = a;
 			};
 			name = Debug;
@@ -221,7 +220,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_EXTENSION = a;
 			};
 			name = Release;
