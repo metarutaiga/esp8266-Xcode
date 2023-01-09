@@ -33,11 +33,7 @@ static _xtos_handler origin_exception IRAM_ATTR;
 static void dump_exception(struct exception_frame* ef, int cause)
 {
     extern int divide;
-    if ((ef->epc & 0xffff0000) == 0x40000000)
-    {
-        
-    }
-    else if ((ef->epc >= (uint32_t)&divide) && (ef->epc < (uint32_t)&divide + 0x800))
+    if ((ef->epc >= (uint32_t)&divide) && (ef->epc < (uint32_t)&divide + 0x800))
     {
         // sprintf
     }
@@ -65,6 +61,8 @@ static void init_down(void)
 }
 
 #ifdef LOOP
+void loop() __attribute__((weak));
+void loop() {}
 static void loop_task(os_event_t* event)
 {
     loop();
@@ -113,6 +111,7 @@ uint32_t IRAM_FLASH_ATTR system_get_time_ms()
 
 void user_init(void)
 {
+    system_set_os_print(1);
 #ifdef LOOP
     static os_event_t loop_event IRAM_ATTR;
     system_os_task(loop_task, USER_TASK_PRIO_1, &loop_event, 1);

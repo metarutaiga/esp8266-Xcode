@@ -7,17 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D6D04182294EEC69006B09EE /* lfs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D0417F294EEC69006B09EE /* lfs.c */; };
+		D6C7F7C5296AC2EF00CF2A5A /* cJSON_Utils.c in Sources */ = {isa = PBXBuildFile; fileRef = D6C7F7C1296AC2EF00CF2A5A /* cJSON_Utils.c */; };
+		D6C7F7C6296AC2EF00CF2A5A /* cJSON.c in Sources */ = {isa = PBXBuildFile; fileRef = D6C7F7C2296AC2EF00CF2A5A /* cJSON.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30A9A7BB25ADC792000FA104 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		30A9A7BB25ADC792000FA104 /* libcJSON.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcJSON.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D69FFA60294185C300CC7E75 /* user_config.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
-		D6D0417E294EEC69006B09EE /* lfs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lfs.h; path = ../littlefs/lfs.h; sourceTree = "<group>"; };
-		D6D0417F294EEC69006B09EE /* lfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs.c; path = ../littlefs/lfs.c; sourceTree = "<group>"; };
-		D6D04180294EEC69006B09EE /* lfs_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs_util.c; path = ../littlefs/lfs_util.c; sourceTree = "<group>"; };
-		D6D04181294EEC69006B09EE /* lfs_util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lfs_util.h; path = ../littlefs/lfs_util.h; sourceTree = "<group>"; };
+		D6C7F7C1296AC2EF00CF2A5A /* cJSON_Utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cJSON_Utils.c; path = ../cJSON/cJSON_Utils.c; sourceTree = "<group>"; };
+		D6C7F7C2296AC2EF00CF2A5A /* cJSON.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = cJSON.c; path = ../cJSON/cJSON.c; sourceTree = "<group>"; };
+		D6C7F7C3296AC2EF00CF2A5A /* cJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cJSON.h; path = ../cJSON/cJSON.h; sourceTree = "<group>"; };
+		D6C7F7C4296AC2EF00CF2A5A /* cJSON_Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cJSON_Utils.h; path = ../cJSON/cJSON_Utils.h; sourceTree = "<group>"; };
+		D6C7F7C9296BAC1000CF2A5A /* cJSON_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cJSON_config.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +37,7 @@
 			isa = PBXGroup;
 			children = (
 				D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */,
+				D6C7F7C9296BAC1000CF2A5A /* cJSON_config.h */,
 				D69FFA60294185C300CC7E75 /* user_config.h */,
 			);
 			name = Configs;
@@ -43,10 +46,10 @@
 		D644A038231ED82900B75B77 = {
 			isa = PBXGroup;
 			children = (
-				D6D04180294EEC69006B09EE /* lfs_util.c */,
-				D6D04181294EEC69006B09EE /* lfs_util.h */,
-				D6D0417F294EEC69006B09EE /* lfs.c */,
-				D6D0417E294EEC69006B09EE /* lfs.h */,
+				D6C7F7C1296AC2EF00CF2A5A /* cJSON_Utils.c */,
+				D6C7F7C4296AC2EF00CF2A5A /* cJSON_Utils.h */,
+				D6C7F7C2296AC2EF00CF2A5A /* cJSON.c */,
+				D6C7F7C3296AC2EF00CF2A5A /* cJSON.h */,
 				CE999BD625D21EC800351116 /* Configs */,
 				D644A042231ED82900B75B77 /* Products */,
 			);
@@ -55,7 +58,7 @@
 		D644A042231ED82900B75B77 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30A9A7BB25ADC792000FA104 /* liblittlefs.a */,
+				30A9A7BB25ADC792000FA104 /* libcJSON.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -63,9 +66,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		30A9A7BA25ADC792000FA104 /* littlefs */ = {
+		30A9A7BA25ADC792000FA104 /* cJSON */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "littlefs" */;
+			buildConfigurationList = 30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "cJSON" */;
 			buildPhases = (
 				30A9A7B825ADC792000FA104 /* Sources */,
 				30A9A7B925ADC792000FA104 /* Frameworks */,
@@ -74,9 +77,9 @@
 			);
 			dependencies = (
 			);
-			name = littlefs;
-			productName = littlefs;
-			productReference = 30A9A7BB25ADC792000FA104 /* liblittlefs.a */;
+			name = cJSON;
+			productName = cJSON;
+			productReference = 30A9A7BB25ADC792000FA104 /* libcJSON.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -92,7 +95,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "littlefs" */;
+			buildConfigurationList = D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "cJSON" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -105,7 +108,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				30A9A7BA25ADC792000FA104 /* littlefs */,
+				30A9A7BA25ADC792000FA104 /* cJSON */,
 			);
 		};
 /* End PBXProject section */
@@ -115,7 +118,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D04182294EEC69006B09EE /* lfs.c in Sources */,
+				D6C7F7C5296AC2EF00CF2A5A /* cJSON_Utils.c in Sources */,
+				D6C7F7C6296AC2EF00CF2A5A /* cJSON.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -177,9 +181,9 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREFIX_HEADER = cJSON_config.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_DEBUG,
-					littlefs_OPEN_SRC,
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -190,15 +194,15 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					.,
 					..,
+					../cJSON/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OBJROOT = ../build/temp;
 				ONLY_ACTIVE_ARCH = YES;
-				PRODUCT_NAME = littlefs;
+				PRODUCT_NAME = cJSON;
 				SKIP_INSTALL = YES;
 				SYMROOT = ../bin;
 				USE_HEADERMAP = NO;
@@ -242,9 +246,9 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREFIX_HEADER = cJSON_config.h;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
-					littlefs_OPEN_SRC,
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
@@ -255,14 +259,14 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
-					.,
 					..,
+					../cJSON/include,
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACH_O_TYPE = staticlib;
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OBJROOT = ../build/temp;
-				PRODUCT_NAME = littlefs;
+				PRODUCT_NAME = cJSON;
 				SKIP_INSTALL = YES;
 				SYMROOT = ../bin;
 				USE_HEADERMAP = NO;
@@ -272,7 +276,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "littlefs" */ = {
+		30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "cJSON" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30A9A7BC25ADC792000FA104 /* Debug */,
@@ -281,7 +285,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "littlefs" */ = {
+		D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "cJSON" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D644A04A231ED82900B75B77 /* Debug */,

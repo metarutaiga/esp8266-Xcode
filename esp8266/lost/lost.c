@@ -86,6 +86,11 @@ time_t mktime(struct tm* tim_p)
     return tim;
 }
 
+void qsort(void* __base, size_t __nmemb, size_t __size, __compar_fn_t _compar)
+{
+    
+}
+
 int strcasecmp(const char* s1, const char* s2)
 {
     return os_strcmp(s1, s2);
@@ -156,14 +161,47 @@ size_t strspn(const char* str, const char* spn)
     return str - s;
 }
 
+double strtod(const char* str, char** str_end)
+{
+    bool negative = false;
+    double result = 0.0;
+    double point = 1.0;
+    for (char c = 0; (c = *str); str++)
+    {
+        if (c == '-')
+            negative = true;
+        else if (c == '.')
+            break;
+        else if (c >= '0' && c <= '9')
+            result = (result * 10.0) + (c - '0');
+        else
+            break;
+    }
+    for (char c = 0; (c = *str); str++)
+    {
+        if (c == '-')
+            break;
+        else if (c == '.')
+            continue;
+        else if (c >= '0' && c <= '9')
+            result = result + (c - '0') * (point *= 0.1);
+        else
+            break;
+    }
+    return negative ? -result : result;
+}
+
 long strtol(const char* str, char** str_end, int base)
 {
+    bool negative = false;
     long result = 0;
     if (base == 16)
     {
         for (char c = 0; (c = *str); str++)
         {
-            if (c >= 'a' && c <= 'f')
+            if (c == '-')
+                negative = true;
+            else if (c >= 'a' && c <= 'f')
                 result = result * 16 + c - 'a' + 10;
             else if (c >= 'A' && c <= 'F')
                 result = result * 16 + c - 'A' + 10;
@@ -177,11 +215,13 @@ long strtol(const char* str, char** str_end, int base)
     {
         for (char c = 0; (c = *str); str++)
         {
-            if (c >= '0' && c <= '9')
+            if (c == '-')
+                negative = true;
+            else if (c >= '0' && c <= '9')
                 result = result * 10 + c - '0';
             else
                 break;
         }
     }
-    return result;
+    return negative ? -result : result;
 }

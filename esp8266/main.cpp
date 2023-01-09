@@ -1,6 +1,7 @@
 #include "esp8266.h"
 #include <string>
 #include "app/fs.h"
+#include "app/homekit.h"
 #include "app/httpd.h"
 #include "app/https.h"
 #include "app/mqtt.h"
@@ -86,6 +87,9 @@ void wifi(System_Event_t* event)
                 ota_init(8266);
             fs_close(fd);
         }
+
+        // HomeKit
+        homekit_init();
         break;
     }
     case EVENT_STAMODE_CONNECTED:

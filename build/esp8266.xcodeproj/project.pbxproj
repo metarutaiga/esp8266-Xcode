@@ -24,6 +24,8 @@
 		D627777D295B33890092DFB5 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D62777AD295FF65D0092DFB5 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D62777AB295FF65D0092DFB5 /* fota.cpp */; };
 		D62777AE2961369F0092DFB5 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D62777AB295FF65D0092DFB5 /* fota.cpp */; };
+		D66B1E00296BD07900C1AED1 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1DFF296BD07900C1AED1 /* lfs_util.c */; };
+		D66B1E01296BD07900C1AED1 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1DFF296BD07900C1AED1 /* lfs_util.c */; };
 		D6918EB72950377E00B0BE87 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
 		D6918EB82950377E00B0BE87 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
 		D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
@@ -32,6 +34,11 @@
 		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
 		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
 		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
+		D6C7F7BB296ABDB200CF2A5A /* libesp-homekit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6C7F7BA296ABDB200CF2A5A /* libesp-homekit.a */; };
+		D6C7F7C0296AC25100CF2A5A /* libhttp-parser.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6C7F7BF296AC25100CF2A5A /* libhttp-parser.a */; };
+		D6C7F7C8296AC30400CF2A5A /* libcJSON.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6C7F7C7296AC30400CF2A5A /* libcJSON.a */; };
+		D6C7F7CD296BCAD300CF2A5A /* homekit.c in Sources */ = {isa = PBXBuildFile; fileRef = D6C7F7CB296BCAD300CF2A5A /* homekit.c */; };
+		D6C7F7CE296BCAD300CF2A5A /* homekit.c in Sources */ = {isa = PBXBuildFile; fileRef = D6C7F7CB296BCAD300CF2A5A /* homekit.c */; };
 		D6D0416A294C28CB006B09EE /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
 		D6D753E42955AE41007D8981 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
 		D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
@@ -50,6 +57,7 @@
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D62777AB295FF65D0092DFB5 /* fota.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fota.cpp; path = ../esp8266/app/fota.cpp; sourceTree = "<group>"; };
 		D62777AC295FF65D0092DFB5 /* fota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fota.h; path = ../esp8266/app/fota.h; sourceTree = "<group>"; };
+		D66B1DFF296BD07900C1AED1 /* lfs_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs_util.c; path = ../esp8266/lost/lfs_util.c; sourceTree = "<group>"; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6918EB12950377D00B0BE87 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
 		D6918EB22950377D00B0BE87 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
@@ -93,6 +101,11 @@
 		D69FFA812941BBF800CC7E75 /* smartconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smartconfig.h; sourceTree = "<group>"; };
 		D69FFA822941BBF800CC7E75 /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ping.h; sourceTree = "<group>"; };
 		D69FFA832941BBF800CC7E75 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
+		D6C7F7BA296ABDB200CF2A5A /* libesp-homekit.a */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; path = "libesp-homekit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C7F7BF296AC25100CF2A5A /* libhttp-parser.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libhttp-parser.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C7F7C7296AC30400CF2A5A /* libcJSON.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcJSON.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C7F7CB296BCAD300CF2A5A /* homekit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = homekit.c; path = ../esp8266/app/homekit.c; sourceTree = "<group>"; };
+		D6C7F7CC296BCAD300CF2A5A /* homekit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = homekit.h; path = ../esp8266/app/homekit.h; sourceTree = "<group>"; };
 		D6D04169294C28CB006B09EE /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = system.cpp; path = ../esp8266/web/system.cpp; sourceTree = "<group>"; };
 		D6D753E12955AE41007D8981 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
 		D6D753E22955AE41007D8981 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
@@ -114,7 +127,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6C7F7C8296AC30400CF2A5A /* libcJSON.a in Frameworks */,
 				D6D753F62959402C007D8981 /* libcrypto.a in Frameworks */,
+				D6C7F7BB296ABDB200CF2A5A /* libesp-homekit.a in Frameworks */,
+				D6C7F7C0296AC25100CF2A5A /* libhttp-parser.a in Frameworks */,
 				D6D753F82959402C007D8981 /* liblittlefs.a in Frameworks */,
 				D6D753FA2959402C007D8981 /* liblwip.a in Frameworks */,
 				D6D753FC2959402C007D8981 /* libmqtt.a in Frameworks */,
@@ -134,6 +150,9 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D6C7F7C7296AC30400CF2A5A /* libcJSON.a */,
+				D6C7F7BF296AC25100CF2A5A /* libhttp-parser.a */,
+				D6C7F7BA296ABDB200CF2A5A /* libesp-homekit.a */,
 				D6D753F52959402C007D8981 /* libcrypto.a */,
 				D6D753F72959402C007D8981 /* liblittlefs.a */,
 				D6D753F92959402C007D8981 /* liblwip.a */,
@@ -245,6 +264,8 @@
 				D6918EB22950377D00B0BE87 /* fs.h */,
 				D6D753EA29583EF8007D8981 /* gpio.c */,
 				D6D753EB29583EF8007D8981 /* gpio.h */,
+				D6C7F7CB296BCAD300CF2A5A /* homekit.c */,
+				D6C7F7CC296BCAD300CF2A5A /* homekit.h */,
 				D6918EB32950377D00B0BE87 /* httpd.c */,
 				D6918EB42950377D00B0BE87 /* httpd.h */,
 				D6918EE229544F6700B0BE87 /* https.c */,
@@ -265,6 +286,7 @@
 			isa = PBXGroup;
 			children = (
 				D6D753E32955AE41007D8981 /* crypto.c */,
+				D66B1DFF296BD07900C1AED1 /* lfs_util.c */,
 				D6D753E22955AE41007D8981 /* libcpp.cpp */,
 				D6D753E12955AE41007D8981 /* lost.c */,
 			);
@@ -373,6 +395,7 @@
 				D6918EB72950377E00B0BE87 /* fs.c in Sources */,
 				D6D753EC29583EF8007D8981 /* gpio.c in Sources */,
 				D6918EB82950377E00B0BE87 /* httpd.c in Sources */,
+				D6C7F7CD296BCAD300CF2A5A /* homekit.c in Sources */,
 				D6918EE329544F6700B0BE87 /* https.c in Sources */,
 				D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */,
 				D6918EBC29515FB900B0BE87 /* ota.c in Sources */,
@@ -385,6 +408,7 @@
 				D69FFA542941832400CC7E75 /* init.c in Sources */,
 				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
 				D69FFA532941832400CC7E75 /* phy.c in Sources */,
+				D66B1E00296BD07900C1AED1 /* lfs_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +420,7 @@
 				D627776F295B33890092DFB5 /* fs.c in Sources */,
 				D6277770295B33890092DFB5 /* gpio.c in Sources */,
 				D6277771295B33890092DFB5 /* httpd.c in Sources */,
+				D6C7F7CE296BCAD300CF2A5A /* homekit.c in Sources */,
 				D6277772295B33890092DFB5 /* https.c in Sources */,
 				D6277773295B33890092DFB5 /* mqtt.cpp in Sources */,
 				D6277774295B33890092DFB5 /* ota.c in Sources */,
@@ -408,6 +433,7 @@
 				D627777B295B33890092DFB5 /* init.c in Sources */,
 				D627777C295B33890092DFB5 /* main.cpp in Sources */,
 				D627777D295B33890092DFB5 /* phy.c in Sources */,
+				D66B1E01296BD07900C1AED1 /* lfs_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,6 +536,7 @@
 				HEADER_SEARCH_PATHS = (
 					..,
 					../esp8266,
+					"../esp-homekit/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACH_O_TYPE = mh_execute;
@@ -573,6 +600,7 @@
 				HEADER_SEARCH_PATHS = (
 					..,
 					../esp8266,
+					"../esp-homekit/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MACH_O_TYPE = mh_execute;

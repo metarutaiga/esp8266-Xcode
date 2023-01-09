@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "container:build/cJSON.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "container:build/crypto.xcodeproj">
    </FileRef>
    <FileRef
@@ -9,6 +12,9 @@
    </FileRef>
    <FileRef
       location = "container:build/esp-homekit.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:build/http-parser.xcodeproj">
    </FileRef>
    <FileRef
       location = "container:build/littlefs.xcodeproj">
