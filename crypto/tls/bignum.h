@@ -24,6 +24,8 @@ int bignum_sub(const struct bignum *a, const struct bignum *b,
 	       struct bignum *c);
 int bignum_mul(const struct bignum *a, const struct bignum *b,
 	       struct bignum *c);
+int bignum_mod(const struct bignum *a, const struct bignum *b,
+	       struct bignum *c);
 int bignum_mulmod(const struct bignum *a, const struct bignum *b,
 		  const struct bignum *c, struct bignum *d);
 int bignum_exptmod(const struct bignum *a, const struct bignum *b,
