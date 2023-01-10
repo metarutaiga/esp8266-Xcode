@@ -33,7 +33,11 @@ static _xtos_handler origin_exception IRAM_ATTR;
 static void dump_exception(struct exception_frame* ef, int cause)
 {
     extern int divide;
-    if ((ef->epc >= (uint32_t)&divide) && (ef->epc < (uint32_t)&divide + 0x800))
+    if ((ef->epc & 0xffff0000) == 0x40000000)
+    {
+        
+    }
+    else if ((ef->epc >= (uint32_t)&divide) && (ef->epc < (uint32_t)&divide + 0x800))
     {
         // sprintf
     }

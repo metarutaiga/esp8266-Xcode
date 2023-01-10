@@ -20,10 +20,32 @@ int os_mktime(int year, int month, int day, int hour, int min, int sec, time_t* 
     return 0;
 }
 
-void* aes_encrypt_init(const u8* key, size_t len)
-{
 #define AES_PRIV_SIZE (4 * 4 * 15 + 4)
 #define AES_PRIV_NR_POS (4 * 15)
+
+void* aes_decrypt_init(const u8* key, size_t len)
+{
+    extern void rijndaelKeySetupDec(u32 rk[], const u8 cipherKey[]);
+    u32* rk;
+    if (len != 16)
+        return NULL;
+    rk = (u32*)os_malloc(AES_PRIV_SIZE);
+    if (rk == NULL)
+        return NULL;
+    rijndaelKeySetupDec(rk, key);
+    rk[AES_PRIV_NR_POS] = 10;
+    return rk;
+}
+
+void aes_decrypt_deinit(void *ctx)
+{
+    os_memset(ctx, 0, AES_PRIV_SIZE);
+    os_free(ctx);
+}
+
+void* aes_encrypt_init(const u8* key, size_t len)
+{
+    extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
     u32* rk;
     if (len != 16)
         return NULL;
@@ -33,6 +55,24 @@ void* aes_encrypt_init(const u8* key, size_t len)
     rijndaelKeySetupEnc(rk, key);
     rk[AES_PRIV_NR_POS] = 10;
     return rk;
+}
+
+void aes_encrypt_deinit(void *ctx)
+{
+    os_memset(ctx, 0, AES_PRIV_SIZE);
+    os_free(ctx);
+}
+
+int aes_wrap(const u8 *kek, int n, const u8 *plain, u8 *cipher)
+{
+    int aes_wrap5(const u8 *kek, size_t kek_len, int n, const u8 *plain, u8 *cipher);
+    return aes_wrap5(kek, 16, n, plain, cipher);
+}
+
+int aes_unwrap(const u8 *kek, int n, const u8 *cipher, u8 *plain)
+{
+    int aes_unwrap5(const u8 *kek, size_t kek_len, int n, const u8 *cipher, u8 *plain);
+    return aes_unwrap5(kek, 16, n, cipher, plain);
 }
 
 void randombytes(u8* data, u64 size)

@@ -561,6 +561,10 @@ static const u8 iv[64] = {
 
 int crypto_hash(u8 *out,const u8 *m,u64 n)
 {
+#if 1
+  int sha512_vector(u32 num_elem, const u8 *addr[], const u32 *len, u8 *mac);
+  return sha512_vector(1, &m, &n, out);
+#endif
   u8 h[64],x[256];
   u64 i,b = n;
 

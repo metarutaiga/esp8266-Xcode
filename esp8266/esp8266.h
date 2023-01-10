@@ -30,7 +30,6 @@ extern "C" {
 #endif
 
 extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
-extern void rijndaelKeySetupEnc(u32 rk[], const u8 cipherKey[]);
 extern void system_restart_local();
 extern uint64_t system_get_time64();
 extern uint32_t system_get_time_ms();
@@ -80,5 +79,7 @@ public:
     using std::string::operator+=;
     string& operator+=(const char* __s) { return append(__s); }
 };
+inline string operator+ (const string& lhs, const char* rhs) { return string(lhs) += rhs; }
+inline string operator+ (const char* lhs, const string& rhs) { return string(lhs) += rhs; }
 #endif
 #endif

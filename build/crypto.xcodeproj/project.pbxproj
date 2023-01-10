@@ -166,8 +166,8 @@
 		D60D0A2B2942F9E90084F160 /* asn1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn1.c; path = ../crypto/tls/asn1.c; sourceTree = "<group>"; };
 		D60D0A8E294313A30084F160 /* aes-wrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-wrap.c"; path = "../crypto/aes-wrap.c"; sourceTree = "<group>"; };
 		D60D0A8F294313A30084F160 /* aes-unwrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-unwrap.c"; path = "../crypto/aes-unwrap.c"; sourceTree = "<group>"; };
-		D66B1E35296D1F9E00C1AED1 /* tweetnacl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tweetnacl.c; path = ../crypto/tweetnacl/tweetnacl.c; sourceTree = "<group>"; };
-		D66B1E36296D1F9E00C1AED1 /* tweetnacl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tweetnacl.h; path = ../crypto/tweetnacl/tweetnacl.h; sourceTree = "<group>"; };
+		D66B1E35296D1F9E00C1AED1 /* tweetnacl.c */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.c; name = tweetnacl.c; path = ../crypto/tweetnacl/tweetnacl.c; sourceTree = "<group>"; tabWidth = 2; };
+		D66B1E36296D1F9E00C1AED1 /* tweetnacl.h */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.c.h; name = tweetnacl.h; path = ../crypto/tweetnacl/tweetnacl.h; sourceTree = "<group>"; tabWidth = 2; };
 		D6918EBD2954431000B0BE87 /* x509v3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = x509v3.c; path = ../crypto/tls/x509v3.c; sourceTree = "<group>"; };
 		D6918EBE2954431000B0BE87 /* tlsv1_common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_common.c; path = ../crypto/tls/tlsv1_common.c; sourceTree = "<group>"; };
 		D6918EBF2954431000B0BE87 /* tlsv1_server_i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_server_i.h; path = ../crypto/tls/tlsv1_server_i.h; sourceTree = "<group>"; };
@@ -617,6 +617,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = z;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					"$(inherited)",

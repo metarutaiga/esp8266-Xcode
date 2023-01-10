@@ -37,7 +37,7 @@ static void fota_recv(void* arg, char* pusrdata, int length)
     if (context->size == 0)
     {
         context->header += string(pusrdata, length);
-        size_t pos = context->header.find("\r\n\r\n");
+        size_t pos = context->header.find(string("\r\n\r\n"));
         if (pos == string::npos)
             return;
         int skip = length - (context->header.length() - (pos + 4));
@@ -45,7 +45,7 @@ static void fota_recv(void* arg, char* pusrdata, int length)
         length -= skip;
 
         // Content-Length:
-        pos = context->header.find("Content-Length: ");
+        pos = context->header.find(string("Content-Length: "));
         if (pos != string::npos)
             context->size = strtol(context->header.data() + pos + sizeof("Content-Length: ") - 1, 0, 10);
         if (context->size == 0)
