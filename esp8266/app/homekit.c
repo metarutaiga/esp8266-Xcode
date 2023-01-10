@@ -4,14 +4,15 @@
 #include <homekit/characteristics.h>
 #include <homekit/homekit.h>
 
-extern const homekit_accessory_t* accessories[] __attribute__((weak));
-const homekit_accessory_t* accessories[] =
+extern homekit_accessory_t const* const accessories[] __attribute__((weak));
+homekit_accessory_t const* const accessories[] =
 {
-    HOMEKIT_ACCESSORY(.id = 1,
-                      .category = homekit_accessory_category_sensor,
-                      .services = (homekit_service_t*[])
+    &(homekit_accessory_t const) HOMEKIT_ACCESSORY_(.id = 1,
+                                                    .category = homekit_accessory_category_sensor,
+                                                    .services = (homekit_service_t **)(homekit_service_t const* const[])
     {
-        HOMEKIT_SERVICE(ACCESSORY_INFORMATION, .characteristics = (homekit_characteristic_t*[])
+        &(homekit_service_t const) HOMEKIT_SERVICE_(ACCESSORY_INFORMATION,
+                                                    .characteristics = (homekit_characteristic_t **)(homekit_characteristic_t const* const[])
         {
             HOMEKIT_CHARACTERISTIC(IDENTIFY, NULL),
             HOMEKIT_CHARACTERISTIC(MANUFACTURER, "ESP8266"),
@@ -21,7 +22,8 @@ const homekit_accessory_t* accessories[] =
             HOMEKIT_CHARACTERISTIC(FIRMWARE_REVISION, (char*)version),
             NULL
         }),
-        HOMEKIT_SERVICE(TEMPERATURE_SENSOR, .characteristics = (homekit_characteristic_t*[])
+        &(homekit_service_t const) HOMEKIT_SERVICE_(TEMPERATURE_SENSOR,
+                                                    .characteristics = (homekit_characteristic_t **)(homekit_characteristic_t const* const[])
         {
             HOMEKIT_CHARACTERISTIC(NAME, "Temperature"),
             HOMEKIT_CHARACTERISTIC(CURRENT_TEMPERATURE, 0),

@@ -61,6 +61,7 @@
 		D60D0A8D294311830084F160 /* sha512.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D09E02942F7610084F160 /* sha512.c */; };
 		D60D0A90294313A30084F160 /* aes-wrap.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D0A8E294313A30084F160 /* aes-wrap.c */; };
 		D60D0A91294313A30084F160 /* aes-unwrap.c in Sources */ = {isa = PBXBuildFile; fileRef = D60D0A8F294313A30084F160 /* aes-unwrap.c */; };
+		D66B1E37296D1F9E00C1AED1 /* tweetnacl.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1E35296D1F9E00C1AED1 /* tweetnacl.c */; };
 		D6918ED02954431100B0BE87 /* x509v3.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBD2954431000B0BE87 /* x509v3.c */; };
 		D6918ED12954431100B0BE87 /* tlsv1_common.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBE2954431000B0BE87 /* tlsv1_common.c */; };
 		D6918ED22954431100B0BE87 /* tlsv1_client_write.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EC12954431000B0BE87 /* tlsv1_client_write.c */; };
@@ -165,6 +166,8 @@
 		D60D0A2B2942F9E90084F160 /* asn1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = asn1.c; path = ../crypto/tls/asn1.c; sourceTree = "<group>"; };
 		D60D0A8E294313A30084F160 /* aes-wrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-wrap.c"; path = "../crypto/aes-wrap.c"; sourceTree = "<group>"; };
 		D60D0A8F294313A30084F160 /* aes-unwrap.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = "aes-unwrap.c"; path = "../crypto/aes-unwrap.c"; sourceTree = "<group>"; };
+		D66B1E35296D1F9E00C1AED1 /* tweetnacl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tweetnacl.c; path = ../crypto/tweetnacl/tweetnacl.c; sourceTree = "<group>"; };
+		D66B1E36296D1F9E00C1AED1 /* tweetnacl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tweetnacl.h; path = ../crypto/tweetnacl/tweetnacl.h; sourceTree = "<group>"; };
 		D6918EBD2954431000B0BE87 /* x509v3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = x509v3.c; path = ../crypto/tls/x509v3.c; sourceTree = "<group>"; };
 		D6918EBE2954431000B0BE87 /* tlsv1_common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_common.c; path = ../crypto/tls/tlsv1_common.c; sourceTree = "<group>"; };
 		D6918EBF2954431000B0BE87 /* tlsv1_server_i.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_server_i.h; path = ../crypto/tls/tlsv1_server_i.h; sourceTree = "<group>"; };
@@ -270,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				D60D0A1D2942F9D80084F160 /* tls */,
+				D66B1E34296D1F8D00C1AED1 /* tweetnacl */,
 				D60D09A12942F69D0084F160 /* utils */,
 				D60D09B22942F69E0084F160 /* aes_i.h */,
 				D60D09A92942F69D0084F160 /* aes_siv.h */,
@@ -353,6 +357,15 @@
 				30A9A7BB25ADC792000FA104 /* libcrypto.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D66B1E34296D1F8D00C1AED1 /* tweetnacl */ = {
+			isa = PBXGroup;
+			children = (
+				D66B1E35296D1F9E00C1AED1 /* tweetnacl.c */,
+				D66B1E36296D1F9E00C1AED1 /* tweetnacl.h */,
+			);
+			name = tweetnacl;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -441,6 +454,7 @@
 				D60D0A6F294311830084F160 /* des-internal.c in Sources */,
 				D60D0A70294311830084F160 /* dh_group5.c in Sources */,
 				D6918EDA2954431100B0BE87 /* tlsv1_client_read.c in Sources */,
+				D66B1E37296D1F9E00C1AED1 /* tweetnacl.c in Sources */,
 				D60D0A71294311830084F160 /* dh_groups.c in Sources */,
 				D60D0A72294311830084F160 /* fips_prf_internal.c in Sources */,
 				D60D0A73294311830084F160 /* md4-internal.c in Sources */,

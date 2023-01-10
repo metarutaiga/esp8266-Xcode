@@ -35,6 +35,11 @@ void* aes_encrypt_init(const u8* key, size_t len)
     return rk;
 }
 
+void randombytes(u8* data, u64 size)
+{
+    os_get_random(data, size);
+}
+
 void wpa_printf(int level, const char* fmt, ...)
 {
     extern int ets_putc(int);
