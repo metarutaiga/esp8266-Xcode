@@ -29,6 +29,7 @@ extern "C" {
 }
 #endif
 
+extern void ets_write_char(char c);
 extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
 extern int system_station_got_ip_set(ip_addr_t* ip, ip_addr_t* mask, ip_addr_t* gw);
 extern void system_restart_local();

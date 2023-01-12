@@ -229,8 +229,9 @@ SECTIONS
     _irom0_text_start = ABSOLUTE(.);
 
     *(.sdk.version)
-    *(*.rodata.__func__* *.rodata.str* *.pstr* EXCLUDE_FILE(ieee80211_crypto_tkip.o ieee80211_crypto_wep.o memp.o tcp.o) *.irom.text* *.rodata.sntp_asctime_r.*)
+    *(*.rodata.__func__* *.rodata.str* *.pstr* EXCLUDE_FILE(ieee80211_phy.o ieee80211_crypto_tkip.o ieee80211_crypto_wep.o memp.o tcp.o) *.irom.text* *.rodata.sntp_asctime_r.*)
     *libmain.a:mem_manager.o(.rodata)
+    *libnet80211.a:ieee80211_phy.o(*.irom.text*)
     *libesp-homekit.a:server.o(.rodata.*response* .rodata..L.str.*)
     *libcrypto.a:base64.o(.rodata.base64_table)
     *libcrypto.a:tweetnacl.o(.rodata.*)

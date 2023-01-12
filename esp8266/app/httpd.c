@@ -4,6 +4,8 @@
 
 #define HTTP_COPY 0
 
+const char* const web_css = "";
+
 struct httpd_handler
 {
     struct httpd_handler* next;

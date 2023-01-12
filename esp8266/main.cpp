@@ -8,8 +8,6 @@
 #include "app/ota.h"
 #include "app/uart.h"
 
-extern "C" void ets_write_char(char c);
-
 extern bool web_system(void* arg, const char* url, int line);
 extern bool web_ssid(void* arg, const char* url, int line);
 extern bool web_ip(void* arg, const char* url, int line);
@@ -56,7 +54,8 @@ void wifi(System_Event_t* event)
             ip_addr_t dns = { ipaddr_addr(fs_gets(number, 128, fd)) };
             fs_close(fd);
 
-            if (now_info.ip.addr != set_info.ip.addr &&
+            if (IPADDR_NONE != set_info.ip.addr &&
+                now_info.ip.addr != set_info.ip.addr &&
                 now_info.netmask.addr == set_info.netmask.addr &&
                 now_info.gw.addr == set_info.gw.addr)
             {
