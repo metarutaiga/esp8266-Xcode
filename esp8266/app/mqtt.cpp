@@ -12,11 +12,11 @@ extern "C"
 
 static MQTT_Client* mqtt_client IRAM_ATTR;
 static void (*mqtt_receive_callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length) IRAM_ATTR;
-static void* mqtt_connected IRAM_ATTR;
+static void* mqtt_is_connected IRAM_ATTR;
 
 static void mqtt_information()
 {
-    if (mqtt_connected == NULL)
+    if (mqtt_is_connected == NULL)
         return;
 
     mqtt_publish(mqtt_prefix(number, "ESP", "SDK Version", 0), system_get_sdk_version(), 0, 0);
@@ -62,7 +62,7 @@ static void mqtt_information()
 
 static void mqtt_loop()
 {
-    if (mqtt_connected == NULL)
+    if (mqtt_is_connected == NULL)
         return;
 
     // Time
@@ -111,7 +111,7 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
 
 void mqtt_publish(const char* topic, const void* data, int length, int retain)
 {
-    if (mqtt_connected == NULL)
+    if (mqtt_is_connected == NULL)
         return;
 
     char* temp_topic = NULL;
@@ -155,7 +155,7 @@ void mqtt_setup(const char* ip, int port)
         MQTT_InitLWT(mqtt_client, mqtt_prefix(number, "connected", 0), "false", 0, 1);
         MQTT_OnConnected(mqtt_client, [](uint32_t* args)
         {
-            mqtt_connected = mqtt_client;
+            mqtt_is_connected = mqtt_client;
             MQTT_Publish(mqtt_client, mqtt_prefix(number, "connected", 0), "true", 0, 0, 1);
             MQTT_Subscribe(mqtt_client, mqtt_prefix(number, "set", "#", 0), 0);
             mqtt_information();
@@ -171,7 +171,7 @@ void mqtt_setup(const char* ip, int port)
         });
         MQTT_OnDisconnected(mqtt_client, [](uint32_t* args)
         {
-            mqtt_connected = NULL;
+            mqtt_is_connected = NULL;
         });
         MQTT_OnData(mqtt_client, [](uint32_t* args, const char* topic, uint32_t topic_len, const char* data, uint32_t length)
         {
@@ -180,4 +180,9 @@ void mqtt_setup(const char* ip, int port)
         });
     }
     MQTT_Connect(mqtt_client);
+}
+
+bool mqtt_connected()
+{
+    return mqtt_is_connected != NULL;
 }
