@@ -2004,6 +2004,8 @@ static int s_mp_exptmod (mp_int * G, mp_int * X, mp_int * P, mp_int * Y, int red
   bitbuf = 0;
 
   for (;;) {
+    extern void ets_run_once();
+    ets_run_once();
     /* grab next digit as required */
     if (--bitcnt == 0) {
       /* if digidx == -1 we are out of digits */

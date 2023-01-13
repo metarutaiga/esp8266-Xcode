@@ -40,12 +40,22 @@ static homekit_server_config_t config =
     .password = "123-45-678",
 };
 
+static bool initialized = false;
+
 void homekit_init()
 {
-    homekit_server_init(&config);
+    if (initialized == false)
+    {
+        initialized = true;
+        homekit_server_init(&config);
+    }
 }
 
 void homekit_deinit()
 {
-    homekit_server_deinit();
+    if (initialized)
+    {
+        initialized = false;
+        homekit_server_deinit();
+    }
 }

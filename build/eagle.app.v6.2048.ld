@@ -231,19 +231,16 @@ SECTIONS
 
     *(.sdk.version)
     *(*.rodata.__func__* *.rodata.str* *.pstr* EXCLUDE_FILE(ieee80211_phy.o ieee80211_crypto_tkip.o ieee80211_crypto_wep.o memp.o tcp.o) *.irom.text* *.rodata.sntp_asctime_r.*)
+    *libesp-homekit.a:server.o(.rodata.*response* .rodata..L.str.*)
+    *libcrypto.a:chacha.o(.rodata.*)
+    *libcrypto.a:base64.o(.rodata.base64_table)
     *libmain.a:mem_manager.o(.rodata)
     *libnet80211.a:ieee80211_phy.o(*.irom.text*)
-    *libesp-homekit.a:server.o(.rodata.*response* .rodata..L.str.*)
-    *libcrypto.a:base64.o(.rodata.base64_table)
     *libcrypto.a:tweetnacl.o(.rodata.*)
     *libhttp-parser.a:http_parser.o(.rodata.normal_url_char .rodata.tokens .rodata.unhex)
+    *(*.rodata *.rodata.SP* *.rodata.bigbyte *.rodata.cst* *.rodata.mon_lengths *.rodata.pc* *.rodata.tls_cipher* *.rodata..* *.rodata.phy_data *.rodata.mktime._DAYS_BEFORE_MONTH *.rodata.user_pre_init.at_partition_table *.irom.text*)
     *libesp-homekit.a:crypto.o(.rodata.*)
     *(*.rodata.K *.rodata.lfs_crc.*)
-    *(*.rodata.phy_data)
-    *(*.rodata.mktime._DAYS_BEFORE_MONTH)
-    *(*.rodata.user_pre_init.at_partition_table)
-    *(*.rodata *.rodata.SP* *.rodata.bigbyte *.rodata.cst* *.rodata.mon_lengths *.rodata.pc* *.rodata.tls_cipher* *.rodata..*)
-    *(*.irom.text*)
     *(*.rodata.[a-z]*)
     *(*.rodata.*)
     *(*.irom0.text.literal* *.literal*)
@@ -318,3 +315,7 @@ INCLUDE "../ld/eagle.rom.addr.v6.ld"
 
 PROVIDE ( _xtos_exc_handler_table = 0x3fffc000 );
 PROVIDE ( _xtos_c_handler_table = 0x3fffc100 );
+
+PROVIDE ( ets_bit_task_priority = 0x3FFFC6FC );
+PROVIDE ( ets_bit_count_task = 0x3FFFDAB8 );
+PROVIDE ( ets_tab_task = 0x3FFFDAC0 );
