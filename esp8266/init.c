@@ -129,22 +129,14 @@ void user_init(void)
 #endif
 }
 
-static void delay_end(void* timer_arg)
-{
-    system_os_post(USER_TASK_PRIO_1, 0, 0);
-}
-
 void delay(unsigned int ms)
 {
-    static os_timer_t delay_timer IRAM_ATTR;
-    if (ms)
+    uint32_t start = ms == 0 ? 0 : system_get_time_ms();
+    for (;;)
     {
-        os_timer_setfn(&delay_timer, delay_end, 0);
-        os_timer_arm(&delay_timer, ms, 1);
-    }
-    system_os_post(USER_TASK_PRIO_1, 0, 0);
-    if (ms)
-    {
-        os_timer_disarm(&delay_timer);
+        extern bool ets_run_once(uint32_t bit_count);
+        while (ets_run_once(0xFF000000));
+        if (ms == 0 || system_get_time_ms() - start >= ms)
+            break;
     }
 }

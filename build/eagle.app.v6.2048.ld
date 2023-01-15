@@ -231,7 +231,7 @@ SECTIONS
 
     *(.sdk.version)
     *(*.rodata.__func__* *.rodata.str* *.pstr* EXCLUDE_FILE(ieee80211_phy.o ieee80211_crypto_tkip.o ieee80211_crypto_wep.o memp.o tcp.o) *.irom.text* *.rodata.sntp_asctime_r.*)
-    *libesp-homekit.a:server.o(.rodata.*response* .rodata..L.str.*)
+    *libesp-homekit.a:server.o(.rodata.*response* .rodata.*.http_headers .rodata..L.str.*)
     *libcrypto.a:chacha.o(.rodata.*)
     *libcrypto.a:base64.o(.rodata.base64_table)
     *libmain.a:mem_manager.o(.rodata)
@@ -316,6 +316,5 @@ INCLUDE "../ld/eagle.rom.addr.v6.ld"
 PROVIDE ( _xtos_exc_handler_table = 0x3fffc000 );
 PROVIDE ( _xtos_c_handler_table = 0x3fffc100 );
 
-PROVIDE ( ets_bit_task_priority = 0x3FFFC6FC );
 PROVIDE ( ets_bit_count_task = 0x3FFFDAB8 );
 PROVIDE ( ets_tab_task = 0x3FFFDAC0 );

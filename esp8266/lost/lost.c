@@ -1,6 +1,8 @@
 #include "esp8266.h"
 #include <stdlib.h>
 #include <time.h>
+#define NANOPRINTF_IMPLEMENTATION
+#include <nanoprintf/nanoprintf.h>
 
 int atoi(const char* str)
 {
@@ -102,7 +104,7 @@ char* strcat(char* s1, const char* s2)
 
     while (*s1)
       s1++;
-    while (*s1++ = pgm_read_byte(s2++))
+    while ((*s1++ = pgm_read_byte(s2++)))
       ;
 
     return s;
@@ -137,12 +139,21 @@ size_t strcspn(const char* str, const char* spn)
 
 char* strdup(const char* str)
 {
-    int len = os_strlen(str);
+    size_t len = os_strlen(str);
     char* dup = (char*)os_malloc(len + 1);
     for (int i = 0; i < len; ++i)
         dup[i] = pgm_read_byte(str + i);
     dup[len] = 0;
     return dup;
+}
+
+char* strndup(const char* str, size_t len)
+{
+   char* dup = (char*)os_malloc(len + 1);
+   for (int i = 0; i < len; ++i)
+       dup[i] = pgm_read_byte(str + i);
+   dup[len] = 0;
+   return dup;
 }
 
 char* strsep(char** sp, const char* sep)
@@ -200,6 +211,10 @@ double strtod(const char* str, char** str_end)
         else
             break;
     }
+    if (str_end)
+    {
+        *str_end = (char*)str;
+    }
     return negative ? -result : result;
 }
 
@@ -234,6 +249,10 @@ long strtol(const char* str, char** str_end, int base)
             else
                 break;
         }
+    }
+    if (str_end)
+    {
+        *str_end = (char*)str;
     }
     return negative ? -result : result;
 }

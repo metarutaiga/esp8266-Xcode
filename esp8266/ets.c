@@ -11,14 +11,14 @@ typedef struct ETSTabTask
     uint32 priority;
 } tab_task;
 
-extern uint8 ets_bit_task_priority;
 extern uint32 ets_bit_count_task;
 extern tab_task ets_tab_task[32];
 
-void ets_run_once()
+bool ets_run_once(uint32_t bit_count)
 {
-    uint8 priority = 32 - __builtin_clz(ets_bit_count_task);
-    if (priority && ets_bit_count_task)
+    bit_count &= ets_bit_count_task;
+    uint8 priority = 32 - __builtin_clz(bit_count);
+    if (priority && bit_count)
     {
         tab_task* tab = &ets_tab_task[priority - 1];
         os_event_t* event = &tab->event[tab->offset++];
@@ -30,8 +30,8 @@ void ets_run_once()
         {
             ets_bit_count_task &= ~tab->priority;
         }
-        ets_bit_task_priority = priority;
         tab->task(event);
-        ets_bit_task_priority = 0;
+        return true;
     }
+    return false;
 }

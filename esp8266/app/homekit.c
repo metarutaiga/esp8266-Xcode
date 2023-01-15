@@ -23,6 +23,7 @@ homekit_accessory_t const* const accessories[] =
             NULL
         }),
         &(homekit_service_t const) HOMEKIT_SERVICE_(TEMPERATURE_SENSOR,
+                                                    .primary = true,
                                                     .characteristics = (homekit_characteristic_t **)(homekit_characteristic_t const* const[])
         {
             HOMEKIT_CHARACTERISTIC(NAME, "Temperature"),

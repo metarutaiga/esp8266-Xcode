@@ -28,13 +28,21 @@
 #include <osapi.h>
 #include <stdio.h>
 
+#include <nanoprintf/nanoprintf.h>
+
 #undef isinf
 #undef isnan
 #undef sprintf
 #undef sscanf
 #undef tolower
-#define sprintf os_sprintf
+#define memcpy os_memcpy
+#define memset os_memset
+#define sprintf(a, b, ...) npf_snprintf(a, sizeof(a), strncmp(b, "%1.1", 4) == 0 ? "%f" : b, ## __VA_ARGS__)
 #define sscanf(...) 0
+#define strcmp os_strcmp
+#define strcpy os_strcpy
+#define strlen os_strlen
+#define strncmp os_strncmp
 #define tolower(c) ((c >= 'A' && c <= 'Z') ? (c + 0x20) : c)
 
 #endif
