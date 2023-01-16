@@ -250,6 +250,21 @@ extern int crypto_stream_salsa20_tweet_xor(unsigned char *,const unsigned char *
 #define crypto_stream_salsa20_NONCEBYTES crypto_stream_salsa20_tweet_NONCEBYTES
 #define crypto_stream_salsa20_VERSION crypto_stream_salsa20_tweet_VERSION
 #define crypto_stream_salsa20_IMPLEMENTATION "crypto_stream/salsa20/tweet"
+#define crypto_stream_chacha20_tweet_KEYBYTES 32
+#define crypto_stream_chacha20_tweet_NONCEBYTES 8
+extern int crypto_stream_chacha20_tweet(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+extern int crypto_stream_chacha20_tweet_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+extern int crypto_stream_chacha20_tweet_ietf(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+extern int crypto_stream_chacha20_tweet_ietf_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+#define crypto_stream_chacha20_tweet_VERSION "-"
+#define crypto_stream_chacha20 crypto_stream_chacha20_tweet
+#define crypto_stream_chacha20_xor crypto_stream_chacha20_tweet_xor
+#define crypto_stream_chacha20_ietf crypto_stream_chacha20_tweet_ietf
+#define crypto_stream_chacha20_ietf_xor crypto_stream_chacha20_tweet_ietf_xor
+#define crypto_stream_chacha20_KEYBYTES crypto_stream_chacha20_tweet_KEYBYTES
+#define crypto_stream_chacha20_NONCEBYTES crypto_stream_chacha20_tweet_NONCEBYTES
+#define crypto_stream_chacha20_VERSION crypto_stream_chacha20_tweet_VERSION
+#define crypto_stream_chacha20_IMPLEMENTATION "crypto_stream/chacha20/tweet"
 #define crypto_verify_PRIMITIVE "16"
 #define crypto_verify crypto_verify_16
 #define crypto_verify_BYTES crypto_verify_16_BYTES

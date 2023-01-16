@@ -168,6 +168,96 @@ int crypto_stream_xor(u8 *c,const u8 *m,u64 d,const u8 *n,const u8 *k)
   return crypto_stream_salsa20_xor(c,m,d,n+16,s);
 }
 
+int crypto_core_chacha20(u8 *out,const u8 *in,const u8 *k,const u8 *c)
+{
+  u32 x[16],y[16];
+  int i,j;
+
+  FOR(i,4) {
+    x[0+i] = ld32(c+4*i);
+    x[4+i] = ld32(k+4*i);
+    x[8+i] = ld32(k+16+4*i);
+    x[12+i] = ld32(in+4*i);
+  }
+
+  FOR(i,16) y[i] = x[i];
+
+  FOR(i,10) {
+    int a,b,c,d;
+    FOR(j,4) {
+      a=0+j;
+      b=4+j;
+      c=8+j;
+      d=12+j;
+      x[d] = L32(x[d]^(x[a]+=x[b]), 16);
+      x[b] = L32(x[b]^(x[c]+=x[d]), 12);
+      x[d] = L32(x[d]^(x[a]+=x[b]),  8);
+      x[b] = L32(x[b]^(x[c]+=x[d]),  7);
+    }
+    FOR(j,4) {
+      a=0+(j+0)%4;
+      b=4+(j+1)%4;
+      c=8+(j+2)%4;
+      d=12+(j+3)%4;
+      x[d] = L32(x[d]^(x[a]+=x[b]), 16);
+      x[b] = L32(x[b]^(x[c]+=x[d]), 12);
+      x[d] = L32(x[d]^(x[a]+=x[b]),  8);
+      x[b] = L32(x[b]^(x[c]+=x[d]),  7);
+    }
+  }
+
+  FOR(i,16) st32(out + 4 * i,x[i] + y[i]);
+
+  return 0;
+}
+
+static int crypto_stream_chacha20_crypt(u8 *c,const u8 *m,u64 b,u32 v,const u8 *n,const u8 *k)
+{
+  u8 z[16],x[64];
+  u32 u,i;
+  if (!b) return 0;
+  FOR(i,16-v/8) z[i] = 0;
+  FOR(i,v/8) z[i+16-v/8] = n[i];
+  while (b >= 64) {
+    crypto_core_chacha20(x,z,k,sigma);
+    FOR(i,64) c[i] = (m?m[i]:0) ^ x[i];
+    u = 1;
+    FOR(i,16-v/8) {
+      u += (u32) z[i];
+      z[i] = u;
+      u >>= 8;
+    }
+    b -= 64;
+    c += 64;
+    if (m) m += 64;
+  }
+  if (b) {
+    crypto_core_chacha20(x,z,k,sigma);
+    FOR(i,b) c[i] = (m?m[i]:0) ^ x[i];
+  }
+  return 0;
+}
+
+int crypto_stream_chacha20(u8 *c,u64 d,const u8 *n,const u8 *k)
+{
+  return crypto_stream_chacha20_crypt(c,0,d,64,n,k);
+}
+
+int crypto_stream_chacha20_xor(u8 *c,const u8 *m,u64 b,const u8 *n,const u8 *k)
+{
+  return crypto_stream_chacha20_crypt(c,m,b,64,n,k);
+}
+
+int crypto_stream_chacha20_ietf(u8 *c,u64 d,const u8 *n,const u8 *k)
+{
+  return crypto_stream_chacha20_crypt(c,0,d,96,n,k);
+}
+
+int crypto_stream_chacha20_ietf_xor(u8 *c,const u8 *m,u64 b,const u8 *n,const u8 *k)
+{
+  return crypto_stream_chacha20_crypt(c,m,b,96,n,k);
+}
+
 sv add1305(u32 *h,const u32 *c)
 {
   u32 j,u = 0;
@@ -533,8 +623,8 @@ int crypto_hashblocks(u8 *x,const u8 *m,u64 n)
       b[3] += t;
       FOR(j,8) a[(j+1)%8] = b[j];
       if (i%16 == 15)
-	FOR(j,16)
-	  w[j] += w[(j+9)%16] + sigma0(w[(j+1)%16]) + sigma1(w[(j+14)%16]);
+        FOR(j,16)
+          w[j] += w[(j+9)%16] + sigma0(w[(j+1)%16]) + sigma1(w[(j+14)%16]);
     }
 
     FOR(i,8) { a[i] += z[i]; z[i] = a[i]; }
