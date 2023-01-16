@@ -19,8 +19,12 @@
 struct crypto_hash {
 	enum crypto_hash_alg alg;
 	union {
+#ifdef CONFIG_MD5
 		struct MD5Context md5;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 		struct SHA1Context sha1;
+#endif /* CONFIG_SHA1 */
 #ifdef CONFIG_SHA256
 		struct sha256_state sha256;
 #endif /* CONFIG_SHA256 */
@@ -51,12 +55,16 @@ struct crypto_hash * crypto_hash_init(enum crypto_hash_alg alg, const u8 *key,
 	ctx->alg = alg;
 
 	switch (alg) {
+#ifdef CONFIG_MD5
 	case CRYPTO_HASH_ALG_MD5:
 		MD5Init(&ctx->u.md5);
 		break;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 	case CRYPTO_HASH_ALG_SHA1:
 		SHA1Init(&ctx->u.sha1);
 		break;
+#endif /* CONFIG_SHA1 */
 #ifdef CONFIG_SHA256
 	case CRYPTO_HASH_ALG_SHA256:
 		sha256_init(&ctx->u.sha256);
@@ -72,6 +80,7 @@ struct crypto_hash * crypto_hash_init(enum crypto_hash_alg alg, const u8 *key,
 		sha512_init(&ctx->u.sha512);
 		break;
 #endif /* CONFIG_INTERNAL_SHA512 */
+#ifdef CONFIG_MD5
 	case CRYPTO_HASH_ALG_HMAC_MD5:
 		if (key_len > sizeof(k_pad)) {
 			MD5Init(&ctx->u.md5);
@@ -91,6 +100,8 @@ struct crypto_hash * crypto_hash_init(enum crypto_hash_alg alg, const u8 *key,
 		MD5Init(&ctx->u.md5);
 		MD5Update(&ctx->u.md5, k_pad, sizeof(k_pad));
 		break;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 	case CRYPTO_HASH_ALG_HMAC_SHA1:
 		if (key_len > sizeof(k_pad)) {
 			SHA1Init(&ctx->u.sha1);
@@ -110,6 +121,7 @@ struct crypto_hash * crypto_hash_init(enum crypto_hash_alg alg, const u8 *key,
 		SHA1Init(&ctx->u.sha1);
 		SHA1Update(&ctx->u.sha1, k_pad, sizeof(k_pad));
 		break;
+#endif /* CONFIG_SHA1 */
 #ifdef CONFIG_SHA256
 	case CRYPTO_HASH_ALG_HMAC_SHA256:
 		if (key_len > sizeof(k_pad)) {
@@ -146,14 +158,18 @@ void crypto_hash_update(struct crypto_hash *ctx, const u8 *data, size_t len)
 		return;
 
 	switch (ctx->alg) {
+#ifdef CONFIG_MD5
 	case CRYPTO_HASH_ALG_MD5:
 	case CRYPTO_HASH_ALG_HMAC_MD5:
 		MD5Update(&ctx->u.md5, data, len);
 		break;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 	case CRYPTO_HASH_ALG_SHA1:
 	case CRYPTO_HASH_ALG_HMAC_SHA1:
 		SHA1Update(&ctx->u.sha1, data, len);
 		break;
+#endif /* CONFIG_SHA1 */
 #ifdef CONFIG_SHA256
 	case CRYPTO_HASH_ALG_SHA256:
 	case CRYPTO_HASH_ALG_HMAC_SHA256:
@@ -190,6 +206,7 @@ int crypto_hash_finish(struct crypto_hash *ctx, u8 *mac, size_t *len)
 	}
 
 	switch (ctx->alg) {
+#ifdef CONFIG_MD5
 	case CRYPTO_HASH_ALG_MD5:
 		if (*len < 16) {
 			*len = 16;
@@ -199,6 +216,8 @@ int crypto_hash_finish(struct crypto_hash *ctx, u8 *mac, size_t *len)
 		*len = 16;
 		MD5Final(mac, &ctx->u.md5);
 		break;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 	case CRYPTO_HASH_ALG_SHA1:
 		if (*len < 20) {
 			*len = 20;
@@ -208,6 +227,7 @@ int crypto_hash_finish(struct crypto_hash *ctx, u8 *mac, size_t *len)
 		*len = 20;
 		SHA1Final(mac, &ctx->u.sha1);
 		break;
+#endif /* CONFIG_SHA1 */
 #ifdef CONFIG_SHA256
 	case CRYPTO_HASH_ALG_SHA256:
 		if (*len < 32) {
@@ -241,6 +261,7 @@ int crypto_hash_finish(struct crypto_hash *ctx, u8 *mac, size_t *len)
 		sha512_done(&ctx->u.sha512, mac);
 		break;
 #endif /* CONFIG_INTERNAL_SHA512 */
+#ifdef CONFIG_MD5
 	case CRYPTO_HASH_ALG_HMAC_MD5:
 		if (*len < 16) {
 			*len = 16;
@@ -261,6 +282,8 @@ int crypto_hash_finish(struct crypto_hash *ctx, u8 *mac, size_t *len)
 		MD5Update(&ctx->u.md5, mac, 16);
 		MD5Final(mac, &ctx->u.md5);
 		break;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 	case CRYPTO_HASH_ALG_HMAC_SHA1:
 		if (*len < 20) {
 			*len = 20;
@@ -281,6 +304,7 @@ int crypto_hash_finish(struct crypto_hash *ctx, u8 *mac, size_t *len)
 		SHA1Update(&ctx->u.sha1, mac, 20);
 		SHA1Final(mac, &ctx->u.sha1);
 		break;
+#endif /* CONFIG_SHA1 */
 #ifdef CONFIG_SHA256
 	case CRYPTO_HASH_ALG_HMAC_SHA256:
 		if (*len < 32) {

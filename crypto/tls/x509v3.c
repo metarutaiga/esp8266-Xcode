@@ -2034,36 +2034,46 @@ skip_digest_oid:
 		    hdr.payload, hdr.length);
 
 	switch (signature->oid.oid[6]) {
+#ifdef CONFIG_MD5
 	case 4: /* md5WithRSAEncryption */
 		md5_vector(1, addr, len, hash);
 		hash_len = 16;
 		wpa_hexdump(MSG_MSGDUMP, "X509: Certificate hash (MD5)",
 			    hash, hash_len);
 		break;
+#endif /* CONFIG_MD5 */
+#ifdef CONFIG_SHA1
 	case 5: /* sha-1WithRSAEncryption */
 		sha1_vector(1, addr, len, hash);
 		hash_len = 20;
 		wpa_hexdump(MSG_MSGDUMP, "X509: Certificate hash (SHA1)",
 			    hash, hash_len);
 		break;
+#endif /* CONFIG_SHA1 */
+#ifdef CONFIG_SHA256
 	case 11: /* sha256WithRSAEncryption */
 		sha256_vector(1, addr, len, hash);
 		hash_len = 32;
 		wpa_hexdump(MSG_MSGDUMP, "X509: Certificate hash (SHA256)",
 			    hash, hash_len);
 		break;
+#endif /* CONFIG_SHA256 */
+#ifdef CONFIG_INTERNAL_SHA384
 	case 12: /* sha384WithRSAEncryption */
 		sha384_vector(1, addr, len, hash);
 		hash_len = 48;
 		wpa_hexdump(MSG_MSGDUMP, "X509: Certificate hash (SHA384)",
 			    hash, hash_len);
 		break;
+#endif /* CONFIG_INTERNAL_SHA384 */
+#ifdef CONFIG_INTERNAL_SHA512
 	case 13: /* sha512WithRSAEncryption */
 		sha512_vector(1, addr, len, hash);
 		hash_len = 64;
 		wpa_hexdump(MSG_MSGDUMP, "X509: Certificate hash (SHA512)",
 			    hash, hash_len);
 		break;
+#endif /* CONFIG_INTERNAL_SHA512 */
 	case 2: /* md2WithRSAEncryption */
 	default:
 		wpa_printf(MSG_INFO, "X509: Unsupported certificate signature "
