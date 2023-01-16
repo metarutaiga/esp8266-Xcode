@@ -9,6 +9,12 @@ int atoi(const char* str)
     return strtol(str, NULL, 10);
 }
 
+int* __errno(void)
+{
+    static int no IRAM_ATTR;
+    return &no;
+}
+
 char* itoa(int value, char* str, int base)
 {
     if (base == 16)

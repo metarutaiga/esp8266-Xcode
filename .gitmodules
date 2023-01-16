@@ -16,3 +16,6 @@
 [submodule "nanoprintf"]
 	path = nanoprintf
 	url = https://github.com/charlesnicholson/nanoprintf
+[submodule "libsodium"]
+	path = libsodium
+	url = https://github.com/jedisct1/libsodium
