@@ -71,34 +71,38 @@ static unsigned int ocsp_hash_data(struct asn1_oid *alg, const u8 *data,
 	size_t len[1] = { data_len };
 	char buf[100];
 
+#ifdef CONFIG_SHA1
 	if (x509_sha1_oid(alg)) {
 		if (sha1_vector(1, addr, len, hash) < 0)
 			return 0;
 		wpa_hexdump(MSG_MSGDUMP, "OCSP: Hash (SHA1)", hash, 20);
 		return 20;
 	}
-
+#endif /* CONFIG_SHA1 */
+#ifdef CONFIG_SHA256
 	if (x509_sha256_oid(alg)) {
 		if (sha256_vector(1, addr, len, hash) < 0)
 			return 0;
 		wpa_hexdump(MSG_MSGDUMP, "OCSP: Hash (SHA256)", hash, 32);
 		return 32;
 	}
-
+#endif /* CONFIG_SHA256 */
+#ifdef CONFIG_INTERNAL_SHA384
 	if (x509_sha384_oid(alg)) {
 		if (sha384_vector(1, addr, len, hash) < 0)
 			return 0;
 		wpa_hexdump(MSG_MSGDUMP, "OCSP: Hash (SHA384)", hash, 48);
 		return 48;
 	}
-
+#endif /* CONFIG_INTERNAL_SHA384 */
+#ifdef CONFIG_INTERNAL_SHA512
 	if (x509_sha512_oid(alg)) {
 		if (sha512_vector(1, addr, len, hash) < 0)
 			return 0;
 		wpa_hexdump(MSG_MSGDUMP, "OCSP: Hash (SHA512)", hash, 64);
 		return 64;
 	}
-
+#endif /* CONFIG_INTERNAL_SHA512 */
 
 	asn1_oid_to_str(alg, buf, sizeof(buf));
 	wpa_printf(MSG_DEBUG, "OCSP: Could not calculate hash with alg %s",

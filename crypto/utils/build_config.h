@@ -22,6 +22,8 @@
 #define CONFIG_NO_HOSTAPD_LOGGER
 #define CONFIG_NO_STDOUT_DEBUG
 #define CONFIG_NO_WPA_MSG
+#define CONFIG_MD5
+#define CONFIG_SHA1
 #define CONFIG_SHA256
 #define CONFIG_TLSV12
 #define CONFIG_TLS_INTERNAL_CLIENT
@@ -55,7 +57,8 @@
 #define os_memcmp_const memcmp
 #define os_memdup(src, len) os_memcpy(os_malloc(len), src, len)
 #define os_strlcpy(dest, src, siz) os_strlen(os_strncpy(dest, src, siz))
-#define aes_unwrap aes_unwrap_unused
+#define aes_unwrap aes_unwrap5
+#define aes_wrap aes_wrap5
 #define rijndaelKeySetupDec rijndaelKeySetupDec_unused
 #define rijndaelKeySetupEnc rijndaelKeySetupEnc_unused
 #define Te0 Te0_unused
@@ -66,6 +69,8 @@
 #define aes_decrypt aes_decrypt_unused
 #define aes_decrypt_deinit aes_decrypt_deinit_unused
 #define aes_decrypt_init aes_decrypt_init_unused
+#define aes_encrypt_aes_encrypt_unused
+#define aes_encrypt_deinit aes_encrypt_deinit_unused
 #define aes_encrypt_init aes_encrypt_init_unused
 #undef rijndaelKeySetupDec
 #undef rijndaelKeySetupEnc
@@ -110,10 +115,5 @@
 #undef sha1_prf
 #define sha1_prf sha1_prf_unused
 #endif
-
-/* Free 0x3FFFEA80 - 0x3FFFEB30 */
-#undef aes_unwrap
-#undef aes_decrypt_deinit
-#undef aes_decrypt_init
 
 #endif /* BUILD_CONFIG_H */

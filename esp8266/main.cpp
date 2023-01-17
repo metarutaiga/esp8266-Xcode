@@ -8,8 +8,6 @@
 #include "app/ota.h"
 #include "app/uart.h"
 
-extern "C" void ets_write_char(char c);
-
 extern bool web_system(void* arg, const char* url, int line);
 extern bool web_ssid(void* arg, const char* url, int line);
 extern bool web_ip(void* arg, const char* url, int line);
@@ -42,6 +40,32 @@ void wifi(System_Event_t* event)
         wifi_set_opmode(STATION_MODE);
         wifi_station_set_hostname(thisname);
 
+        // Static IP
+        int fd = fs_open("ip", "r");
+        if (fd >= 0)
+        {
+            struct ip_info now_info = {};
+            wifi_get_ip_info(STATION_IF, &now_info);
+
+            struct ip_info set_info = {};
+            set_info.ip.addr = ipaddr_addr(fs_gets(number, 128, fd));
+            set_info.gw.addr = ipaddr_addr(fs_gets(number, 128, fd));
+            set_info.netmask.addr = ipaddr_addr(fs_gets(number, 128, fd));
+            ip_addr_t dns = { ipaddr_addr(fs_gets(number, 128, fd)) };
+            fs_close(fd);
+
+            if (IPADDR_NONE != set_info.ip.addr &&
+                now_info.ip.addr != set_info.ip.addr &&
+                now_info.netmask.addr == set_info.netmask.addr &&
+                now_info.gw.addr == set_info.gw.addr)
+            {
+                wifi_station_dhcpc_stop();
+                wifi_set_ip_info(STATION_IF, &set_info);
+                system_station_got_ip_set(&now_info.ip, &now_info.netmask, &now_info.gw);
+                espconn_dns_setserver(0, &dns);
+            }
+        }
+
         // HTTP
         httpd_regist("/setup", "text/html", web_system);
 #ifdef DEMO
@@ -55,7 +79,7 @@ void wifi(System_Event_t* event)
         }, nullptr);
 #endif
         // MQTT
-        int fd = fs_open("mqtt", "r");
+        fd = fs_open("mqtt", "r");
         if (fd >= 0)
         {
             string mqtt = fs_gets(number, 128, fd);
@@ -148,21 +172,6 @@ void setup(void)
         os_strcpy((char*)config.password, fs_gets(number, 128, fd));
         fs_close(fd);
         wifi_station_set_config(&config);
-
-        // Static IP
-        fd = fs_open("ip", "r");
-        if (fd >= 0)
-        {
-            struct ip_info info = {};
-            info.ip.addr = ipaddr_addr(fs_gets(number, 128, fd));
-            info.gw.addr = ipaddr_addr(fs_gets(number, 128, fd));
-            info.netmask.addr = ipaddr_addr(fs_gets(number, 128, fd));
-            ip_addr_t dns = { ipaddr_addr(fs_gets(number, 128, fd)) };
-            fs_close(fd);
-
-            wifi_set_ip_info(STATION_IF, &info);
-            espconn_dns_setserver(0, &dns);
-        }
     }
 #ifdef DEMO
     // UART

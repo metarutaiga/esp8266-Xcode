@@ -3,9 +3,6 @@
 #include "app/fs.h"
 #include "app/httpd.h"
 
-extern const char* web_css __attribute__((weak));
-const char* web_css = "";
-
 bool web_system(void* arg, const char* url, int line)
 {
     string html;
@@ -74,10 +71,6 @@ bool web_system(void* arg, const char* url, int line)
         string gateway;
         string subnet;
         string dns;
-        os_sprintf(number, IPSTR, IP2STR(&info.ip)); ip = number;
-        os_sprintf(number, IPSTR, IP2STR(&info.gw)); gateway = number;
-        os_sprintf(number, IPSTR, IP2STR(&info.netmask)); subnet = number;
-        os_sprintf(number, IPSTR, IP2STR(&dns_server)); dns = number;
         int fd = fs_open("ip", "r");
         if (fd >= 0)
         {
@@ -86,6 +79,26 @@ bool web_system(void* arg, const char* url, int line)
             subnet = fs_gets(number, 128, fd);
             dns = fs_gets(number, 128, fd);
             fs_close(fd);
+        }
+        if (ip.empty())
+        {
+            os_sprintf(number, IPSTR, IP2STR(&info.ip));
+            ip = number;
+        }
+        if (gateway.empty())
+        {
+            os_sprintf(number, IPSTR, IP2STR(&info.gw));
+            gateway = number;
+        }
+        if (subnet.empty())
+        {
+            os_sprintf(number, IPSTR, IP2STR(&info.netmask));
+            subnet = number;
+        }
+        if (dns.empty())
+        {
+            os_sprintf(number, IPSTR, IP2STR(&dns_server));
+            dns = number;
         }
         html += "<form method='get' action='ip'>";
         html +=     "<tr>";
@@ -159,13 +172,17 @@ bool web_system(void* arg, const char* url, int line)
     {
         // MQTT
         string mqtt;
-        string mqttPort = "1883";
+        string mqttPort;
         int fd = fs_open("mqtt", "r");
         if (fd >= 0)
         {
             mqtt = fs_gets(number, 128, fd);
             mqttPort = fs_gets(number, 128, fd);
             fs_close(fd);
+        }
+        if (mqttPort.empty())
+        {
+            mqttPort = "1883";
         }
         html += "<form method='get' action='mqtt'>";
         html +=     "<tr>";
@@ -195,14 +212,22 @@ bool web_system(void* arg, const char* url, int line)
     case 5:
     {
         // NTP
-        string ntp = "pool.ntp.org";
-        string ntpZone = "8";
+        string ntp;
+        string ntpZone;
         int fd = fs_open("ntp", "r");
         if (fd >= 0)
         {
             ntp = fs_gets(number, 128, fd);
             ntpZone = fs_gets(number, 128, fd);
             fs_close(fd);
+        }
+        if (ntp.empty())
+        {
+            ntp = "pool.ntp.org";
+        }
+        if (ntpZone.empty())
+        {
+            ntpZone = "8";
         }
         html += "<form method='get' action='ntp'>";
         html +=     "<tr>";

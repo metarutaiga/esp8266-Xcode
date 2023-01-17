@@ -4,6 +4,8 @@
 extern "C" {
 #endif
 
+extern const char* const web_css __attribute__((weak));
+
 void httpd_init(int port);
 void httpd_regist(const char* url, const char* type, bool (*handler)(void* arg, const char* url, int line));
 void httpd_redirect(void* arg, const char* url);

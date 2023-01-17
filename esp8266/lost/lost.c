@@ -1,10 +1,18 @@
 #include "esp8266.h"
 #include <stdlib.h>
 #include <time.h>
+#define NANOPRINTF_IMPLEMENTATION
+#include <nanoprintf/nanoprintf.h>
 
 int atoi(const char* str)
 {
     return strtol(str, NULL, 10);
+}
+
+int* __errno(void)
+{
+    static int no IRAM_ATTR;
+    return &no;
 }
 
 char* itoa(int value, char* str, int base)
@@ -86,9 +94,26 @@ time_t mktime(struct tm* tim_p)
     return tim;
 }
 
+void qsort(void* __base, size_t __nmemb, size_t __size, __compar_fn_t _compar)
+{
+    
+}
+
 int strcasecmp(const char* s1, const char* s2)
 {
     return os_strcmp(s1, s2);
+}
+
+char* strcat(char* s1, const char* s2)
+{
+    char* s = s1;
+
+    while (*s1)
+      s1++;
+    while ((*s1++ = pgm_read_byte(s2++)))
+      ;
+
+    return s;
 }
 
 char* strchr(const char* str, int chr)
@@ -120,12 +145,21 @@ size_t strcspn(const char* str, const char* spn)
 
 char* strdup(const char* str)
 {
-    int len = os_strlen(str);
+    size_t len = os_strlen(str);
     char* dup = (char*)os_malloc(len + 1);
     for (int i = 0; i < len; ++i)
         dup[i] = pgm_read_byte(str + i);
     dup[len] = 0;
     return dup;
+}
+
+char* strndup(const char* str, size_t len)
+{
+   char* dup = (char*)os_malloc(len + 1);
+   for (int i = 0; i < len; ++i)
+       dup[i] = pgm_read_byte(str + i);
+   dup[len] = 0;
+   return dup;
 }
 
 char* strsep(char** sp, const char* sep)
@@ -156,14 +190,51 @@ size_t strspn(const char* str, const char* spn)
     return str - s;
 }
 
+double strtod(const char* str, char** str_end)
+{
+    bool negative = false;
+    double result = 0.0;
+    double point = 1.0;
+    for (char c = 0; (c = *str); str++)
+    {
+        if (c == '-')
+            negative = true;
+        else if (c == '.')
+            break;
+        else if (c >= '0' && c <= '9')
+            result = (result * 10.0) + (c - '0');
+        else
+            break;
+    }
+    for (char c = 0; (c = *str); str++)
+    {
+        if (c == '-')
+            break;
+        else if (c == '.')
+            continue;
+        else if (c >= '0' && c <= '9')
+            result = result + (c - '0') * (point *= 0.1);
+        else
+            break;
+    }
+    if (str_end)
+    {
+        *str_end = (char*)str;
+    }
+    return negative ? -result : result;
+}
+
 long strtol(const char* str, char** str_end, int base)
 {
+    bool negative = false;
     long result = 0;
     if (base == 16)
     {
         for (char c = 0; (c = *str); str++)
         {
-            if (c >= 'a' && c <= 'f')
+            if (c == '-')
+                negative = true;
+            else if (c >= 'a' && c <= 'f')
                 result = result * 16 + c - 'a' + 10;
             else if (c >= 'A' && c <= 'F')
                 result = result * 16 + c - 'A' + 10;
@@ -177,11 +248,17 @@ long strtol(const char* str, char** str_end, int base)
     {
         for (char c = 0; (c = *str); str++)
         {
-            if (c >= '0' && c <= '9')
+            if (c == '-')
+                negative = true;
+            else if (c >= '0' && c <= '9')
                 result = result * 10 + c - '0';
             else
                 break;
         }
     }
-    return result;
+    if (str_end)
+    {
+        *str_end = (char*)str;
+    }
+    return negative ? -result : result;
 }

@@ -23,7 +23,8 @@
  * @plain: Plaintext key, n * 64 bits
  * Returns: 0 on success, -1 on failure (e.g., integrity verification failed)
  */
-int aes_unwrap(const u8 *kek, int n, const u8 *cipher, u8 *plain)
+int aes_unwrap(const u8 *kek, size_t kek_len, int n, const u8 *cipher,
+	       u8 *plain)
 {
 	u8 a[8], *r, b[AES_BLOCK_SIZE];
 	int i, j;
@@ -35,7 +36,7 @@ int aes_unwrap(const u8 *kek, int n, const u8 *cipher, u8 *plain)
 	r = plain;
 	os_memcpy(r, cipher + 8, 8 * n);
 
-	ctx = aes_decrypt_init(kek, 16);
+	ctx = aes_decrypt_init(kek, kek_len);
 	if (ctx == NULL)
 		return -1;
 

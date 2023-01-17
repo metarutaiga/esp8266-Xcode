@@ -178,7 +178,7 @@
 		D6918EC72954431100B0BE87 /* tlsv1_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_common.h; path = ../crypto/tls/tlsv1_common.h; sourceTree = "<group>"; };
 		D6918EC82954431100B0BE87 /* tlsv1_record.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_record.h; path = ../crypto/tls/tlsv1_record.h; sourceTree = "<group>"; };
 		D6918EC92954431100B0BE87 /* tlsv1_server_read.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_server_read.c; path = ../crypto/tls/tlsv1_server_read.c; sourceTree = "<group>"; };
-		D6918ECA2954431100B0BE87 /* tlsv1_server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_server.c; path = ../crypto/tls/tlsv1_server.c; sourceTree = "<group>"; };
+		D6918ECA2954431100B0BE87 /* tlsv1_server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_server.c; path = ../crypto/tls/tlsv1_server.c; sourceTree = "<group>"; tabWidth = 4; usesTabs = 1; };
 		D6918ECB2954431100B0BE87 /* tlsv1_cred.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tlsv1_cred.h; path = ../crypto/tls/tlsv1_cred.h; sourceTree = "<group>"; };
 		D6918ECC2954431100B0BE87 /* tlsv1_cred.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_cred.c; path = ../crypto/tls/tlsv1_cred.c; sourceTree = "<group>"; };
 		D6918ECD2954431100B0BE87 /* tlsv1_client_ocsp.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tlsv1_client_ocsp.c; path = ../crypto/tls/tlsv1_client_ocsp.c; sourceTree = "<group>"; };
@@ -488,10 +488,6 @@
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = a;
-				OTHER_CFLAGS = (
-					"-mtext-section-literals",
-					"$(inherited)",
-				);
 			};
 			name = Debug;
 		};
@@ -500,10 +496,6 @@
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = a;
-				OTHER_CFLAGS = (
-					"-mtext-section-literals",
-					"$(inherited)",
-				);
 			};
 			name = Release;
 		};
@@ -611,6 +603,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = z;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					"$(inherited)",

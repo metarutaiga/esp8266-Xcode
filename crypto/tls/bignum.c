@@ -185,6 +185,24 @@ int bignum_mul(const struct bignum *a, const struct bignum *b,
 
 
 /**
+ * bignum_mod - c = a (mod b)
+ * @a: Bignum from bignum_init()
+ * @b: Bignum from bignum_init()
+ * @c: Bignum from bignum_init(); used to store the result of a (mod b)
+ * Returns: 0 on success, -1 on failure
+ */
+int bignum_mod(const struct bignum *a, const struct bignum *b,
+	       struct bignum *c)
+{
+	if (mp_mod((mp_int *) a, (mp_int *) b, (mp_int *) c) != MP_OKAY) {
+		wpa_printf(MSG_DEBUG, "BIGNUM: %s failed", __func__);
+		return -1;
+	}
+	return 0;
+}
+
+
+/**
  * bignum_mulmod - d = a * b (mod c)
  * @a: Bignum from bignum_init()
  * @b: Bignum from bignum_init()

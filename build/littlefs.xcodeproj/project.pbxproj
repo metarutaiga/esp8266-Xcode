@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D6D04182294EEC69006B09EE /* lfs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D0417F294EEC69006B09EE /* lfs.c */; };
-		D6D04183294EEC69006B09EE /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D04180294EEC69006B09EE /* lfs_util.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -117,7 +116,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6D04182294EEC69006B09EE /* lfs.c in Sources */,
-				D6D04183294EEC69006B09EE /* lfs_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -244,6 +242,7 @@
 				GCC_ENABLE_CPP_RTTI = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = z;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					NDEBUG,
 					littlefs_OPEN_SRC,

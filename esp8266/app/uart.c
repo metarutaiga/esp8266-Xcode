@@ -118,11 +118,11 @@ int uart_send(void* uart, const void* buffer, int length)
         default:
             break;
         case 'E':
-            GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1 ^ 1);
+            GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1);
             uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         case 'O':
-            GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1);
+            GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1 ^ 1);
             uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         }
