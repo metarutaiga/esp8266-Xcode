@@ -27,5 +27,9 @@ while [[ $# > 0 ]] ; do
     shift
 done
 
-echo esp-clang/bin/llvm-ar r $ARGS
-esp-clang/bin/llvm-ar r $ARGS
+echo llvm-ar $ARGS
+if [ -f "esp-clang/bin/llvm-ar" ]; then
+  esp-clang/bin/llvm-ar r $ARGS
+else
+  llvm-ar $ARGS
+fi
