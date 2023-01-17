@@ -1,9 +1,9 @@
-[submodule "ESP8266_NONOS_SDK"]
-	path = ESP8266_NONOS_SDK
-	url = https://github.com/espressif/ESP8266_NONOS_SDK.git
 [submodule "littlefs"]
 	path = littlefs
 	url = https://github.com/littlefs-project/littlefs
 [submodule "nanoprintf"]
 	path = nanoprintf
 	url = https://github.com/charlesnicholson/nanoprintf
+[submodule "ESP8266_RTOS_SDK"]
+	path = ESP8266_RTOS_SDK
+	url = https://github.com/espressif/ESP8266_RTOS_SDK

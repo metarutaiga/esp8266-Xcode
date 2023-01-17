@@ -1,11 +1,8 @@
 .DS_Store
 bin/
-build/crypto.xcodeproj/xcshareddata/
-build/crypto.xcodeproj/xcuserdata/
 build/esp8266.xcodeproj/xcshareddata/
 build/esp8266.xcodeproj/xcuserdata/
-build/mqtt.xcodeproj/xcshareddata/
-build/mqtt.xcodeproj/xcuserdata/
+build/hello_world/
 build/temp/
 build/esp-clang/
 build/xtensa-lx106-elf/

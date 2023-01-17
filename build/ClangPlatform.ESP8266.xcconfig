@@ -18,9 +18,59 @@ LIBTOOL = $PROJECT_DIR/xtensa-lx106-elf-ar
 LIBTOOL_DEPENDENCY_INFO_FILE =
 ALTERNATE_LINKER = $PROJECT_DIR/xtensa-lx106-elf-ld
 
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_ESP_CONSOLE_UART_NUM=0
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_ESP_TASK_WDT_TIMEOUT_S=5
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_ESP8266_XTAL_FREQ_26
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_ESP8266_PHY_MAX_WIFI_TX_POWER=20
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_FREERTOS_HZ=1000
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_LOG_DEFAULT_LEVEL=3
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_SOC_IRAM_SIZE=0xC000
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_LWIP_TCP_OVERSIZE_DISABLE=
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_WIFI_PPT_TASKSTACK_SIZE=2048
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_SCAN_AP_MAX=99
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_SPI_FLASH_FREQ=0x0
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) CONFIG_SPI_FLASH_MODE=0x3
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) IDF_VER=\"4.00\"
+//GCC_PREPROCESSOR_DEFINITIONS = $(inherited) __ESP_FILE__=__FILE_NAME__
+
 HEADER_SEARCH_PATHS = $(inherited) .
-HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_NONOS_SDK/include
-LIBRARY_SEARCH_PATHS = $(inherited) ../ESP8266_NONOS_SDK/lib
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/app_update/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/bootloader_support/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp8266/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp8266/include/driver
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp_common/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp_event/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp_ringbuf/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp_ringbuf/include/freertos
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/freertos/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/freertos/include/freertos
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/freertos/include/freertos/private
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/freertos/port/esp8266/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/freertos/port/esp8266/include/freertos
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/heap/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/heap/port/esp8266/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/log/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/lwip/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/lwip/include/apps
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/lwip/include/apps/sntp
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/lwip/lwip/src/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/lwip/port/esp8266/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/newlib/platform_include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/nvs_flash/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/spi_flash/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/tcpip_adapter/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/vfs/include
+//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/wpa_supplicant/include
+
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/esp8266
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/freertos
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/heap
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/log
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/newlib
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/pthread
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/spi_flash
+LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/vfs
+LIBRARY_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/esp8266/lib
 
 OTHER_CFLAGS = $(inherited) -fdata-sections
 OTHER_CFLAGS = $(inherited) -ffunction-sections
@@ -37,10 +87,6 @@ OTHER_CFLAGS = $(inherited) -Wno-strict-prototypes
 OTHER_CFLAGS = $(inherited) -Wno-switch
 OTHER_CFLAGS = $(inherited) -Wno-writable-strings
 
-OTHER_CFLAGS = $(inherited) -DESP_NONOS
-OTHER_CFLAGS = $(inherited) -DICACHE_FLASH
-OTHER_CFLAGS = $(inherited) -DLFS_CONFIG=user_config.h
-//OTHER_CFLAGS = $(inherited) -DLOOP
 OTHER_CFLAGS = $(inherited) -isysroot esp-clang/xtensa-lx106-elf
 OTHER_CFLAGS = $(inherited) --sysroot esp-clang/xtensa-lx106-elf
 //OTHER_CFLAGS = $(inherited) -target xtensa-lx106-elf -mcpu=esp8266
@@ -53,28 +99,43 @@ OTHER_LDFLAGS = $(inherited) -nostdlib -Wl,-static
 OTHER_LDFLAGS = $(inherited) -isysroot esp-clang/xtensa-lx106-elf
 OTHER_LDFLAGS = $(inherited) --sysroot esp-clang/xtensa-lx106-elf
 //OTHER_LDFLAGS = $(inherited) -target xtensa-lx106-elf -mcpu=esp8266
-OTHER_LDFLAGS = $(inherited) -u call_user_start
-OTHER_LDFLAGS = $(inherited) -T eagle.app.v6.2048.ld
+OTHER_LDFLAGS = $(inherited) -nostdlib
+OTHER_LDFLAGS = $(inherited) -T esp8266_out.ld
+OTHER_LDFLAGS = $(inherited) -T esp8266.project.ld
+OTHER_LDFLAGS = $(inherited) -T ../ESP8266_RTOS_SDK/components/esp8266/ld/esp8266.peripherals.ld
+OTHER_LDFLAGS = $(inherited) -T ../ESP8266_RTOS_SDK/components/esp8266/ld/esp8266.rom.ld
 OTHER_LDFLAGS = $(inherited) -Wl,-Map,$(TARGET_BUILD_DIR)/$(EXECUTABLE_NAME).map
 OTHER_LDFLAGS = $(inherited) -Wl,--start-group
+OTHER_LDFLAGS = $(inherited) -lesp8266
+OTHER_LDFLAGS = $(inherited) -lfreertos
+OTHER_LDFLAGS = $(inherited) -lheap
+OTHER_LDFLAGS = $(inherited) -llog
+OTHER_LDFLAGS = $(inherited) -lnewlib
+OTHER_LDFLAGS = $(inherited) -lpthread
+OTHER_LDFLAGS = $(inherited) -lspi_flash
+OTHER_LDFLAGS = $(inherited) -lvfs
 //OTHER_LDFLAGS = $(inherited) -lairkiss
 //OTHER_LDFLAGS = $(inherited) -lc
+OTHER_LDFLAGS = $(inherited) -lc_nano
+OTHER_LDFLAGS = $(inherited) -lcore
 //OTHER_LDFLAGS = $(inherited) -lcrypto
 //OTHER_LDFLAGS = $(inherited) -lespnow
-OTHER_LDFLAGS = $(inherited) -lgcc
+//OTHER_LDFLAGS = $(inherited) -lgcc
+OTHER_LDFLAGS = $(inherited) -lhal
 //OTHER_LDFLAGS] = $(inherited) -llwip_536
-OTHER_LDFLAGS = $(inherited) -lmain
+//OTHER_LDFLAGS = $(inherited) -lmain
 OTHER_LDFLAGS = $(inherited) -lnet80211
 OTHER_LDFLAGS = $(inherited) -lphy
 OTHER_LDFLAGS = $(inherited) -lpp
+OTHER_LDFLAGS = $(inherited) -lrtc
 //OTHER_LDFLAGS = $(inherited) -lsmartconfig
-OTHER_LDFLAGS = $(inherited) -lupgrade
-OTHER_LDFLAGS = $(inherited) -lwpa
+//OTHER_LDFLAGS = $(inherited) -lupgrade
+//OTHER_LDFLAGS = $(inherited) -lwpa
 //OTHER_LDFLAGS = $(inherited) -lwpa2
 //OTHER_LDFLAGS = $(inherited) -lwps
 //OTHER_LDFLAGS = $(inherited) -Wl,--end-group
-OTHER_LDFLAGS = $(inherited) -Wl,-wrap,spi_flash_read
-OTHER_LDFLAGS = $(inherited) -Wl,-wrap,spi_flash_write
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,spi_flash_read
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,spi_flash_write
 
 OTHER_LDFLAGS[config=Release] = $(inherited) -Wl,--gc-sections
 

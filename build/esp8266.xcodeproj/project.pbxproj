@@ -7,112 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D627776F295B33890092DFB5 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
-		D6277770295B33890092DFB5 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753EA29583EF8007D8981 /* gpio.c */; };
-		D6277771295B33890092DFB5 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
-		D6277772295B33890092DFB5 /* https.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EE229544F6700B0BE87 /* https.c */; };
-		D6277773295B33890092DFB5 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
-		D6277774295B33890092DFB5 /* ota.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBA29515FB900B0BE87 /* ota.c */; };
-		D6277775295B33890092DFB5 /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D75426295AE75D007D8981 /* rtc.c */; };
-		D6277776295B33890092DFB5 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E729580AD6007D8981 /* uart.c */; };
-		D6277777295B33890092DFB5 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E32955AE41007D8981 /* crypto.c */; };
-		D6277778295B33890092DFB5 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
-		D6277779295B33890092DFB5 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
-		D627777A295B33890092DFB5 /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
-		D627777B295B33890092DFB5 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
-		D627777C295B33890092DFB5 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
-		D627777D295B33890092DFB5 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
-		D62777AD295FF65D0092DFB5 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D62777AB295FF65D0092DFB5 /* fota.cpp */; };
-		D62777AE2961369F0092DFB5 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D62777AB295FF65D0092DFB5 /* fota.cpp */; };
-		D66B1E00296BD07900C1AED1 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1DFF296BD07900C1AED1 /* lfs_util.c */; };
-		D66B1E01296BD07900C1AED1 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1DFF296BD07900C1AED1 /* lfs_util.c */; };
-		D66B1E3D2971939300C1AED1 /* ets.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1E3C2971939300C1AED1 /* ets.c */; };
-		D66B1E3E2971939300C1AED1 /* ets.c in Sources */ = {isa = PBXBuildFile; fileRef = D66B1E3C2971939300C1AED1 /* ets.c */; };
-		D6918EB72950377E00B0BE87 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB12950377D00B0BE87 /* fs.c */; };
-		D6918EB82950377E00B0BE87 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB32950377D00B0BE87 /* httpd.c */; };
-		D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6918EB52950377D00B0BE87 /* mqtt.cpp */; };
-		D6918EBC29515FB900B0BE87 /* ota.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EBA29515FB900B0BE87 /* ota.c */; };
-		D6918EE329544F6700B0BE87 /* https.c in Sources */ = {isa = PBXBuildFile; fileRef = D6918EE229544F6700B0BE87 /* https.c */; };
-		D69FFA522941832400CC7E75 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4C2941832300CC7E75 /* main.cpp */; };
-		D69FFA532941832400CC7E75 /* phy.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA4E2941832300CC7E75 /* phy.c */; };
-		D69FFA542941832400CC7E75 /* init.c in Sources */ = {isa = PBXBuildFile; fileRef = D69FFA512941832400CC7E75 /* init.c */; };
-		D6D0416A294C28CB006B09EE /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D04169294C28CB006B09EE /* system.cpp */; };
-		D6D753E42955AE41007D8981 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E12955AE41007D8981 /* lost.c */; };
-		D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E22955AE41007D8981 /* libcpp.cpp */; };
-		D6D753E62955AE41007D8981 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E32955AE41007D8981 /* crypto.c */; };
-		D6D753E929580AD6007D8981 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753E729580AD6007D8981 /* uart.c */; };
-		D6D753EC29583EF8007D8981 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D753EA29583EF8007D8981 /* gpio.c */; };
-		D6D753F62959402C007D8981 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F52959402C007D8981 /* libcrypto.a */; };
-		D6D753F82959402C007D8981 /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F72959402C007D8981 /* liblittlefs.a */; };
-		D6D753FA2959402C007D8981 /* liblwip.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753F92959402C007D8981 /* liblwip.a */; };
-		D6D753FC2959402C007D8981 /* libmqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6D753FB2959402C007D8981 /* libmqtt.a */; };
-		D6D75428295AE75D007D8981 /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D75426295AE75D007D8981 /* rtc.c */; };
+		D668D0982976993C009ABBB9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D62777AB295FF65D0092DFB5 /* fota.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fota.cpp; path = ../esp8266/app/fota.cpp; sourceTree = "<group>"; };
-		D62777AC295FF65D0092DFB5 /* fota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fota.h; path = ../esp8266/app/fota.h; sourceTree = "<group>"; };
-		D66B1DFF296BD07900C1AED1 /* lfs_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs_util.c; path = ../esp8266/lost/lfs_util.c; sourceTree = "<group>"; };
-		D66B1E3C2971939300C1AED1 /* ets.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ets.c; path = ../esp8266/ets.c; sourceTree = "<group>"; };
+		D668D0972976993C009ABBB9 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../esp8266/main.c; sourceTree = "<group>"; };
+		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
-		D6918EB12950377D00B0BE87 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
-		D6918EB22950377D00B0BE87 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
-		D6918EB32950377D00B0BE87 /* httpd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = httpd.c; path = ../esp8266/app/httpd.c; sourceTree = "<group>"; };
-		D6918EB42950377D00B0BE87 /* httpd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = httpd.h; path = ../esp8266/app/httpd.h; sourceTree = "<group>"; };
-		D6918EB52950377D00B0BE87 /* mqtt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mqtt.cpp; path = ../esp8266/app/mqtt.cpp; sourceTree = "<group>"; };
-		D6918EB62950377E00B0BE87 /* mqtt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mqtt.h; path = ../esp8266/app/mqtt.h; sourceTree = "<group>"; };
-		D6918EBA29515FB900B0BE87 /* ota.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ota.c; path = ../esp8266/app/ota.c; sourceTree = "<group>"; };
-		D6918EBB29515FB900B0BE87 /* ota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ota.h; path = ../esp8266/app/ota.h; sourceTree = "<group>"; };
-		D6918EE129544F6700B0BE87 /* https.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = https.h; path = ../esp8266/app/https.h; sourceTree = "<group>"; };
-		D6918EE229544F6700B0BE87 /* https.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = https.c; path = ../esp8266/app/https.c; sourceTree = "<group>"; };
-		D69FFA4C2941832300CC7E75 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../esp8266/main.cpp; sourceTree = "<group>"; };
-		D69FFA4D2941832300CC7E75 /* esp8266.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = esp8266.h; path = ../esp8266/esp8266.h; sourceTree = "<group>"; };
-		D69FFA4E2941832300CC7E75 /* phy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = phy.c; path = ../esp8266/phy.c; sourceTree = "<group>"; };
-		D69FFA512941832400CC7E75 /* init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = init.c; path = ../esp8266/init.c; sourceTree = "<group>"; };
-		D69FFA5E294185BA00CC7E75 /* mqtt_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mqtt_config.h; sourceTree = "<group>"; };
-		D69FFA5F294185BA00CC7E75 /* user_config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_config.h; sourceTree = "<group>"; };
-		D69FFA692941BBF800CC7E75 /* sntp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sntp.h; sourceTree = "<group>"; };
-		D69FFA6A2941BBF800CC7E75 /* espconn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = espconn.h; sourceTree = "<group>"; };
-		D69FFA6B2941BBF800CC7E75 /* at_custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = at_custom.h; sourceTree = "<group>"; };
-		D69FFA6C2941BBF800CC7E75 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
-		D69FFA6D2941BBF800CC7E75 /* user_interface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = user_interface.h; sourceTree = "<group>"; };
-		D69FFA6E2941BBF800CC7E75 /* os_type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = os_type.h; sourceTree = "<group>"; };
-		D69FFA6F2941BBF800CC7E75 /* upgrade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = upgrade.h; sourceTree = "<group>"; };
-		D69FFA702941BBF800CC7E75 /* osapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = osapi.h; sourceTree = "<group>"; };
-		D69FFA712941BBF800CC7E75 /* pwm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = pwm.h; sourceTree = "<group>"; };
-		D69FFA722941BBF800CC7E75 /* c_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c_types.h; sourceTree = "<group>"; };
-		D69FFA732941BBF800CC7E75 /* eagle_soc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = eagle_soc.h; sourceTree = "<group>"; };
-		D69FFA742941BBF800CC7E75 /* spi_flash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = spi_flash.h; sourceTree = "<group>"; };
-		D69FFA752941BBF800CC7E75 /* ets_sys.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ets_sys.h; sourceTree = "<group>"; };
-		D69FFA762941BBF800CC7E75 /* airkiss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = airkiss.h; sourceTree = "<group>"; };
-		D69FFA782941BBF800CC7E75 /* jsonparse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonparse.h; sourceTree = "<group>"; };
-		D69FFA792941BBF800CC7E75 /* jsontree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsontree.h; sourceTree = "<group>"; };
-		D69FFA7A2941BBF800CC7E75 /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = json.h; sourceTree = "<group>"; };
-		D69FFA7B2941BBF800CC7E75 /* ip_addr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ip_addr.h; sourceTree = "<group>"; };
-		D69FFA7C2941BBF800CC7E75 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gpio.h; sourceTree = "<group>"; };
-		D69FFA7D2941BBF800CC7E75 /* simple_pair.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = simple_pair.h; sourceTree = "<group>"; };
-		D69FFA7E2941BBF800CC7E75 /* wpa2_enterprise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wpa2_enterprise.h; sourceTree = "<group>"; };
-		D69FFA7F2941BBF800CC7E75 /* espnow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = espnow.h; sourceTree = "<group>"; };
-		D69FFA802941BBF800CC7E75 /* mem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mem.h; sourceTree = "<group>"; };
-		D69FFA812941BBF800CC7E75 /* smartconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = smartconfig.h; sourceTree = "<group>"; };
-		D69FFA822941BBF800CC7E75 /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ping.h; sourceTree = "<group>"; };
-		D69FFA832941BBF800CC7E75 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
-		D6D04169294C28CB006B09EE /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = system.cpp; path = ../esp8266/web/system.cpp; sourceTree = "<group>"; };
-		D6D753E12955AE41007D8981 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
-		D6D753E22955AE41007D8981 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
-		D6D753E32955AE41007D8981 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto.c; path = ../esp8266/lost/crypto.c; sourceTree = "<group>"; };
-		D6D753E729580AD6007D8981 /* uart.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = uart.c; path = ../esp8266/app/uart.c; sourceTree = "<group>"; };
-		D6D753E829580AD6007D8981 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uart.h; path = ../esp8266/app/uart.h; sourceTree = "<group>"; };
-		D6D753EA29583EF8007D8981 /* gpio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gpio.c; path = ../esp8266/app/gpio.c; sourceTree = "<group>"; };
-		D6D753EB29583EF8007D8981 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gpio.h; path = ../esp8266/app/gpio.h; sourceTree = "<group>"; };
 		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753FB2959402C007D8981 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6D75426295AE75D007D8981 /* rtc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rtc.c; path = ../esp8266/app/rtc.c; sourceTree = "<group>"; };
-		D6D75427295AE75D007D8981 /* rtc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rtc.h; path = ../esp8266/app/rtc.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,10 +27,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6D753F62959402C007D8981 /* libcrypto.a in Frameworks */,
-				D6D753F82959402C007D8981 /* liblittlefs.a in Frameworks */,
-				D6D753FA2959402C007D8981 /* liblwip.a in Frameworks */,
-				D6D753FC2959402C007D8981 /* libmqtt.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,8 +55,7 @@
 			isa = PBXGroup;
 			children = (
 				D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */,
-				D69FFA5E294185BA00CC7E75 /* mqtt_config.h */,
-				D69FFA5F294185BA00CC7E75 /* user_config.h */,
+				D668D0B52976A107009ABBB9 /* sdkconfig.h */,
 			);
 			name = Configs;
 			sourceTree = "<group>";
@@ -161,15 +63,7 @@
 		D644A038231ED82900B75B77 = {
 			isa = PBXGroup;
 			children = (
-				D69FFA672941BBEA00CC7E75 /* ESP8266_NONOS_SDK */,
-				D6D0416B294C52A4006B09EE /* app */,
-				D6D753E02955AE31007D8981 /* lost */,
-				D6D04168294C28BB006B09EE /* web */,
-				D69FFA4D2941832300CC7E75 /* esp8266.h */,
-				D66B1E3C2971939300C1AED1 /* ets.c */,
-				D69FFA512941832400CC7E75 /* init.c */,
-				D69FFA4C2941832300CC7E75 /* main.cpp */,
-				D69FFA4E2941832300CC7E75 /* phy.c */,
+				D668D0972976993C009ABBB9 /* main.c */,
 				CE999BD625D21EC800351116 /* Configs */,
 				D644A042231ED82900B75B77 /* Products */,
 				300264BD24266097004559E0 /* Frameworks */,
@@ -183,100 +77,6 @@
 				D627776B295B33050092DFB5 /* libeagle.a */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D69FFA672941BBEA00CC7E75 /* ESP8266_NONOS_SDK */ = {
-			isa = PBXGroup;
-			children = (
-				D69FFA682941BBF800CC7E75 /* include */,
-			);
-			name = ESP8266_NONOS_SDK;
-			sourceTree = "<group>";
-		};
-		D69FFA682941BBF800CC7E75 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				D69FFA772941BBF800CC7E75 /* json */,
-				D69FFA762941BBF800CC7E75 /* airkiss.h */,
-				D69FFA6B2941BBF800CC7E75 /* at_custom.h */,
-				D69FFA722941BBF800CC7E75 /* c_types.h */,
-				D69FFA732941BBF800CC7E75 /* eagle_soc.h */,
-				D69FFA6A2941BBF800CC7E75 /* espconn.h */,
-				D69FFA7F2941BBF800CC7E75 /* espnow.h */,
-				D69FFA752941BBF800CC7E75 /* ets_sys.h */,
-				D69FFA7C2941BBF800CC7E75 /* gpio.h */,
-				D69FFA7B2941BBF800CC7E75 /* ip_addr.h */,
-				D69FFA802941BBF800CC7E75 /* mem.h */,
-				D69FFA6E2941BBF800CC7E75 /* os_type.h */,
-				D69FFA702941BBF800CC7E75 /* osapi.h */,
-				D69FFA822941BBF800CC7E75 /* ping.h */,
-				D69FFA712941BBF800CC7E75 /* pwm.h */,
-				D69FFA832941BBF800CC7E75 /* queue.h */,
-				D69FFA7D2941BBF800CC7E75 /* simple_pair.h */,
-				D69FFA812941BBF800CC7E75 /* smartconfig.h */,
-				D69FFA692941BBF800CC7E75 /* sntp.h */,
-				D69FFA742941BBF800CC7E75 /* spi_flash.h */,
-				D69FFA6F2941BBF800CC7E75 /* upgrade.h */,
-				D69FFA6D2941BBF800CC7E75 /* user_interface.h */,
-				D69FFA6C2941BBF800CC7E75 /* version.h */,
-				D69FFA7E2941BBF800CC7E75 /* wpa2_enterprise.h */,
-			);
-			name = include;
-			path = ../ESP8266_NONOS_SDK/include;
-			sourceTree = "<group>";
-		};
-		D69FFA772941BBF800CC7E75 /* json */ = {
-			isa = PBXGroup;
-			children = (
-				D69FFA7A2941BBF800CC7E75 /* json.h */,
-				D69FFA782941BBF800CC7E75 /* jsonparse.h */,
-				D69FFA792941BBF800CC7E75 /* jsontree.h */,
-			);
-			path = json;
-			sourceTree = "<group>";
-		};
-		D6D04168294C28BB006B09EE /* web */ = {
-			isa = PBXGroup;
-			children = (
-				D6D04169294C28CB006B09EE /* system.cpp */,
-			);
-			name = web;
-			sourceTree = "<group>";
-		};
-		D6D0416B294C52A4006B09EE /* app */ = {
-			isa = PBXGroup;
-			children = (
-				D62777AB295FF65D0092DFB5 /* fota.cpp */,
-				D62777AC295FF65D0092DFB5 /* fota.h */,
-				D6918EB12950377D00B0BE87 /* fs.c */,
-				D6918EB22950377D00B0BE87 /* fs.h */,
-				D6D753EA29583EF8007D8981 /* gpio.c */,
-				D6D753EB29583EF8007D8981 /* gpio.h */,
-				D6918EB32950377D00B0BE87 /* httpd.c */,
-				D6918EB42950377D00B0BE87 /* httpd.h */,
-				D6918EE229544F6700B0BE87 /* https.c */,
-				D6918EE129544F6700B0BE87 /* https.h */,
-				D6918EB52950377D00B0BE87 /* mqtt.cpp */,
-				D6918EB62950377E00B0BE87 /* mqtt.h */,
-				D6918EBA29515FB900B0BE87 /* ota.c */,
-				D6918EBB29515FB900B0BE87 /* ota.h */,
-				D6D75426295AE75D007D8981 /* rtc.c */,
-				D6D75427295AE75D007D8981 /* rtc.h */,
-				D6D753E729580AD6007D8981 /* uart.c */,
-				D6D753E829580AD6007D8981 /* uart.h */,
-			);
-			name = app;
-			sourceTree = "<group>";
-		};
-		D6D753E02955AE31007D8981 /* lost */ = {
-			isa = PBXGroup;
-			children = (
-				D6D753E32955AE41007D8981 /* crypto.c */,
-				D66B1DFF296BD07900C1AED1 /* lfs_util.c */,
-				D6D753E22955AE41007D8981 /* libcpp.cpp */,
-				D6D753E12955AE41007D8981 /* lost.c */,
-			);
-			name = lost;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -368,7 +168,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\ncat $PROJECT_DIR/../ESP8266_NONOS_SDK/bin/boot_v1.7.bin >libesp8266.bin\nprintf '\\x02\\x60' | dd of=libesp8266.bin bs=1 seek=2 count=2 conv=notrunc\necho \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\c\" >>libesp8266.bin\ncat libesp8266-0x01000.bin >>libesp8266.bin\nrm libesp8266-0x01000.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\ncat $PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin >libesp8266.bin\nprintf '\\x02\\x60' | dd of=libesp8266.bin bs=1 seek=2 count=2 conv=notrunc\necho \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\c\" >>libesp8266.bin\ncat libesp8266-0x01000.bin >>libesp8266.bin\nrm libesp8266-0x01000.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -377,24 +177,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D62777AD295FF65D0092DFB5 /* fota.cpp in Sources */,
-				D6918EB72950377E00B0BE87 /* fs.c in Sources */,
-				D6D753EC29583EF8007D8981 /* gpio.c in Sources */,
-				D6918EB82950377E00B0BE87 /* httpd.c in Sources */,
-				D6918EE329544F6700B0BE87 /* https.c in Sources */,
-				D6918EB92950377E00B0BE87 /* mqtt.cpp in Sources */,
-				D6918EBC29515FB900B0BE87 /* ota.c in Sources */,
-				D6D75428295AE75D007D8981 /* rtc.c in Sources */,
-				D6D753E929580AD6007D8981 /* uart.c in Sources */,
-				D6D753E62955AE41007D8981 /* crypto.c in Sources */,
-				D6D753E52955AE41007D8981 /* libcpp.cpp in Sources */,
-				D6D753E42955AE41007D8981 /* lost.c in Sources */,
-				D6D0416A294C28CB006B09EE /* system.cpp in Sources */,
-				D69FFA542941832400CC7E75 /* init.c in Sources */,
-				D66B1E3D2971939300C1AED1 /* ets.c in Sources */,
-				D69FFA522941832400CC7E75 /* main.cpp in Sources */,
-				D69FFA532941832400CC7E75 /* phy.c in Sources */,
-				D66B1E00296BD07900C1AED1 /* lfs_util.c in Sources */,
+				D668D0982976993C009ABBB9 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -402,24 +185,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D62777AE2961369F0092DFB5 /* fota.cpp in Sources */,
-				D627776F295B33890092DFB5 /* fs.c in Sources */,
-				D6277770295B33890092DFB5 /* gpio.c in Sources */,
-				D6277771295B33890092DFB5 /* httpd.c in Sources */,
-				D6277772295B33890092DFB5 /* https.c in Sources */,
-				D6277773295B33890092DFB5 /* mqtt.cpp in Sources */,
-				D6277774295B33890092DFB5 /* ota.c in Sources */,
-				D6277775295B33890092DFB5 /* rtc.c in Sources */,
-				D6277776295B33890092DFB5 /* uart.c in Sources */,
-				D6277777295B33890092DFB5 /* crypto.c in Sources */,
-				D6277778295B33890092DFB5 /* libcpp.cpp in Sources */,
-				D6277779295B33890092DFB5 /* lost.c in Sources */,
-				D627777A295B33890092DFB5 /* system.cpp in Sources */,
-				D627777B295B33890092DFB5 /* init.c in Sources */,
-				D66B1E3E2971939300C1AED1 /* ets.c in Sources */,
-				D627777C295B33890092DFB5 /* main.cpp in Sources */,
-				D627777D295B33890092DFB5 /* phy.c in Sources */,
-				D66B1E01296BD07900C1AED1 /* lfs_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
