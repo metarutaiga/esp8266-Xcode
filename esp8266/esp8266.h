@@ -72,9 +72,26 @@ public:
     using std::string::append;
     string& append(const char* __s)
     {
-        for (char c; (c = pgm_read_byte(__s)); ++__s)
+        for (uint32_t i = (uint32_t)__s % 4; i > 0 && i < 4; i += 1)
         {
+            char c = pgm_read_byte(__s);
+            if (c == 0)
+                return *this;
             std::string::push_back(c);
+            __s += 1;
+        }
+        for (;;)
+        {
+            uint32_t d = pgm_read_dword_aligned(__s);
+            for (uint32_t i = 0; i < 4; i += 1)
+            {
+                char c = d & 0xFF;
+                if (c == 0)
+                    return *this;
+                std::string::push_back(c);
+                d >>= 8;
+            }
+            __s += 4;
         }
         return *this;
     }
