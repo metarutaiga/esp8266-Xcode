@@ -1,18 +1,16 @@
 #!/bin/bash
 
-HAVE_AS=0
 ARGS=""
+LONGCALLS=""
+USE_GCC=0
 while [[ $# > 0 ]] ; do
     case $1 in
-        *.S)
-        HAVE_AS=1;
-        ARGS=$ARGS" "$1
-        ;;
         -fstrict-volatile-bitfields*)
         ;;
         -g*)
         ;;
         -mlongcalls*)
+        LONGCALLS="-mlongcalls"
         ;;
         -Wno-old-style-declaration*)
         ;;
@@ -23,7 +21,10 @@ while [[ $# > 0 ]] ; do
     shift
 done
 
-if [ $HAVE_AS = 0 ]; then
+if [ $USE_GCC -eq 1 ]; then
+# echo xtensa-lx106-elf-c++ $ARGS
+  $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-c++ $LONGCALLS $ARGS
+else
   ARGS=$ARGS" -target xtensa-lx106-elf -mcpu=esp8266 -fuse-ld=$BUILD_PATH/xtensa-lx106-elf-lld"
   ARGS=$ARGS" -Wno-sometimes-uninitialized"
   ARGS=$ARGS" -Wno-unused-command-line-argument" 
@@ -33,10 +34,12 @@ if [ $HAVE_AS = 0 ]; then
   ARGS=$ARGS" -Wno-uninitialized"
   ARGS=$ARGS" -Wno-array-parameter"
   ARGS=$ARGS" -Wno-format-security"
+  ARGS=$ARGS" -I/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"
+  ARGS=$ARGS" -D_LIBCPP_DISABLE_EXTERN_TEMPLATE"
+  ARGS=$ARGS" -D_LIBCPP_DISABLE_VISIBILITY_ANNOTATIONS"
+  ARGS=$ARGS" -D_LIBCPP_HAS_NO_THREADS"
+  ARGS=$ARGS" -Oz"
 
 # echo clang++ $ARGS
   clang++ $ARGS
-else
-# echo xtensa-lx106-elf-g++ $ARGS
-  $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-g++ $ARGS
 fi

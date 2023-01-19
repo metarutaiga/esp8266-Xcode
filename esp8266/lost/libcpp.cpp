@@ -1,4 +1,5 @@
-#include "esp8266.h"
+#include <stdio.h>
+#include <new>
 #include <string>
 
 #if defined(_LIBCPP_VERSION)
@@ -7,38 +8,47 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 _LIBCPP_END_NAMESPACE_STD
 #endif
 
+namespace std
+{
+    const nothrow_t nothrow {};
+}
+
 void* operator new(size_t size)
 {
-    return os_malloc(size);
+    return malloc(size);
+}
+
+void* operator new(size_t size, std::nothrow_t const&) noexcept
+{
+    return malloc(size);
 }
 
 void* operator new[](size_t size)
 {
-    return os_malloc(size);
+    return malloc(size);
+}
+
+void* operator new[](size_t size, std::nothrow_t const&) noexcept
+{
+    return malloc(size);
 }
 
 void operator delete(void* ptr) noexcept
 {
-    os_free(ptr);
+    free(ptr);
 }
 
 void operator delete(void* ptr, size_t size) noexcept
 {
-    os_free(ptr);
+    free(ptr);
 }
 
 void operator delete[](void* ptr) noexcept
 {
-    os_free(ptr);
+    free(ptr);
 }
 
 void operator delete[](void* ptr, size_t size) noexcept
 {
-    os_free(ptr);
-}
-
-#pragma clang diagnostic ignored "-Winvalid-noreturn"
-void abort()
-{
-    
+    free(ptr);
 }

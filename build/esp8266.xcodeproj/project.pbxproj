@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D668D0982976993C009ABBB9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.c */; };
+		D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -15,6 +16,7 @@
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D668D0972976993C009ABBB9 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../esp8266/main.c; sourceTree = "<group>"; };
 		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
+		D668D0DF297934D8009ABBB9 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -63,6 +65,7 @@
 		D644A038231ED82900B75B77 = {
 			isa = PBXGroup;
 			children = (
+				D668D0DE297934CE009ABBB9 /* lost */,
 				D668D0972976993C009ABBB9 /* main.c */,
 				CE999BD625D21EC800351116 /* Configs */,
 				D644A042231ED82900B75B77 /* Products */,
@@ -77,6 +80,14 @@
 				D627776B295B33050092DFB5 /* libeagle.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D668D0DE297934CE009ABBB9 /* lost */ = {
+			isa = PBXGroup;
+			children = (
+				D668D0DF297934D8009ABBB9 /* libcpp.cpp */,
+			);
+			name = lost;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,7 +179,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\ncat $PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin >libesp8266.bin\nprintf '\\x02\\x60' | dd of=libesp8266.bin bs=1 seek=2 count=2 conv=notrunc\necho \"\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\c\" >>libesp8266.bin\ncat libesp8266-0x01000.bin >>libesp8266.bin\nrm libesp8266-0x01000.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x2BFF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libesp8266.bin >>libesp8266-0x0000.bin\nmv libesp8266-0x0000.bin libesp8266.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -178,6 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D668D0982976993C009ABBB9 /* main.c in Sources */,
+				D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

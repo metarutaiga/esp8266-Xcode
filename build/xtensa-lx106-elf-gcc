@@ -1,11 +1,20 @@
 #!/bin/bash
 
-HAVE_AS=0
 ARGS=""
+LONGCALLS=""
+USE_GCC=0
 while [[ $# > 0 ]] ; do
     case $1 in
         *.S)
-        HAVE_AS=1;
+        USE_GCC=1;
+        ARGS=$ARGS" "$1
+        ;;
+        */bootloader/*)
+        USE_GCC=1;
+        ARGS=$ARGS" "$1
+        ;;
+        */heap/*)
+        USE_GCC=1;
         ARGS=$ARGS" "$1
         ;;
         -fstrict-volatile-bitfields*)
@@ -13,6 +22,7 @@ while [[ $# > 0 ]] ; do
         -g*)
         ;;
         -mlongcalls*)
+        LONGCALLS="-mlongcalls"
         ;;
         -Wno-old-style-declaration*)
         ;;
@@ -23,7 +33,10 @@ while [[ $# > 0 ]] ; do
     shift
 done
 
-if [ $HAVE_AS = 0 ]; then
+if [ $USE_GCC -eq 1 ]; then
+# echo xtensa-lx106-elf-gcc $ARGS
+  $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc $LONGCALLS $ARGS
+else
   ARGS=$ARGS" -target xtensa-lx106-elf -mcpu=esp8266 -fuse-ld=$BUILD_PATH/xtensa-lx106-elf-lld"
   ARGS=$ARGS" -Wno-sometimes-uninitialized"
   ARGS=$ARGS" -Wno-unused-command-line-argument" 
@@ -33,10 +46,8 @@ if [ $HAVE_AS = 0 ]; then
   ARGS=$ARGS" -Wno-uninitialized"
   ARGS=$ARGS" -Wno-array-parameter"
   ARGS=$ARGS" -Wno-format-security"
+  ARGS=$ARGS" -Oz"
 
 # echo clang $ARGS
   clang $ARGS
-else
-# echo xtensa-lx106-elf-gcc $ARGS
-  $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc $ARGS
 fi
