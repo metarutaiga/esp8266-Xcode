@@ -1,12 +1,12 @@
 wget -N https://github.com/espressif/llvm-project/releases/download/esp-15.0.0-20221201/llvm-esp-15.0.0-20221201-macos.tar.xz
-wget -N https://github.com/earlephilhower/esp-quick-toolchain/releases/download/3.1.0-gcc10.3/x86_64-apple-darwin14.xtensa-lx106-elf-e5f9fec.220621.tar.gz
+wget -N https://dl.espressif.com/dl/xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz
 
 if [ ! -d "esp-clang" ]; then
   tar xvf llvm-esp-15.0.0-20221201-macos.tar.xz
 fi
 
 if [ ! -d "xtensa-lx106-elf" ]; then
-  tar xvf x86_64-apple-darwin14.xtensa-lx106-elf-e5f9fec.220621.tar.gz
+  tar xvf xtensa-lx106-elf-gcc8_4_0-esp-2020r3-macos.tar.gz
 fi
 
 if [ ! -d "esp-clang/xtensa-lx106-elf" ]; then

@@ -60,8 +60,7 @@
 #define PBUF_RSV_FOR_WLAN
 #define TCP_MSS 536
 #define _TIME_T_ long
-#include <sys/timeb.h>
-#include <sys/_tz_structs.h>
+#include <time.h>
 #undef isprint
 #undef isdigit
 #undef isxdigit
@@ -79,7 +78,6 @@
 
 #pragma clang diagnostic ignored "-Wsection"
 #include <c_types.h>
-#include <sys/pgmspace.h>
 #undef ICACHE_FLASH_ATTR
 #undef ICACHE_RODATA_ATTR
 #undef PROGMEM
@@ -91,5 +89,9 @@
 #define PROGMEM             __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define IRAM_FLASH_ATTR     __attribute__((section(".iram0.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define IRAM_ATTR           __attribute__((section(".iram.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
+
+#define pgm_adjust_offset(addr, res)    __asm__("ssa8l\t%1\nsrl\t%0, %1" : "=r"(res) : "r"(addr))
+#define pgm_read_byte(addr)             (__extension__({uint32_t res; pgm_adjust_offset((uint32_t)addr, res); res;}))
+#define pgm_read_dword_aligned(addr)    (*(const uint32_t*)(addr))
 
 #endif
