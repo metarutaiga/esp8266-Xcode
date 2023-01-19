@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D668D0982976993C009ABBB9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.c */; };
 		D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
+		D668D0E229798737009ABBB9 /* nvs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E129798737009ABBB9 /* nvs.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -17,6 +18,7 @@
 		D668D0972976993C009ABBB9 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../esp8266/main.c; sourceTree = "<group>"; };
 		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
 		D668D0DF297934D8009ABBB9 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
+		D668D0E129798737009ABBB9 /* nvs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nvs.c; path = ../esp8266/lost/nvs.c; sourceTree = "<group>"; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -85,6 +87,7 @@
 		D668D0DE297934CE009ABBB9 /* lost */ = {
 			isa = PBXGroup;
 			children = (
+				D668D0E129798737009ABBB9 /* nvs.c */,
 				D668D0DF297934D8009ABBB9 /* libcpp.cpp */,
 			);
 			name = lost;
@@ -188,6 +191,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D668D0E229798737009ABBB9 /* nvs.c in Sources */,
 				D668D0982976993C009ABBB9 /* main.c in Sources */,
 				D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */,
 			);
