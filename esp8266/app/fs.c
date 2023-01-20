@@ -17,13 +17,13 @@ static int32_t fs_hal_read(uint32_t addr, uint32_t size, uint8_t* dst)
     {
         int length = size < PHYS_PAGE ? size : PHYS_PAGE;
         int length_aligned = (length + 3) & ~3;
-        SpiFlashOpResult result = spi_flash_read(addr, buffer, length_aligned);
-        if (result != SPI_FLASH_RESULT_OK)
+        esp_err_t result = spi_flash_read(addr, buffer, length_aligned);
+        if (result != ESP_OK)
         {
-            os_printf("%d = %s(%p, %p, %d)\n", result, "spi_flash_read", (char*)addr, (char*)buffer, length_aligned);
+            printf("%d = %s(%p, %p, %d)\n", result, "spi_flash_read", (char*)addr, (char*)buffer, length_aligned);
             return -1;
         }
-        os_memcpy(dst, buffer, length);
+        memcpy(dst, buffer, length);
         addr += length;
         size -= length;
     }
@@ -37,11 +37,11 @@ static int32_t fs_hal_write(uint32_t addr, uint32_t size, uint8_t* src)
     {
         int length = size < PHYS_PAGE ? size : PHYS_PAGE;
         int length_aligned = (length + 3) & ~3;
-        os_memcpy(buffer, src, length);
-        SpiFlashOpResult result = spi_flash_write(addr, buffer, length_aligned);
-        if (result != SPI_FLASH_RESULT_OK)
+        memcpy(buffer, src, length);
+        esp_err_t result = spi_flash_write(addr, buffer, length_aligned);
+        if (result != ESP_OK)
         {
-            os_printf("%d = %s(%p, %p, %d)\n", result, "spi_flash_write", (char*)addr, (char*)buffer, length_aligned);
+            printf("%d = %s(%p, %p, %d)\n", result, "spi_flash_write", (char*)addr, (char*)buffer, length_aligned);
             return -1;
         }
         addr += length;
@@ -56,10 +56,10 @@ static int32_t fs_hal_erase(uint32_t addr, uint32_t size)
     const uint32_t sectorCount = size / SPI_FLASH_SEC_SIZE;
     for (uint32_t i = 0; i < sectorCount; ++i)
     {
-        SpiFlashOpResult result = spi_flash_erase_sector(sector + i);
-        if (result != SPI_FLASH_RESULT_OK)
+        esp_err_t result = spi_flash_erase_sector(sector + i);
+        if (result != ESP_OK)
         {
-            os_printf("%d = %s(%p)\n", result, "spi_flash_erase_sector", (char*)sector + i);
+            printf("%d = %s(%p)\n", result, "spi_flash_erase_sector", (char*)sector + i);
             return -1;
         }
     }
@@ -139,16 +139,16 @@ int fs_open(const char* name, const char* mode)
         break;
     }
     char* temp = strdup(name);
-    lfs_file_t* fd = os_zalloc(sizeof(lfs_file_t));
+    lfs_file_t* fd = calloc(1, sizeof(lfs_file_t));
     int result = lfs_file_open(&fs, fd, temp, flags);
     if (result != LFS_ERR_OK)
     {
-        os_printf("%d = %s(%p, %p, %s, %s)\n", result, "lfs_file_open", &fs, fd, name, mode);
+        printf("%d = %s(%p, %p, %s, %s)\n", result, "lfs_file_open", &fs, fd, name, mode);
 
-        os_free(fd);
+        free(fd);
         fd = (lfs_file_t*)result;
     }
-    os_free(temp);
+    free(temp);
     return (int)fd;
 }
 
@@ -157,7 +157,7 @@ void fs_close(int fd)
     if (fd < 0)
         return;
     lfs_file_close(&fs, (lfs_file_t*)fd);
-    os_free((lfs_file_t*)fd);
+    free((lfs_file_t*)fd);
 }
 
 int fs_getc(int fd)

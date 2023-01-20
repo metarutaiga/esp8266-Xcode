@@ -1,20 +1,6 @@
-/* Hello World Example
-
-   This example code is in the Public Domain (or CC0 licensed, at your option.)
-
-   Unless required by applicable law or agreed to in writing, this
-   software is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR
-   CONDITIONS OF ANY KIND, either express or implied.
-*/
-
-#pragma clang diagnostic ignored "-Wmacro-redefined"
-
-#include <stdio.h>
-#include <string.h>
-#include "esp_system.h"
-#include "esp_log.h"
+#include "esp8266.h"
 #include "esp_wifi.h"
-#include "esp_spi_flash.h"
+#include "app/fs.h"
 
 #define TAG __FILE_NAME__
 
@@ -28,11 +14,15 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
     {
         esp_wifi_connect();
         ESP_LOGI(TAG, "retry to connect to the AP");
+
+        ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_APSTA));
     }
     else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
     {
         ip_event_got_ip_t* event = (ip_event_got_ip_t*) event_data;
         ESP_LOGI(TAG, "got ip:%s", ip4addr_ntoa(&event->ip_info.ip));
+
+        ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     }
 }
 
@@ -50,7 +40,8 @@ void wifi_init_sta(void)
     {
         .sta =
         {
-            .ssid = "esp8266",
+            .ssid = "TAiGA",
+            .password = "qwertyuiop",
             .threshold.authmode = WIFI_AUTH_WPA_WPA2_PSK,
         },
     };
@@ -81,20 +72,8 @@ void app_main()
 {
     ESP_ERROR_CHECK(esp_event_loop_create_default());
 
-    printf("Hello world!\n");
-
-    /* Print chip information */
-    esp_chip_info_t chip_info;
-    esp_chip_info(&chip_info);
-    printf("This is ESP8266 chip with %d CPU cores, WiFi, ",
-            chip_info.cores);
-
-    printf("silicon revision %d, ", chip_info.revision);
-
-    printf("%dMB %s flash\n", spi_flash_get_chip_size() / (1024 * 1024),
-            (chip_info.features & CHIP_FEATURE_EMB_FLASH) ? "embedded" : "external");
-
-    ESP_LOGI(TAG, "%d/%d\n", esp_get_minimum_free_heap_size(), esp_get_free_heap_size());
+    // Component
+    fs_init();
 
     ESP_LOGI(TAG, "ESP_WIFI_MODE_STA");
     wifi_init_sta();

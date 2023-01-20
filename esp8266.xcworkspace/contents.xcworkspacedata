@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:build/esp8266.xcodeproj">
+      location = "container:build/eagle.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "container:build/littlefs.xcodeproj">
    </FileRef>
 </Workspace>

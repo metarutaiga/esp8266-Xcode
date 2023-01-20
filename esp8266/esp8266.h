@@ -4,13 +4,17 @@
 extern "C" {
 #endif
 
-#include <c_types.h>
-#include <mem.h>
-#include <osapi.h>
-#include <sntp.h>
-#include <time.h>
-#include <user_interface.h>
-#include <espconn.h>
+#include "esp_attr.h"
+#include "esp_log.h"
+#include "esp_system.h"
+
+//#include <c_types.h>
+//#include <mem.h>
+//#include <osapi.h>
+//#include <sntp.h>
+//#include <time.h>
+//#include <user_interface.h>
+//#include <espconn.h>
 
 #define DIRECT 1
 #define GPIO_EN_OUTPUT(gpio)
@@ -29,27 +33,27 @@ extern "C" {
 }
 #endif
 
-extern void ets_write_char(char c);
-extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
-extern int system_station_got_ip_set(ip_addr_t* ip, ip_addr_t* mask, ip_addr_t* gw);
-extern void system_restart_local();
-extern uint64_t system_get_time64();
-extern uint32_t system_get_time_ms();
-extern struct tm* sntp_localtime(const time_t* tim_p);
-inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
-{
-    uint32_t ccount;
-    __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
-    return ccount;
-}
-
-extern const char version[];
-extern const char build_date[];
-extern char number[128];
-
-void setup(void);
-void loop(void);
-void delay(unsigned int ms);
+//extern void ets_write_char(char c);
+//extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
+//extern int system_station_got_ip_set(ip_addr_t* ip, ip_addr_t* mask, ip_addr_t* gw);
+//extern void system_restart_local();
+//extern uint64_t system_get_time64();
+//extern uint32_t system_get_time_ms();
+//extern struct tm* sntp_localtime(const time_t* tim_p);
+//inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
+//{
+//    uint32_t ccount;
+//    __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
+//    return ccount;
+//}
+//
+//extern const char version[];
+//extern const char build_date[];
+//extern char number[128];
+//
+//void setup(void);
+//void loop(void);
+//void delay(unsigned int ms);
 
 #ifdef __cplusplus
 };

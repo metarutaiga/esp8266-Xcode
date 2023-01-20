@@ -10,16 +10,23 @@
 		D668D0982976993C009ABBB9 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.c */; };
 		D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
 		D668D0E229798737009ABBB9 /* nvs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E129798737009ABBB9 /* nvs.c */; };
+		D668D0E6297A8267009ABBB9 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E5297A8267009ABBB9 /* fs.c */; };
+		D668D0E8297A84BC009ABBB9 /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D668D0E7297A84BC009ABBB9 /* liblittlefs.a */; };
+		D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBA297A861500CAAB46 /* lfs_util.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		30A9A7BB25ADC792000FA104 /* libesp8266.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libesp8266.so; sourceTree = BUILT_PRODUCTS_DIR; };
+		30A9A7BB25ADC792000FA104 /* libeagle.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libeagle.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D668D0972976993C009ABBB9 /* main.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = main.c; path = ../esp8266/main.c; sourceTree = "<group>"; };
 		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
 		D668D0DF297934D8009ABBB9 /* libcpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = libcpp.cpp; path = ../esp8266/lost/libcpp.cpp; sourceTree = "<group>"; };
 		D668D0E129798737009ABBB9 /* nvs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nvs.c; path = ../esp8266/lost/nvs.c; sourceTree = "<group>"; };
+		D668D0E4297A8267009ABBB9 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
+		D668D0E5297A8267009ABBB9 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
+		D668D0E7297A84BC009ABBB9 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
+		D6D48CBA297A861500CAAB46 /* lfs_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs_util.c; path = ../esp8266/lost/lfs_util.c; sourceTree = "<group>"; };
 		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -31,6 +38,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D668D0E8297A84BC009ABBB9 /* liblittlefs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +55,7 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D668D0E7297A84BC009ABBB9 /* liblittlefs.a */,
 				D6D753F52959402C007D8981 /* libcrypto.a */,
 				D6D753F72959402C007D8981 /* liblittlefs.a */,
 				D6D753F92959402C007D8981 /* liblwip.a */,
@@ -67,6 +76,7 @@
 		D644A038231ED82900B75B77 = {
 			isa = PBXGroup;
 			children = (
+				D668D0E3297A825A009ABBB9 /* app */,
 				D668D0DE297934CE009ABBB9 /* lost */,
 				D668D0972976993C009ABBB9 /* main.c */,
 				CE999BD625D21EC800351116 /* Configs */,
@@ -78,7 +88,7 @@
 		D644A042231ED82900B75B77 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				30A9A7BB25ADC792000FA104 /* libesp8266.so */,
+				30A9A7BB25ADC792000FA104 /* libeagle.so */,
 				D627776B295B33050092DFB5 /* libeagle.a */,
 			);
 			name = Products;
@@ -87,18 +97,28 @@
 		D668D0DE297934CE009ABBB9 /* lost */ = {
 			isa = PBXGroup;
 			children = (
-				D668D0E129798737009ABBB9 /* nvs.c */,
+				D6D48CBA297A861500CAAB46 /* lfs_util.c */,
 				D668D0DF297934D8009ABBB9 /* libcpp.cpp */,
+				D668D0E129798737009ABBB9 /* nvs.c */,
 			);
 			name = lost;
+			sourceTree = "<group>";
+		};
+		D668D0E3297A825A009ABBB9 /* app */ = {
+			isa = PBXGroup;
+			children = (
+				D668D0E5297A8267009ABBB9 /* fs.c */,
+				D668D0E4297A8267009ABBB9 /* fs.h */,
+			);
+			name = app;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		30A9A7BA25ADC792000FA104 /* esp8266 */ = {
+		30A9A7BA25ADC792000FA104 /* eagle */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "esp8266" */;
+			buildConfigurationList = 30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "eagle" */;
 			buildPhases = (
 				30A9A7B825ADC792000FA104 /* Sources */,
 				30A9A7B925ADC792000FA104 /* Frameworks */,
@@ -108,14 +128,14 @@
 			);
 			dependencies = (
 			);
-			name = esp8266;
+			name = eagle;
 			productName = "esp8266 (Android)";
-			productReference = 30A9A7BB25ADC792000FA104 /* libesp8266.so */;
+			productReference = 30A9A7BB25ADC792000FA104 /* libeagle.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		D627776A295B33050092DFB5 /* eagle */ = {
+		D627776A295B33050092DFB5 /* eagle (lib) */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle" */;
+			buildConfigurationList = D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle (lib)" */;
 			buildPhases = (
 				D6277768295B33050092DFB5 /* Sources */,
 				D6277769295B33050092DFB5 /* Frameworks */,
@@ -124,7 +144,7 @@
 			);
 			dependencies = (
 			);
-			name = eagle;
+			name = "eagle (lib)";
 			productName = eagle;
 			productReference = D627776B295B33050092DFB5 /* libeagle.a */;
 			productType = "com.apple.product-type.library.static";
@@ -145,7 +165,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "esp8266" */;
+			buildConfigurationList = D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "eagle" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -158,8 +178,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				30A9A7BA25ADC792000FA104 /* esp8266 */,
-				D627776A295B33050092DFB5 /* eagle */,
+				30A9A7BA25ADC792000FA104 /* eagle */,
+				D627776A295B33050092DFB5 /* eagle (lib) */,
 			);
 		};
 /* End PBXProject section */
@@ -182,7 +202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x27FF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libesp8266.bin >>libesp8266-0x0000.bin\nmv libesp8266-0x0000.bin libesp8266.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\n#python3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\n#cat $PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin >libeagle-0x0000.bin\n#dd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x0FFF\n#cat libeagle.bin >>libeagle-0x0000.bin\n#mv libeagle-0x0000.bin libeagle.bin\n\npython3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libeagle-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x27FF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libeagle-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libeagle.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -193,7 +213,9 @@
 			files = (
 				D668D0E229798737009ABBB9 /* nvs.c in Sources */,
 				D668D0982976993C009ABBB9 /* main.c in Sources */,
+				D668D0E6297A8267009ABBB9 /* fs.c in Sources */,
 				D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */,
+				D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,6 +237,7 @@
 					DEMO,
 					"$(inherited)",
 				);
+				PRODUCT_NAME = eagle;
 			};
 			name = Debug;
 		};
@@ -226,6 +249,7 @@
 					DEMO,
 					"$(inherited)",
 				);
+				PRODUCT_NAME = eagle;
 			};
 			name = Release;
 		};
@@ -236,7 +260,7 @@
 				EXECUTABLE_EXTENSION = a;
 				EXECUTABLE_PREFIX = lib;
 				MACH_O_TYPE = staticlib;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = eagle;
 			};
 			name = Debug;
 		};
@@ -247,7 +271,7 @@
 				EXECUTABLE_EXTENSION = a;
 				EXECUTABLE_PREFIX = lib;
 				MACH_O_TYPE = staticlib;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = eagle;
 			};
 			name = Release;
 		};
@@ -382,7 +406,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "esp8266" */ = {
+		30A9A7BE25ADC792000FA104 /* Build configuration list for PBXNativeTarget "eagle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				30A9A7BC25ADC792000FA104 /* Debug */,
@@ -391,7 +415,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle" */ = {
+		D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle (lib)" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D627776C295B33050092DFB5 /* Debug */,
@@ -400,7 +424,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "esp8266" */ = {
+		D644A03C231ED82900B75B77 /* Build configuration list for PBXProject "eagle" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D644A04A231ED82900B75B77 /* Debug */,

@@ -79,7 +79,7 @@ SECTIONS
   {
     /* Code marked as runnning out of IRAM */
     _iram_text_start = ABSOLUTE(.);
-
+/*
     *libesp8266.a:(.data.WIFI_EVENT .data.g_esp_ticks_per_us)
     *libnet80211.a:ieee80211_nvs.o(.data.g_wifi_nvs)
     *libnet80211.a:ieee80211_api.o(.data.g_wifi_event_mask)
@@ -90,7 +90,7 @@ SECTIONS
     *libc_nano.a:lib_a-locale.o(.data.__global_locale_ptr)
     *libtcpip_adapter.a:tcpip_adapter_lwip.o(.data.IP_EVENT)
     *liblwip.a:(.data.dhcps_lease_time .data.s_dhcps_mask .data.tcp_next_iss.iss)
-
+*/
     *( .iram1  .iram1.* EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2.* *libgcc.a:unwind-dw2-fde.* *libspi_flash.a:spi_flash_raw.*) .literal EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2.* *libgcc.a:unwind-dw2-fde.* *libspi_flash.a:spi_flash_raw.*) .text)
     *libpp.a:( .literal  .literal.*  .text  .text.*)
     *libphy.a:( .literal  .literal.*  .text  .text.*)
@@ -116,7 +116,7 @@ SECTIONS
     *libfreertos.a:freertos_hooks.*( .bss  .bss.*  COMMON)
     *libfreertos.a:event_groups.*( .bss  .bss.*  COMMON)
     *liblwip.a:( .bss  .bss.*  COMMON)
-
+/*
     *libc_nano.a:(.bss.environ .bss.__sinit_recursive_mutex .bss.__sfp_recursive_mutex .bss._global_impure_ptr)
     *libesp8266.a:(.bss.p_uart_obj .bss.rx_gain_dc_table .bss.s_nmi_wd_state .bss.s_reset_reason .bss.s_sleep_wakup_triggers .bss.s_sleep_mode)
     *libesp_event.a:default_event_loop.o(.bss.s_default_loop)
@@ -132,7 +132,7 @@ SECTIONS
     *libvfs.a:(.bss.s_fd_table_lock .bss.s_vfs_count .bss.s_registered_select_num .bss.s_registered_selects .bss.s_vfs)
     *libwpa_supplicant.a:wpa_auth.o(.bss.s_sm_table .bss.s_sm_valid_bitmap)
     *libfreertos.a:xtensa_vectors.o(.bss)
-
+*/
     . = ALIGN (4);
     _iram_bss_end = ABSOLUTE(.);
     _iram_end = ABSOLUTE(.);
