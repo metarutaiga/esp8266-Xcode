@@ -13,7 +13,7 @@ while [[ $# > 0 ]] ; do
         USE_GCC=1;
         ARGS=$ARGS" "$1
         ;;
-        */heap/*)
+        *esp_heap_caps.c)
         USE_GCC=1;
         ARGS=$ARGS" "$1
         ;;

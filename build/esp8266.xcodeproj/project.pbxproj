@@ -182,7 +182,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x2BFF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libesp8266.bin >>libesp8266-0x0000.bin\nmv libesp8266-0x0000.bin libesp8266.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libesp8266.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x27FF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libesp8266-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libesp8266-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libesp8266.bin >>libesp8266-0x0000.bin\nmv libesp8266-0x0000.bin libesp8266.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
