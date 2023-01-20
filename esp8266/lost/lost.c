@@ -1,26 +1,51 @@
-#include "esp8266.h"
+#include "eagle.h"
 #include <stdlib.h>
 #include <time.h>
-#define NANOPRINTF_IMPLEMENTATION
-#include <nanoprintf/nanoprintf.h>
 
+size_t strcspn(const char* str, const char* spn)
+{
+    const char* s = str;
+    char b;
+    char c;
+
+    while ((b = pgm_read_byte(str)))
+    {
+        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (b == c) break;
+        if (c) break;
+        str++;
+    }
+
+    return str - s;
+}
+
+size_t strspn(const char* str, const char* spn)
+{
+    const char* s = str;
+    char b;
+    char c;
+
+    while ((b = pgm_read_byte(str)))
+    {
+        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (b == c) break;
+        if (c == '\0') break;
+        str++;
+    }
+
+    return str - s;
+}
+
+#if 0
 int atoi(const char* str)
 {
     return strtol(str, NULL, 10);
 }
 
-int* __errno(void)
-{
-    static int no IRAM_ATTR;
-    return &no;
-}
-
 char* itoa(int value, char* str, int base)
 {
     if (base == 16)
-        os_sprintf(str, "%x", value);
+        sprintf(str, "%x", value);
     else
-        os_sprintf(str, "%d", value);
+        sprintf(str, "%d", value);
     return str;
 }
 
@@ -101,7 +126,7 @@ void qsort(void* __base, size_t __nmemb, size_t __size, __compar_fn_t _compar)
 
 int strcasecmp(const char* s1, const char* s2)
 {
-    return os_strcmp(s1, s2);
+    return strcmp(s1, s2);
 }
 
 char* strcat(char* s1, const char* s2)
@@ -127,26 +152,12 @@ char* strchr(const char* str, int chr)
     return NULL;
 }
 
-size_t strcspn(const char* str, const char* spn)
-{
-    const char* s = str;
-    char b;
-    char c;
 
-    while ((b = pgm_read_byte(str)))
-    {
-        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (b == c) break;
-        if (c) break;
-        str++;
-    }
-
-    return str - s;
-}
 
 char* strdup(const char* str)
 {
-    size_t len = os_strlen(str);
-    char* dup = (char*)os_malloc(len + 1);
+    size_t len = strlen(str);
+    char* dup = (char*)malloc(len + 1);
     for (int i = 0; i < len; ++i)
         dup[i] = pgm_read_byte(str + i);
     dup[len] = 0;
@@ -155,7 +166,7 @@ char* strdup(const char* str)
 
 char* strndup(const char* str, size_t len)
 {
-   char* dup = (char*)os_malloc(len + 1);
+   char* dup = (char*)malloc(len + 1);
    for (int i = 0; i < len; ++i)
        dup[i] = pgm_read_byte(str + i);
    dup[len] = 0;
@@ -172,22 +183,6 @@ char* strsep(char** sp, const char* sep)
         *p++ = '\0';
     *sp = p;
     return s;
-}
-
-size_t strspn(const char* str, const char* spn)
-{
-    const char* s = str;
-    char b;
-    char c;
-
-    while ((b = pgm_read_byte(str)))
-    {
-        for (const char* p = spn; (c = pgm_read_byte(p)); p++) if (b == c) break;
-        if (c == '\0') break;
-        str++;
-    }
-
-    return str - s;
 }
 
 double strtod(const char* str, char** str_end)
@@ -262,3 +257,4 @@ long strtol(const char* str, char** str_end, int base)
     }
     return negative ? -result : result;
 }
+#endif

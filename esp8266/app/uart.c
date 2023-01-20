@@ -1,4 +1,5 @@
-#include "esp8266.h"
+#include "eagle.h"
+#include "esp_clk.h"
 #include "gpio.h"
 
 struct uart_context
@@ -17,9 +18,10 @@ struct uart_context
     uint8_t buffer[1];
 };
 
-static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
+static void IRAM_ATTR uart_rx(void* arg)
 {
     struct uart_context* context = arg;
+    int up = 0;
 
     uint32_t cycle = esp_get_cycle_count();
     int last_cycle;
@@ -66,7 +68,7 @@ static void IRAM_FLASH_ATTR uart_rx(void* arg, int up)
 
 void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int buffer_size)
 {
-    struct uart_context* context = os_zalloc(sizeof(struct uart_context) + buffer_size - 1);
+    struct uart_context* context = calloc(1, sizeof(struct uart_context) + buffer_size - 1);
     context->bit = -1;
     context->head = 0;
     context->tail = 0;
@@ -75,16 +77,18 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
     context->parity = parity;
     context->stop = stop;
     context->frame = data + (parity == 'O' || parity == 'E' ? 1 : 0) + stop;
-    context->baud_cycle = (system_get_cpu_freq() * 1000 * 1000 + baud / 2) / baud;
+    context->baud_cycle = (esp_clk_cpu_freq() * 1000 * 1000 + baud / 2) / baud;
     context->last_cycle = esp_get_cycle_count() - context->baud_cycle / 2;
     context->buffer_size = buffer_size;
 
-    gpio_regist(rx, uart_rx, context);
-    gpio_regist(tx, NULL, NULL);
-    GPIO_DIS_OUTPUT(rx);
-    GPIO_EN_OUTPUT(tx);
-    gpio_pullup(rx, true);
-    gpio_pullup(tx, true);
+    gpio_isr_handler_add(rx, uart_rx, context);
+    gpio_isr_handler_add(tx, NULL, NULL);
+    gpio_set_direction(rx, GPIO_MODE_DEF_INPUT);
+    gpio_set_direction(tx, GPIO_MODE_DEF_OUTPUT);
+    gpio_set_intr_type(rx, GPIO_INTR_ANYEDGE);
+    gpio_set_intr_type(tx, GPIO_INTR_DISABLE);
+    gpio_pullup_en(rx);
+    gpio_pullup_en(tx);
 
     return context;
 }
@@ -93,7 +97,7 @@ static void uart_wait_until(int begin, int cycle)
 {
     while (esp_get_cycle_count() - begin < cycle)
     {
-        delay(0);
+        vTaskDelay(1);
     }
 }
 
@@ -106,11 +110,11 @@ int uart_send(void* uart, const void* buffer, int length)
     for (int i = 0; i < length; ++i)
     {
         uint8_t c = ((uint8_t*)buffer)[i];
-        GPIO_OUTPUT_SET(context->tx, 0);
+        gpio_set_level(context->tx, 0);
         uart_wait_until(begin, cycle += context->baud_cycle);
         for (int i = 0; i < 8; ++i)
         {
-            GPIO_OUTPUT_SET(context->tx, c & BIT(i) ? 1 : 0);
+            gpio_set_level(context->tx, c & BIT(i) ? 1 : 0);
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
         switch (context->parity)
@@ -118,17 +122,17 @@ int uart_send(void* uart, const void* buffer, int length)
         default:
             break;
         case 'E':
-            GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1);
+            gpio_set_level(context->tx, (__builtin_popcount(c) & 1));
             uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         case 'O':
-            GPIO_OUTPUT_SET(context->tx, __builtin_popcount(c) & 1 ^ 1);
+            gpio_set_level(context->tx, (__builtin_popcount(c) & 1) ^ 1);
             uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         }
         for (int i = 0; i < context->stop; ++i)
         {
-            GPIO_OUTPUT_SET(context->tx, 1);
+            gpio_set_level(context->tx, 1);
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
         uart_wait_until(begin, cycle += context->baud_cycle / 2);

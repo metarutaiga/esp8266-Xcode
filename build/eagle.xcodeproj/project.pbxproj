@@ -13,6 +13,8 @@
 		D668D0E6297A8267009ABBB9 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E5297A8267009ABBB9 /* fs.c */; };
 		D668D0E8297A84BC009ABBB9 /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D668D0E7297A84BC009ABBB9 /* liblittlefs.a */; };
 		D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBA297A861500CAAB46 /* lfs_util.c */; };
+		D6D48CBE297A9C7100CAAB46 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBD297A9C7100CAAB46 /* lost.c */; };
+		D6D48CC4297AA03600CAAB46 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CC2297AA03600CAAB46 /* uart.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,10 @@
 		D668D0E7297A84BC009ABBB9 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6D48CBA297A861500CAAB46 /* lfs_util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfs_util.c; path = ../esp8266/lost/lfs_util.c; sourceTree = "<group>"; };
+		D6D48CBC297A9BF300CAAB46 /* eagle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = eagle.h; path = ../esp8266/eagle.h; sourceTree = "<group>"; };
+		D6D48CBD297A9C7100CAAB46 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
+		D6D48CC2297AA03600CAAB46 /* uart.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = uart.c; path = ../esp8266/app/uart.c; sourceTree = "<group>"; };
+		D6D48CC3297AA03600CAAB46 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uart.h; path = ../esp8266/app/uart.h; sourceTree = "<group>"; };
 		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -78,6 +84,7 @@
 			children = (
 				D668D0E3297A825A009ABBB9 /* app */,
 				D668D0DE297934CE009ABBB9 /* lost */,
+				D6D48CBC297A9BF300CAAB46 /* eagle.h */,
 				D668D0972976993C009ABBB9 /* main.c */,
 				CE999BD625D21EC800351116 /* Configs */,
 				D644A042231ED82900B75B77 /* Products */,
@@ -99,6 +106,7 @@
 			children = (
 				D6D48CBA297A861500CAAB46 /* lfs_util.c */,
 				D668D0DF297934D8009ABBB9 /* libcpp.cpp */,
+				D6D48CBD297A9C7100CAAB46 /* lost.c */,
 				D668D0E129798737009ABBB9 /* nvs.c */,
 			);
 			name = lost;
@@ -109,6 +117,8 @@
 			children = (
 				D668D0E5297A8267009ABBB9 /* fs.c */,
 				D668D0E4297A8267009ABBB9 /* fs.h */,
+				D6D48CC2297AA03600CAAB46 /* uart.c */,
+				D6D48CC3297AA03600CAAB46 /* uart.h */,
 			);
 			name = app;
 			sourceTree = "<group>";
@@ -193,16 +203,16 @@
 			inputFileListPaths = (
 			);
 			inputPaths = (
-				"$(TARGET_BUILD_DIR)/libesp8266.so",
+				"$(TARGET_BUILD_DIR)/libeagle.so",
 			);
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(TARGET_BUILD_DIR)/libesp8266-0x01000.bin",
+				"$(TARGET_BUILD_DIR)/libeagle.bin",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\n#python3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n\n#cat $PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin >libeagle-0x0000.bin\n#dd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x0FFF\n#cat libeagle.bin >>libeagle-0x0000.bin\n#mv libeagle-0x0000.bin libeagle.bin\n\npython3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libeagle-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x27FF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libeagle-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libeagle.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\n#python3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\npython3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\n#cat $PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin >libeagle-0x0000.bin\n#dd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x0FFF\n#cat libeagle.bin >>libeagle-0x0000.bin\n#mv libeagle-0x0000.bin libeagle.bin\n\ncat $PROJECT_DIR/hello_world/build/bootloader/bootloader.bin >libeagle-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x27FF\ncat $PROJECT_DIR/hello_world/build/partitions.bin >>libeagle-0x0000.bin\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 count=1 seek=0x2FFF\ncat libeagle.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -211,9 +221,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6D48CC4297AA03600CAAB46 /* uart.c in Sources */,
 				D668D0E229798737009ABBB9 /* nvs.c in Sources */,
 				D668D0982976993C009ABBB9 /* main.c in Sources */,
 				D668D0E6297A8267009ABBB9 /* fs.c in Sources */,
+				D6D48CBE297A9C7100CAAB46 /* lost.c in Sources */,
 				D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */,
 				D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */,
 			);
