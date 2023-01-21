@@ -1,8 +1,11 @@
 #pragma once
 
 #include "esp_attr.h"
+#include "esp_err.h"
 #include "esp_log.h"
+#include "esp_netif.h"
 #include "esp_system.h"
+#include "esp_wifi.h"
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 
@@ -10,6 +13,7 @@
 extern "C" {
 #endif
 
+extern char* fix_http_param(char* param);
 extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
 inline uint32_t IRAM_ATTR esp_get_cycle_count()
 {
@@ -17,6 +21,12 @@ inline uint32_t IRAM_ATTR esp_get_cycle_count()
     __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
     return ccount;
 }
+
+extern const char version[];
+extern const char build_date[];
+extern const char web_css[];
+extern char thisname[16];
+extern char number[128];
 
 #ifdef __cplusplus
 };
@@ -52,7 +62,7 @@ inline uint32_t IRAM_ATTR esp_get_cycle_count()
 #define pgm_read_with_offset(addr, res) \
     __pgm_adjust_offset(*__pgm_cast_u32ptr(addr), addr, res)
 
-#define pgm_read_byte(addr)                 (__extension__({uint32_t res; pgm_read_with_offset(addr, res); res;}))
+#define pgm_read_byte(addr)                 (__extension__({uint32_t res; pgm_read_with_offset(addr, res); (uint8_t)res;}))
 #ifdef __cplusplus
     #define pgm_read_dword_aligned(addr)    (*reinterpret_cast<const uint32_t*>(addr))
     #define pgm_read_float_aligned(addr)    (*reinterpret_cast<const float*>(addr))

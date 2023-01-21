@@ -1,298 +1,286 @@
-#include "esp8266.h"
-#include <string>
+#include "eagle.h"
+#include <esp_http_server.h>
 #include "app/fs.h"
-#include "app/httpd.h"
 
-bool web_system(void* arg, const char* url, int line)
+esp_err_t web_system(httpd_req_t* req)
 {
     string html;
 
-    switch (line)
-    {
-    case 0:
-    {
-        // Head
-        html += "<html>";
-        html += "<head>";
-        html +=     wifi_station_get_connect_status() == STATION_GOT_IP ? web_css : "";
-        html +=     "<title>";
-        html +=         wifi_station_get_hostname();
-        html +=     "</title>";
-        html += "</head>";
-        html += "<body>";
-        html += "<table>";
-        if (httpd_chunk_send(arg, 1, html.data(), html.length()) == false)
-            return true;
-        html.clear();
-    }
-    case 1:
-    {
-        // SSID
-        string ssid;
-        int fd = fs_open("ssid", "r");
-        if (fd >= 0)
-        {
-            ssid = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        html += "<form method='get' action='ssid'>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>SSID</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='ssid' length=32 value='" + ssid + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>PASS</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='password' name='pass' length=32>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='submit'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html += "</form>";
-        if (httpd_chunk_send(arg, 2, html.data(), html.length()) == false)
-            return true;
-        html.clear();
-    }
-    case 2:
-    {
-        struct ip_info info = {};
-        wifi_get_ip_info(STATION_IF, &info);
-        ip_addr_t dns_server = espconn_dns_getserver(0);
+    // Head
+    wifi_mode_t mode = WIFI_MODE_APSTA;
+    esp_wifi_get_mode(&mode);
+    html += "<html>";
+    html += "<head>";
+    html +=     mode == WIFI_MODE_STA ? web_css : "";
+    html +=     "<title>";
+    html +=         thisname;
+    html +=     "</title>";
+    html += "</head>";
+    html += "<body>";
+    html += "<table>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
 
-        // IP
-        string ip;
-        string gateway;
-        string subnet;
-        string dns;
-        int fd = fs_open("ip", "r");
-        if (fd >= 0)
-        {
-            ip = fs_gets(number, 128, fd);
-            gateway = fs_gets(number, 128, fd);
-            subnet = fs_gets(number, 128, fd);
-            dns = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        if (ip.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&info.ip));
-            ip = number;
-        }
-        if (gateway.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&info.gw));
-            gateway = number;
-        }
-        if (subnet.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&info.netmask));
-            subnet = number;
-        }
-        if (dns.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&dns_server));
-            dns = number;
-        }
-        html += "<form method='get' action='ip'>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>IP</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='ip' length=32 value='" + ip + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>Gateway</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='gateway' length=32 value='" + gateway + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>Subnet</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='subnet' length=32 value='" + subnet + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>DNS</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='dns' length=32 value='" + dns + "'>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='submit'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html += "</form>";
-        if (httpd_chunk_send(arg, 3, html.data(), html.length()) == false)
-            return true;
-        html.clear();
-    }
-    case 3:
+    // SSID
+    string ssid;
+    int fd = fs_open("ssid", "r");
+    if (fd >= 0)
     {
-        // OTA
-        string ota;
-        int fd = fs_open("ota", "r");
-        if (fd >= 0)
-        {
-            ota = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        html += "<form method='get' action='ota'>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>OTA</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='ota' length=32 value='" + ota + "'>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='submit'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html += "</form>";
-        if (httpd_chunk_send(arg, 4, html.data(), html.length()) == false)
-            return true;
-        html.clear();
+        ssid = fs_gets(number, 128, fd);
+        fs_close(fd);
     }
-    case 4:
-    {
-        // MQTT
-        string mqtt;
-        string mqttPort;
-        int fd = fs_open("mqtt", "r");
-        if (fd >= 0)
-        {
-            mqtt = fs_gets(number, 128, fd);
-            mqttPort = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        if (mqttPort.empty())
-        {
-            mqttPort = "1883";
-        }
-        html += "<form method='get' action='mqtt'>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>MQTT</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='mqtt' length=32 value='" + mqtt + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>PORT</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='port' length=32 value='" + mqttPort + "'>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='submit'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html += "</form>";
-        if (httpd_chunk_send(arg, 5, html.data(), html.length()) == false)
-            return true;
-        html.clear();
-    }
-    case 5:
-    {
-        // NTP
-        string ntp;
-        string ntpZone;
-        int fd = fs_open("ntp", "r");
-        if (fd >= 0)
-        {
-            ntp = fs_gets(number, 128, fd);
-            ntpZone = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        if (ntp.empty())
-        {
-            ntp = "pool.ntp.org";
-        }
-        if (ntpZone.empty())
-        {
-            ntpZone = "8";
-        }
-        html += "<form method='get' action='ntp'>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>NTP</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='name' length=32 value='" + ntp + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>ZONE</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='zone' length=32 value='" + ntpZone + "'>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='submit'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html += "</form>";
-        if (httpd_chunk_send(arg, 6, html.data(), html.length()) == false)
-            return true;
-        html.clear();
-    }
-    case 6:
-    {
-        html += "</table>";
-        html += sntp_get_real_time(sntp_get_current_timestamp());
+    html += "<form method='get' action='ssid'>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>SSID</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='ssid' length=32 value='" + ssid + "'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>PASS</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input type='password' name='pass' length=32>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input type='submit'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html += "</form>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
 
-        // Reset
-        html += "<form method='get' action='reset'>";
-        html +=     "<button type='submit'>Reset</button>";
-        html += "</form>";
+    tcpip_adapter_ip_info_t ip_info = {};
+    tcpip_adapter_dns_info_t dns_info = {};
+    tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info);
+    tcpip_adapter_get_dns_info(TCPIP_ADAPTER_IF_STA, TCPIP_ADAPTER_DNS_MAIN, &dns_info);
 
-        // Tail
-        html += "</body>";
-        html += "</html>";
-        if (httpd_chunk_send(arg, 7, html.data(), html.length()) == false)
-            return true;
-        html.clear();
+    // IP
+    string ip;
+    string gateway;
+    string subnet;
+    string dns;
+    fd = fs_open("ip", "r");
+    if (fd >= 0)
+    {
+        ip = fs_gets(number, 128, fd);
+        gateway = fs_gets(number, 128, fd);
+        subnet = fs_gets(number, 128, fd);
+        dns = fs_gets(number, 128, fd);
+        fs_close(fd);
     }
-    default:
-        break;
+    if (ip.empty())
+    {
+        sprintf(number, IPSTR, IP2STR(&ip_info.ip));
+        ip = number;
     }
+    if (gateway.empty())
+    {
+        sprintf(number, IPSTR, IP2STR(&ip_info.gw));
+        gateway = number;
+    }
+    if (subnet.empty())
+    {
+        sprintf(number, IPSTR, IP2STR(&ip_info.netmask));
+        subnet = number;
+    }
+    if (dns.empty())
+    {
+        sprintf(number, IPSTR, IP2STR(&dns_info.ip));
+        dns = number;
+    }
+    html += "<form method='get' action='ip'>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>IP</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='ip' length=32 value='" + ip + "'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>Gateway</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='gateway' length=32 value='" + gateway + "'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>Subnet</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='subnet' length=32 value='" + subnet + "'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>DNS</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='dns' length=32 value='" + dns + "'>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input type='submit'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html += "</form>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
 
-    return false;
+    // OTA
+    string ota;
+    fd = fs_open("ota", "r");
+    if (fd >= 0)
+    {
+        ota = fs_gets(number, 128, fd);
+        fs_close(fd);
+    }
+    html += "<form method='get' action='ota'>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>OTA</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='ota' length=32 value='" + ota + "'>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input type='submit'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html += "</form>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
+
+    // MQTT
+    string mqtt;
+    string mqttPort;
+    fd = fs_open("mqtt", "r");
+    if (fd >= 0)
+    {
+        mqtt = fs_gets(number, 128, fd);
+        mqttPort = fs_gets(number, 128, fd);
+        fs_close(fd);
+    }
+    if (mqttPort.empty())
+    {
+        mqttPort = "1883";
+    }
+    html += "<form method='get' action='mqtt'>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>MQTT</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='mqtt' length=32 value='" + mqtt + "'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>PORT</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='port' length=32 value='" + mqttPort + "'>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input type='submit'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html += "</form>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
+
+    // NTP
+    string ntp;
+    string ntpZone;
+    fd = fs_open("ntp", "r");
+    if (fd >= 0)
+    {
+        ntp = fs_gets(number, 128, fd);
+        ntpZone = fs_gets(number, 128, fd);
+        fs_close(fd);
+    }
+    if (ntp.empty())
+    {
+        ntp = "pool.ntp.org";
+    }
+    if (ntpZone.empty())
+    {
+        ntpZone = "GMT-8";
+    }
+    html += "<form method='get' action='ntp'>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>NTP</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='name' length=32 value='" + ntp + "'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html +=     "<tr>";
+    html +=         "<td>";
+    html +=             "<label>ZONE</label>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input name='zone' length=32 value='" + ntpZone + "'>";
+    html +=         "</td>";
+    html +=         "<td>";
+    html +=             "<input type='submit'>";
+    html +=         "</td>";
+    html +=     "</tr>";
+    html += "</form>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
+
+    // Time
+    time_t now;
+    struct tm timeinfo;
+    char strftime_buf[64];
+    time(&now);
+    localtime_r(&now, &timeinfo);
+    strftime(strftime_buf, sizeof(strftime_buf), "%c", &timeinfo);
+    html += "</table>";
+    html += strftime_buf;
+
+    // Reset
+    html += "<form method='get' action='reset'>";
+    html +=     "<button type='submit'>Reset</button>";
+    html += "</form>";
+
+    // Tail
+    html += "</body>";
+    html += "</html>";
+    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
+        return ESP_FAIL;
+    html.clear();
+
+    return httpd_resp_send_chunk(req, NULL, 0);
 }
 
-bool web_ssid(void* arg, const char* url, int line)
+esp_err_t web_ssid(httpd_req_t* req)
 {
-    httpd_redirect(arg, "/");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/");
+    httpd_resp_send(req, NULL, 0);
+
+    size_t len;
+    char buffer[(len = httpd_req_get_url_query_len(req) + 1)];
+    httpd_req_get_url_query_str(req, buffer, len);
 
     string text;
-    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
-    {
-        string& text = *(string*)context;
-        if (os_strcmp(key, "ssid") == 0 ||
-            os_strcmp(key, "pass") == 0)
-        {
-            text += value;
-            text += '\n';
-        }
-    }, &text);
+    char value[64];
+    value[0] = 0; httpd_query_key_value(buffer, "ssid", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "pass", value, 64); text += fix_http_param(value); text += '\n';
 
     int fd = fs_open("ssid", "w");
     if (fd >= 0)
@@ -301,26 +289,25 @@ bool web_ssid(void* arg, const char* url, int line)
         fs_close(fd);
     }
 
-    return false;
+    return ESP_OK;
 }
 
-bool web_ip(void* arg, const char* url, int line)
+esp_err_t web_ip(httpd_req_t* req)
 {
-    httpd_redirect(arg, "/");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/");
+    httpd_resp_send(req, NULL, 0);
+
+    size_t len;
+    char buffer[(len = httpd_req_get_url_query_len(req) + 1)];
+    httpd_req_get_url_query_str(req, buffer, len);
 
     string text;
-    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
-    {
-        string& text = *(string*)context;
-        if (os_strcmp(key, "ip") == 0 ||
-            os_strcmp(key, "gateway") == 0 ||
-            os_strcmp(key, "subnet") == 0 ||
-            os_strcmp(key, "dns") == 0)
-        {
-            text += value;
-            text += '\n';
-        }
-    }, &text);
+    char value[64];
+    value[0] = 0; httpd_query_key_value(buffer, "ip", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "gateway", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "subnet", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "dns", value, 64); text += fix_http_param(value); text += '\n';
 
     int fd = fs_open("ip", "w");
     if (fd >= 0)
@@ -329,23 +316,22 @@ bool web_ip(void* arg, const char* url, int line)
         fs_close(fd);
     }
 
-    return false;
+    return ESP_OK;
 }
 
-bool web_ota(void* arg, const char* url, int line)
+esp_err_t web_ota(httpd_req_t* req)
 {
-    httpd_redirect(arg, "/");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/");
+    httpd_resp_send(req, NULL, 0);
+
+    size_t len;
+    char buffer[(len = httpd_req_get_url_query_len(req) + 1)];
+    httpd_req_get_url_query_str(req, buffer, len);
 
     string text;
-    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
-    {
-        string& text = *(string*)context;
-        if (os_strcmp(key, "ota") == 0)
-        {
-            text += value;
-            text += '\n';
-        }
-    }, &text);
+    char value[64];
+    value[0] = 0; httpd_query_key_value(buffer, "ota", value, 64); text += fix_http_param(value); text += '\n';
 
     int fd = fs_open("ota", "w");
     if (fd >= 0)
@@ -354,24 +340,23 @@ bool web_ota(void* arg, const char* url, int line)
         fs_close(fd);
     }
 
-    return false;
+    return ESP_OK;
 }
 
-bool web_mqtt(void* arg, const char* url, int line)
+esp_err_t web_mqtt(httpd_req_t* req)
 {
-    httpd_redirect(arg, "/");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/");
+    httpd_resp_send(req, NULL, 0);
+
+    size_t len;
+    char buffer[(len = httpd_req_get_url_query_len(req) + 1)];
+    httpd_req_get_url_query_str(req, buffer, len);
 
     string text;
-    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
-    {
-        string& text = *(string*)context;
-        if (os_strcmp(key, "mqtt") == 0 ||
-            os_strcmp(key, "port") == 0)
-        {
-            text += value;
-            text += '\n';
-        }
-    }, &text);
+    char value[64];
+    value[0] = 0; httpd_query_key_value(buffer, "mqtt", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "port", value, 64); text += fix_http_param(value); text += '\n';
 
     int fd = fs_open("mqtt", "w");
     if (fd >= 0)
@@ -380,24 +365,23 @@ bool web_mqtt(void* arg, const char* url, int line)
         fs_close(fd);
     }
 
-    return false;
+    return ESP_OK;
 }
 
-bool web_ntp(void* arg, const char* url, int line)
+esp_err_t web_ntp(httpd_req_t* req)
 {
-    httpd_redirect(arg, "/");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/");
+    httpd_resp_send(req, NULL, 0);
+
+    size_t len;
+    char buffer[(len = httpd_req_get_url_query_len(req) + 1)];
+    httpd_req_get_url_query_str(req, buffer, len);
 
     string text;
-    httpd_parameter_parse(url, [](void* context, const char* key, const char* value)
-    {
-        string& text = *(string*)context;
-        if (os_strcmp(key, "name") == 0 ||
-            os_strcmp(key, "zone") == 0)
-        {
-            text += value;
-            text += '\n';
-        }
-    }, &text);
+    char value[64];
+    value[0] = 0; httpd_query_key_value(buffer, "name", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "zone", value, 64); text += fix_http_param(value); text += '\n';
 
     int fd = fs_open("ntp", "w");
     if (fd >= 0)
@@ -406,31 +390,18 @@ bool web_ntp(void* arg, const char* url, int line)
         fs_close(fd);
     }
 
-    return false;
+    return ESP_OK;
 }
 
-bool web_reset(void* arg, const char* url, int line)
+esp_err_t web_reset(httpd_req_t* req)
 {
-    httpd_redirect(arg, "/");
+    httpd_resp_set_status(req, "302 Found");
+    httpd_resp_set_hdr(req, "Location", "/");
+    httpd_resp_send(req, NULL, 0);
 
-    os_timer_t* timer = (os_timer_t*)os_zalloc(sizeof(os_timer_t));
-    os_timer_setfn(timer, [](void* arg)
-    {
-        system_restart_local();
-    }, nullptr);
-    os_timer_arm(timer, 100, true);
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
 
-    return false;
-}
+    esp_restart();
 
-bool web_rtc(void* arg, const char* url, int stage)
-{
-    if (stage < 192)
-    {
-        uint32_t data = 0;
-        system_rtc_mem_read(stage, &data, sizeof(uint32_t));
-        httpd_chunk_send(arg, stage + 1, number, os_sprintf(number, "%-3d:%08X\n", stage - 64, data));
-        return true;
-    }
-    return false;
+    return ESP_OK;
 }

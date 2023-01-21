@@ -34,6 +34,28 @@ size_t strspn(const char* str, const char* spn)
     return str - s;
 }
 
+char* fix_http_param(char* param)
+{
+    int l = 0;
+    int r = 0;
+    for (;;)
+    {
+        char c = param[r++];
+        if (c == '%')
+        {
+            char temp[3] = { param[r], param[r + 1] };
+            c = strtol(temp, 0, 16);
+            r += 2;
+        }
+        param[l++] = c;
+        if (c == 0)
+        {
+            break;
+        }
+    }
+    return param;
+}
+
 #if 0
 int atoi(const char* str)
 {

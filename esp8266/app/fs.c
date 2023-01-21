@@ -22,7 +22,7 @@ static int32_t fs_hal_read(uint32_t addr, uint32_t size, uint8_t* dst)
         esp_err_t result = spi_flash_read(addr, buffer, length_aligned);
         if (result != ESP_OK)
         {
-            ESP_LOGE(TAG, "%d = %s(%p, %p, %d)\n", result, "spi_flash_read", (char*)addr, (char*)buffer, length_aligned);
+            ESP_LOGE(TAG, "%s(%p, %p, %d): %d", "spi_flash_read", (char*)addr, (char*)buffer, length_aligned, result);
             return -1;
         }
         memcpy(dst, buffer, length);
@@ -43,7 +43,7 @@ static int32_t fs_hal_write(uint32_t addr, uint32_t size, uint8_t* src)
         esp_err_t result = spi_flash_write(addr, buffer, length_aligned);
         if (result != ESP_OK)
         {
-            ESP_LOGE(TAG, "%d = %s(%p, %p, %d)\n", result, "spi_flash_write", (char*)addr, (char*)buffer, length_aligned);
+            ESP_LOGE(TAG, "%s(%p, %p, %d): %d", "spi_flash_write", (char*)addr, (char*)buffer, length_aligned, result);
             return -1;
         }
         addr += length;
@@ -61,7 +61,7 @@ static int32_t fs_hal_erase(uint32_t addr, uint32_t size)
         esp_err_t result = spi_flash_erase_sector(sector + i);
         if (result != ESP_OK)
         {
-            ESP_LOGE(TAG, "%d = %s(%p)\n", result, "spi_flash_erase_sector", (char*)sector + i);
+            ESP_LOGE(TAG, "%s(%p): %d", "spi_flash_erase_sector", (char*)sector + i, result);
             return -1;
         }
     }
@@ -145,7 +145,7 @@ int fs_open(const char* name, const char* mode)
     int result = lfs_file_open(&fs, fd, temp, flags);
     if (result != LFS_ERR_OK)
     {
-        ESP_LOGE(TAG, "%d = %s(%p, %p, %s, %s)\n", result, "lfs_file_open", &fs, fd, name, mode);
+        ESP_LOGE(TAG, "%s(%p, %p, %s, %d): %d", "lfs_file_open", &fs, fd, name, flags, result);
 
         free(fd);
         fd = (lfs_file_t*)result;
