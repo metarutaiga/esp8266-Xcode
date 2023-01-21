@@ -3,6 +3,7 @@
 #include <lwip/apps/sntp.h>
 #include <nvs_flash.h>
 #include "app/fs.h"
+#include "app/mqtt.h"
 
 #define TAG __FILE_NAME__
 
@@ -86,9 +87,7 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
         {
             string mqtt = fs_gets(number, 128, fd);
             string port = fs_gets(number, 128, fd);
-#if 0
             mqtt_setup(mqtt.c_str(), strtol(port.c_str(), nullptr, 10));
-#endif
             fs_close(fd);
         }
 

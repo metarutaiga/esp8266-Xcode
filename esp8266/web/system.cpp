@@ -400,8 +400,8 @@ esp_err_t web_reset(httpd_req_t* req)
     httpd_resp_send(req, NULL, 0);
 
     vTaskDelay(1000 / portTICK_PERIOD_MS);
-
     esp_restart();
+    vTaskDelay(1000 / portTICK_PERIOD_MS);
 
     return ESP_OK;
 }
