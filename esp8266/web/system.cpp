@@ -279,8 +279,8 @@ esp_err_t web_ssid(httpd_req_t* req)
 
     string text;
     char value[64];
-    value[0] = 0; httpd_query_key_value(buffer, "ssid", value, 64); text += fix_http_param(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "pass", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "ssid", value, 64); text += url_decode(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "pass", value, 64); text += url_decode(value); text += '\n';
 
     int fd = fs_open("ssid", "w");
     if (fd >= 0)
@@ -304,10 +304,10 @@ esp_err_t web_ip(httpd_req_t* req)
 
     string text;
     char value[64];
-    value[0] = 0; httpd_query_key_value(buffer, "ip", value, 64); text += fix_http_param(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "gateway", value, 64); text += fix_http_param(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "subnet", value, 64); text += fix_http_param(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "dns", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "ip", value, 64); text += url_decode(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "gateway", value, 64); text += url_decode(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "subnet", value, 64); text += url_decode(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "dns", value, 64); text += url_decode(value); text += '\n';
 
     int fd = fs_open("ip", "w");
     if (fd >= 0)
@@ -331,7 +331,7 @@ esp_err_t web_ota(httpd_req_t* req)
 
     string text;
     char value[64];
-    value[0] = 0; httpd_query_key_value(buffer, "ota", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "ota", value, 64); text += url_decode(value); text += '\n';
 
     int fd = fs_open("ota", "w");
     if (fd >= 0)
@@ -355,8 +355,8 @@ esp_err_t web_mqtt(httpd_req_t* req)
 
     string text;
     char value[64];
-    value[0] = 0; httpd_query_key_value(buffer, "mqtt", value, 64); text += fix_http_param(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "port", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "mqtt", value, 64); text += url_decode(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "port", value, 64); text += url_decode(value); text += '\n';
 
     int fd = fs_open("mqtt", "w");
     if (fd >= 0)
@@ -380,8 +380,8 @@ esp_err_t web_ntp(httpd_req_t* req)
 
     string text;
     char value[64];
-    value[0] = 0; httpd_query_key_value(buffer, "name", value, 64); text += fix_http_param(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "zone", value, 64); text += fix_http_param(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "name", value, 64); text += url_decode(value); text += '\n';
+    value[0] = 0; httpd_query_key_value(buffer, "zone", value, 64); text += url_decode(value); text += '\n';
 
     int fd = fs_open("ntp", "w");
     if (fd >= 0)

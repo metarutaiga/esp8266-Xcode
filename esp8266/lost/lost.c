@@ -34,7 +34,7 @@ size_t strspn(const char* str, const char* spn)
     return str - s;
 }
 
-char* fix_http_param(char* param)
+char* url_decode(char* param)
 {
     int l = 0;
     int r = 0;

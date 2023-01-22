@@ -1,5 +1,4 @@
 #include "eagle.h"
-#include <esp_clk.h>
 #include <esp_private/wifi.h>
 #include <mqtt_client.h>
 #include "mqtt.h"
@@ -16,7 +15,7 @@ static void mqtt_information()
         return;
 
     mqtt_publish(mqtt_prefix(number, "ESP", "SDK Version", 0), esp_get_idf_version(), 0, 0);
-    mqtt_publish(mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(esp_clk_cpu_freq(), number + 64, 10), 0, 0);
+    mqtt_publish(mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(esp_clk_cpu_freq() / 1000000, number + 64, 10), 0, 0);
 
     mqtt_publish(mqtt_prefix(number, "ESP", "Build", 0), build_date, 0, 0);
     mqtt_publish(mqtt_prefix(number, "ESP", "Version", 0), version, 0, 1);
@@ -48,7 +47,7 @@ static void mqtt_information()
     mqtt_publish(mqtt_prefix(number, "ESP", "ResetReason", 0), reason, 0, 0);
 }
 
-static void mqtt_loop()
+static void mqtt_loop(TimerHandle_t xTimer)
 {
     if (mqtt_is_connected == NULL)
         return;
@@ -63,7 +62,7 @@ static void mqtt_loop()
     if (now_timestamp != timestamp)
     {
         now_timestamp = timestamp;
-        sprintf(number + 64, "%d:%d", timeinfo.tm_hour, timeinfo.tm_min);
+        sprintf(number + 64, "%d:%02d", timeinfo.tm_hour, timeinfo.tm_min);
         mqtt_publish(mqtt_prefix(number, "ESP", "Time", 0), number + 64, 0, 0);
     }
 
@@ -147,6 +146,7 @@ static void mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
         mqtt_is_connected = client;
         esp_mqtt_client_publish(client, mqtt_prefix(number, "connected", 0), "true", 4, 0, 1);
         esp_mqtt_client_subscribe(client, mqtt_prefix(number, "set", "#", 0), 0);
+        mqtt_information();
         break;
     case MQTT_EVENT_DISCONNECTED:
         ESP_LOGI(TAG, "MQTT_EVENT_DISCONNECTED");
@@ -165,6 +165,9 @@ static void mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
         ESP_LOGI(TAG, "MQTT_EVENT_DATA");
         if (mqtt_receive_callback)
             mqtt_receive_callback(event->topic, event->topic_len, event->data, event->data_len);
+        break;
+    case MQTT_EVENT_BEFORE_CONNECT:
+        ESP_LOGI(TAG, "MQTT_EVENT_BEFORE_CONNECT");
         break;
     case MQTT_EVENT_ERROR:
         ESP_LOGI(TAG, "MQTT_EVENT_ERROR");
@@ -198,6 +201,9 @@ void mqtt_setup(const char* ip, int port)
         mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
         esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, mqtt_client);
         esp_mqtt_client_start(mqtt_client);
+
+        TimerHandle_t timer = xTimerCreate("MQTT Timer", 10000 / portTICK_PERIOD_MS, pdTRUE, mqtt_client, mqtt_loop);
+        xTimerStart(timer, 0);
     }
 }
 

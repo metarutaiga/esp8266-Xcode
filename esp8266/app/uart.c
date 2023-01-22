@@ -1,5 +1,4 @@
 #include "eagle.h"
-#include "esp_clk.h"
 #include "gpio.h"
 
 struct uart_context

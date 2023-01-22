@@ -29,6 +29,88 @@ extern esp_err_t web_mqtt(httpd_req_t* req);
 extern esp_err_t web_ntp(httpd_req_t* req);
 extern esp_err_t web_reset(httpd_req_t* req);
 
+static void setup_handler(TimerHandle_t xTimer)
+{
+    // Static IP
+    int fd = fs_open("ip", "r");
+    if (fd >= 0)
+    {
+#if 0
+        struct ip_info now_info = {};
+        wifi_get_ip_info(STATION_IF, &now_info);
+
+        struct ip_info set_info = {};
+        set_info.ip.addr = ipaddr_addr(fs_gets(number, 128, fd));
+        set_info.gw.addr = ipaddr_addr(fs_gets(number, 128, fd));
+        set_info.netmask.addr = ipaddr_addr(fs_gets(number, 128, fd));
+        ip_addr_t dns = { ipaddr_addr(fs_gets(number, 128, fd)) };
+
+        if (IPADDR_NONE != set_info.ip.addr &&
+            now_info.ip.addr != set_info.ip.addr &&
+            now_info.netmask.addr == set_info.netmask.addr &&
+            now_info.gw.addr == set_info.gw.addr)
+        {
+            wifi_station_dhcpc_stop();
+            wifi_set_ip_info(STATION_IF, &set_info);
+            system_station_got_ip_set(&now_info.ip, &now_info.netmask, &now_info.gw);
+            espconn_dns_setserver(0, &dns);
+        }
+#endif
+        fs_close(fd);
+    }
+
+    // HTTP
+    httpd_uri_t web_system_uri = { .uri = "/setup", .method = HTTP_GET, .handler = web_system };
+    httpd_register_uri_handler(httpd_server, &web_system_uri);
+
+    // MQTT
+    fd = fs_open("mqtt", "r");
+    if (fd >= 0)
+    {
+        string mqtt = fs_gets(number, 128, fd);
+        string port = fs_gets(number, 128, fd);
+        mqtt_setup(mqtt.c_str(), strtol(port.c_str(), nullptr, 10));
+        fs_close(fd);
+    }
+
+    // NTP
+    string ntp = "pool.ntp.org";
+    string zone = "GMT-8";
+    fd = fs_open("ntp", "r");
+    if (fd >= 0)
+    {
+        ntp = fs_gets(number, 128, fd);
+        zone = fs_gets(number, 128, fd);
+        fs_close(fd);
+    }
+    sntp_setoperatingmode(SNTP_OPMODE_POLL);
+    sntp_setservername(0, ntp.c_str());
+    sntp_init();
+    setenv("TZ", zone.c_str(), 1);
+    tzset();
+
+    // OTA
+    fd = fs_open("ota", "r");
+    if (fd >= 0)
+    {
+#if 0
+        if (os_strcmp(fs_gets(number, 128, fd), "YES") == 0)
+            ota_init(8266);
+#endif
+        fs_close(fd);
+    }
+
+    // Dump task
+    size_t uxArraySize = uxTaskGetNumberOfTasks();
+    TaskStatus_t* pxTaskStatusArray = (TaskStatus_t*)malloc(uxArraySize * sizeof(TaskStatus_t));
+    uxArraySize = uxTaskGetSystemState(pxTaskStatusArray, uxArraySize, nullptr);
+    for (int i = 0; i < uxArraySize; ++i)
+    {
+        ESP_LOGI(TAG, "%d: %p %8d %s", pxTaskStatusArray[i].xTaskNumber, pxTaskStatusArray[i].pxStackBase, pxTaskStatusArray[i].usStackHighWaterMark, pxTaskStatusArray[i].pcTaskName);
+    }
+    free(pxTaskStatusArray);
+}
+
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
 {
     if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
@@ -49,74 +131,12 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
-        // Static IP
-        int fd = fs_open("ip", "r");
-        if (fd >= 0)
+        static TimerHandle_t timer IRAM_ATTR;
+        if (timer == nullptr)
         {
-#if 0
-            struct ip_info now_info = {};
-            wifi_get_ip_info(STATION_IF, &now_info);
-
-            struct ip_info set_info = {};
-            set_info.ip.addr = ipaddr_addr(fs_gets(number, 128, fd));
-            set_info.gw.addr = ipaddr_addr(fs_gets(number, 128, fd));
-            set_info.netmask.addr = ipaddr_addr(fs_gets(number, 128, fd));
-            ip_addr_t dns = { ipaddr_addr(fs_gets(number, 128, fd)) };
-
-            if (IPADDR_NONE != set_info.ip.addr &&
-                now_info.ip.addr != set_info.ip.addr &&
-                now_info.netmask.addr == set_info.netmask.addr &&
-                now_info.gw.addr == set_info.gw.addr)
-            {
-                wifi_station_dhcpc_stop();
-                wifi_set_ip_info(STATION_IF, &set_info);
-                system_station_got_ip_set(&now_info.ip, &now_info.netmask, &now_info.gw);
-                espconn_dns_setserver(0, &dns);
-            }
-#endif
-            fs_close(fd);
+            timer = xTimerCreate("WiFi Timer", 0, pdFALSE, &timer, setup_handler);
         }
-
-        // HTTP
-        httpd_uri_t web_system_uri = { .uri = "/setup", .method = HTTP_GET, .handler = web_system };
-        httpd_register_uri_handler(httpd_server, &web_system_uri);
-
-        // MQTT
-        fd = fs_open("mqtt", "r");
-        if (fd >= 0)
-        {
-            string mqtt = fs_gets(number, 128, fd);
-            string port = fs_gets(number, 128, fd);
-            mqtt_setup(mqtt.c_str(), strtol(port.c_str(), nullptr, 10));
-            fs_close(fd);
-        }
-
-        // NTP
-        string ntp = "pool.ntp.org";
-        string zone = "GMT+8";
-        fd = fs_open("ntp", "r");
-        if (fd >= 0)
-        {
-            ntp = fs_gets(number, 128, fd);
-            zone = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        sntp_setoperatingmode(SNTP_OPMODE_POLL);
-        sntp_setservername(0, ntp.c_str());
-        sntp_init();
-        setenv("TZ", zone.c_str(), 1);
-        tzset();
-
-        // OTA
-        fd = fs_open("ota", "r");
-        if (fd >= 0)
-        {
-#if 0
-            if (os_strcmp(fs_gets(number, 128, fd), "YES") == 0)
-                ota_init(8266);
-#endif
-            fs_close(fd);
-        }
+        xTimerStart(timer, 0);
     }
 }
 
