@@ -3,7 +3,7 @@
 /* Generated from: /Users/metora/Documents/esp8266-Xcode/ESP8266_RTOS_SDK/components/esp8266/ld/esp8266.project.ld.in */
 
 /*  Default entry point:  */
-ENTRY(call_start_cpu);
+ENTRY(call_start_cpu_compatible);
 
 SECTIONS
 {
@@ -209,12 +209,13 @@ SECTIONS
     _stext = .;
     _text_start = ABSOLUTE(.);
 
-    *(.rodata.__func__* .rodata.__FUNCTION__* .rodata.*str*)
+    *(.rodata.__func__* .rodata.__FUNCTION__* .rodata.*str1.1)
     *libcore.a:user_interface.o(.rodata2.2)
     *libnet80211.a:(.rodata .rodata.g_wifi_nvs_cfg .rodata2.*)
     *libesp_event.a:(.rodata)
     *libphy.a:phy_chip_v6.o(.rodata)
     *libpp.a:(.rodata .rodata2.*)
+    *libhttp_parser.a:http_parser.o(.rodata.normal_url_char .rodata.tokens .rodata.unhex)
     *(.rodata._* .rodata..L* .rodata.err_to_errno_table .rodata.phy_init_data)
     *(.rodata.K .rodata.Td0 .rodata.Td4s .rodata.Te0 .rodata.crc*)
     *libwpa_supplicant.a:md5-internal.o*(.literal.MD5*)

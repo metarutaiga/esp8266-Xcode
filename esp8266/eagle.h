@@ -25,9 +25,9 @@ inline uint32_t IRAM_ATTR esp_get_cycle_count()
     return ccount;
 }
 
-extern const char version[];
-extern const char build_date[];
-extern const char web_css[];
+extern const char* const version;
+extern const char* const build_date;
+extern const char* const web_css;
 extern char thisname[16];
 extern char number[128];
 

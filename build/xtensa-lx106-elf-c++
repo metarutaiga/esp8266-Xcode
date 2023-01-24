@@ -20,6 +20,7 @@ while [[ $# > 0 ]] ; do
     esac
     shift
 done
+ARGS=$ARGS" -D__FILE__=__FILE_NAME__ -Wno-builtin-macro-redefined"
 
 if [ $USE_GCC -eq 1 ]; then
 # echo xtensa-lx106-elf-c++ $ARGS

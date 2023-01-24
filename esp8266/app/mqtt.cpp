@@ -202,7 +202,11 @@ void mqtt_setup(const char* ip, int port)
         esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, mqtt_client);
         esp_mqtt_client_start(mqtt_client);
 
-        TimerHandle_t timer = xTimerCreate("MQTT Timer", 10000 / portTICK_PERIOD_MS, pdTRUE, mqtt_client, mqtt_loop);
+        static TimerHandle_t timer IRAM_ATTR;
+        if (timer == nullptr)
+        {
+            timer = xTimerCreate("MQTT Timer", 10000 / portTICK_PERIOD_MS, pdTRUE, mqtt_client, mqtt_loop);
+        }
         xTimerStart(timer, 0);
     }
 }

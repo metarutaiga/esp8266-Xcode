@@ -7,16 +7,16 @@
 
 #define TAG __FILE_NAME__
 
-extern const char version[] __attribute__((weak));
-extern const char build_date[] __attribute__((weak));
-extern const char web_css[] __attribute__((weak));
-extern const char wifi_format[] __attribute__((weak));
-extern const char pass_format[] __attribute__((weak));
-const char version[] ICACHE_RODATA_ATTR = "1.00";
-const char build_date[] ICACHE_RODATA_ATTR = __DATE__ " " __TIME__;
-const char web_css[] ICACHE_RODATA_ATTR = "";
-const char wifi_format[] ICACHE_RODATA_ATTR = "ESP8266_%02X%02X%02X";
-const char pass_format[] ICACHE_RODATA_ATTR = "8266ESP_%02X%02X%02X";
+extern const char* const version __attribute__((weak));
+extern const char* const build_date __attribute__((weak));
+extern const char* const web_css __attribute__((weak));
+extern const char* const wifi_format __attribute__((weak));
+extern const char* const pass_format __attribute__((weak));
+const char* const version = "1.00";
+const char* const build_date = __DATE__ " " __TIME__;
+const char* const web_css = "";
+const char* const wifi_format = "ESP8266_%02X%02X%02X";
+const char* const pass_format = "8266ESP_%02X%02X%02X";
 char thisname[16] = "";
 char number[128] = "";
 
