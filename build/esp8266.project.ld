@@ -79,19 +79,8 @@ SECTIONS
   {
     /* Code marked as runnning out of IRAM */
     _iram_text_start = ABSOLUTE(.);
-/*
-    *libesp8266.a:(.data.WIFI_EVENT .data.g_esp_ticks_per_us)
-    *libnet80211.a:ieee80211_nvs.o(.data.g_wifi_nvs)
-    *libnet80211.a:ieee80211_api.o(.data.g_wifi_event_mask)
-    *libnet80211.a:ieee80211_action.o(.data.*)
-    *libphy.a:(.data.g_phyFuns .data.chip_v6_phyops .data.chip_version)
-    *libpp.a:(.data.cur_timeout .data.cur_early .data.pTxRx .data.wDev_sniffer_max_len_filter .data.wDev_sniffer_payload_data_len .data.BcnInterval .data.g_sniffer_filter .data.sniffer_enable .data.WDEV_INTEREST_EVENT)
-    *liblog.a:log.o(.data.s_putchar_func)
-    *libc_nano.a:lib_a-locale.o(.data.__global_locale_ptr)
-    *libtcpip_adapter.a:tcpip_adapter_lwip.o(.data.IP_EVENT)
-    *liblwip.a:(.data.dhcps_lease_time .data.s_dhcps_mask .data.tcp_next_iss.iss)
-*/
-    *( .iram1  .iram1.* EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2.* *libgcc.a:unwind-dw2-fde.* *libspi_flash.a:spi_flash_raw.*) .literal EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2.* *libgcc.a:unwind-dw2-fde.* *libspi_flash.a:spi_flash_raw.*) .text)
+
+    *( .iram1  .iram1.* EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2-fde.* *libgcc.a:unwind-dw2.* *libspi_flash.a:spi_flash_raw.*) .literal EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2-fde.* *libgcc.a:unwind-dw2.* *libspi_flash.a:spi_flash_raw.*) .text)
     *libpp.a:( .literal  .literal.*  .text  .text.*)
     *libphy.a:( .literal  .literal.*  .text  .text.*)
     *libspi_flash.a:spi_flash_raw.*( .literal  .literal.*  .text  .text.*)
@@ -109,30 +98,14 @@ SECTIONS
     *libcore.a:( .bss  .bss.*  COMMON)
     *libfreertos.a:impure.*( .bss  .bss.*  COMMON)
     *libfreertos.a:tasks.*( .bss  .bss.*  COMMON)
-    *libfreertos.a:list.*( .bss  .bss.*  COMMON)
-    *libfreertos.a:timers.*( .bss  .bss.*  COMMON)
-    *libfreertos.a:queue.*( .bss  .bss.*  COMMON)
     *libfreertos.a:stream_buffer.*( .bss  .bss.*  COMMON)
-    *libfreertos.a:freertos_hooks.*( .bss  .bss.*  COMMON)
+    *libfreertos.a:queue.*( .bss  .bss.*  COMMON)
     *libfreertos.a:event_groups.*( .bss  .bss.*  COMMON)
+    *libfreertos.a:freertos_hooks.*( .bss  .bss.*  COMMON)
+    *libfreertos.a:timers.*( .bss  .bss.*  COMMON)
+    *libfreertos.a:list.*( .bss  .bss.*  COMMON)
     *liblwip.a:( .bss  .bss.*  COMMON)
-/*
-    *libc_nano.a:(.bss.environ .bss.__sinit_recursive_mutex .bss.__sfp_recursive_mutex .bss._global_impure_ptr)
-    *libesp8266.a:(.bss.p_uart_obj .bss.rx_gain_dc_table .bss.s_nmi_wd_state .bss.s_reset_reason .bss.s_sleep_wakup_triggers .bss.s_sleep_mode)
-    *libesp_event.a:default_event_loop.o(.bss.s_default_loop)
-    *libfreertos.a:(.bss.cpu_sr .bss.g_esp_boot_ccount .bss.g_esp_os_ticks .bss.g_esp_os_us .bss.g_esp_os_cpu_clk .bss.s_isr .bss.uxCriticalNesting .bss._xt_tick_divisor)
-    *libheap.a:(.bss.g_heap_region)
-    *liblog.a:log.o(.bss.s_lock)
-    *libnet80211.a:(.bss.probesize .bss.BcnIntvl .bss.BcnEb .bss.arg_slp .bss.cb_slp .bss.type_slp .bss.wifi_sta_rx_probe_req .bss.avs_rx_content .bss.get_key_cb .bss.avs_cb)
-    *libnewlib.a:time.o(.bss.s_boot_time)
-    *libphy.a:(.bss.check_result .bss.esp_phyops .bss.adc_rand_noise .bss.rxiq_compute_num)
-    *libpp.a:(.bss.app_optimize_and_debug_mac .bss.tsf_diff .bss.s_pp_queue_wptr .bss.s_pp_queue_rptr .bss.xphyQueue .bss.g_free_rxblock_eb_cnt .bss.peb_space .bss.prxdesc .bss.ptxdesc .bss.s_lmac_check_rx_hang .bss.updateCounter .bss.wDev_sniffer_min_len_filter .bss.BcnSendTick .bss.rxbufbit .bss.frontdata .bss.extradata .bss.hwtxrxbuf)
-    *libpthread.a:(.bss.s_pthread_cfg_key .bss.s_threads_mux .bss.s_keys)
-    *libtcpip_adapter.a:tcpip_adapter_lwip.o(.bss.dhcps_status .bss.esp_ip_lost_timer)
-    *libvfs.a:(.bss.s_fd_table_lock .bss.s_vfs_count .bss.s_registered_select_num .bss.s_registered_selects .bss.s_vfs)
-    *libwpa_supplicant.a:wpa_auth.o(.bss.s_sm_table .bss.s_sm_valid_bitmap)
-    *libfreertos.a:xtensa_vectors.o(.bss)
-*/
+
     . = ALIGN (4);
     _iram_bss_end = ABSOLUTE(.);
     _iram_end = ABSOLUTE(.);
@@ -183,7 +156,7 @@ SECTIONS
     . = ALIGN (8);
     _bss_start = ABSOLUTE(.);
 
-    *(EXCLUDE_FILE(*libcore.a *libfreertos.a:event_groups.* *libfreertos.a:freertos_hooks.* *libfreertos.a:stream_buffer.* *libfreertos.a:queue.* *libfreertos.a:timers.* *libfreertos.a:list.* *libfreertos.a:tasks.* *libfreertos.a:impure.* *liblwip.a) .bss EXCLUDE_FILE(*libcore.a *libfreertos.a:event_groups.* *libfreertos.a:freertos_hooks.* *libfreertos.a:stream_buffer.* *libfreertos.a:queue.* *libfreertos.a:timers.* *libfreertos.a:list.* *libfreertos.a:tasks.* *libfreertos.a:impure.* *liblwip.a) .bss.* EXCLUDE_FILE(*libcore.a *libfreertos.a:event_groups.* *libfreertos.a:freertos_hooks.* *libfreertos.a:stream_buffer.* *libfreertos.a:queue.* *libfreertos.a:timers.* *libfreertos.a:list.* *libfreertos.a:tasks.* *libfreertos.a:impure.* *liblwip.a) COMMON)
+    *(EXCLUDE_FILE(*libcore.a *libfreertos.a:list.* *libfreertos.a:timers.* *libfreertos.a:freertos_hooks.* *libfreertos.a:event_groups.* *libfreertos.a:queue.* *libfreertos.a:stream_buffer.* *libfreertos.a:tasks.* *libfreertos.a:impure.* *liblwip.a) .bss EXCLUDE_FILE(*libcore.a *libfreertos.a:list.* *libfreertos.a:timers.* *libfreertos.a:freertos_hooks.* *libfreertos.a:event_groups.* *libfreertos.a:queue.* *libfreertos.a:stream_buffer.* *libfreertos.a:tasks.* *libfreertos.a:impure.* *liblwip.a) .bss.* EXCLUDE_FILE(*libcore.a *libfreertos.a:list.* *libfreertos.a:timers.* *libfreertos.a:freertos_hooks.* *libfreertos.a:event_groups.* *libfreertos.a:queue.* *libfreertos.a:stream_buffer.* *libfreertos.a:tasks.* *libfreertos.a:impure.* *liblwip.a) COMMON)
 
     *(.dynsbss)
     *(.sbss)

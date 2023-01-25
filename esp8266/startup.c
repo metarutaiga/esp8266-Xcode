@@ -98,7 +98,7 @@ static void user_init_entry(void *param)
     vTaskDelete(NULL);
 }
 
-static void call_start_cpu(uint32_t start_addr)
+static __attribute__((noinline)) void call_start_cpu(uint32_t start_addr)
 {
     int i;
     int *p;

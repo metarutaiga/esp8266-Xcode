@@ -179,7 +179,6 @@ extern "C" void app_main()
     if (fd >= 0)
     {
         wifi_config_t config = {};
-        config.sta.scan_method = WIFI_ALL_CHANNEL_SCAN;
         strcpy((char*)config.sta.ssid, fs_gets(number, 128, fd));
         strcpy((char*)config.sta.password, fs_gets(number, 128, fd));
         fs_close(fd);
