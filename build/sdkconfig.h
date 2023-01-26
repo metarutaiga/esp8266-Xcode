@@ -7,3 +7,5 @@
 #define LFS_NO_DEBUG
 #define LFS_NO_ERROR
 #define LFS_NO_WARN
+
+#define BSS_IRAM_ATTR _SECTION_ATTR_IMPL(".bss.iram1", __COUNTER__)

@@ -105,6 +105,7 @@ SECTIONS
     *libfreertos.a:timers.*( .bss  .bss.*  COMMON)
     *libfreertos.a:list.*( .bss  .bss.*  COMMON)
     *liblwip.a:( .bss  .bss.*  COMMON)
+    *( .bss.iram1 .bss.iram1.*)
 
     . = ALIGN (4);
     _iram_bss_end = ABSOLUTE(.);

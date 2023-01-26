@@ -20,7 +20,7 @@ const char* const pass_format = "8266ESP_%02X%02X%02X";
 char thisname[16] = "";
 char number[128] = "";
 
-static httpd_handle_t httpd_server IRAM_ATTR = NULL;
+static httpd_handle_t httpd_server BSS_IRAM_ATTR;
 extern esp_err_t web_system(httpd_req_t* req);
 extern esp_err_t web_ssid(httpd_req_t* req);
 extern esp_err_t web_ip(httpd_req_t* req);
@@ -131,7 +131,7 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
-        static TimerHandle_t timer IRAM_ATTR;
+        static TimerHandle_t timer BSS_IRAM_ATTR;
         if (timer == nullptr)
         {
             timer = xTimerCreate("WiFi Timer", 0, pdFALSE, &timer, setup_handler);
