@@ -69,11 +69,12 @@ static void mqtt_loop(TimerHandle_t xTimer)
     // Heap
     extern size_t heap_caps_get_free_size(uint32_t caps);
     static int now_free_heap BSS_IRAM_ATTR;
-    int free_heap = heap_caps_get_free_size(2);
+    int free_heap = heap_caps_get_free_size(0);
     if (now_free_heap != free_heap)
     {
         now_free_heap = free_heap;
-        mqtt_publish(mqtt_prefix(number, "ESP", "FreeHeap", 0), itoa(free_heap, number + 64, 10), 0, 0);
+        sprintf(number + 64, "%d.%d", free_heap, heap_caps_get_free_size(4));
+        mqtt_publish(mqtt_prefix(number, "ESP", "FreeHeap", 0), number + 64, 0, 0);
     }
 
     // RSSI

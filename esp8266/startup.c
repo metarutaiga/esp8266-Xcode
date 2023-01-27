@@ -23,13 +23,14 @@
 #include "tcpip_adapter.h"
 
 #include "esp_log.h"
-#include "../../bootloader_support/include/esp_image_format.h"
 #include "esp_phy_init.h"
 #include "esp_heap_caps_init.h"
 #include "esp_task_wdt.h"
 #include "esp_private/wifi.h"
 #include "esp_private/esp_system_internal.h"
 #include "esp8266/eagle_soc.h"
+#include "esp8266/pin_mux_register.h"
+#include "esp8266/spi_register.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -40,19 +41,6 @@
 extern esp_err_t esp_pthread_init(void);
 extern void chip_boot(void);
 extern int base_gpio_init(void);
-
-static inline int should_load(uint32_t load_addr)
-{
-    if (IS_USR_RTC(load_addr)) {
-        if (esp_reset_reason_early() == ESP_RST_DEEPSLEEP)
-            return 0;
-    }
-
-    if (IS_FLASH(load_addr))
-        return 0;
-
-    return 1;
-}
 
 static void user_init_entry(void *param)
 {
@@ -98,9 +86,9 @@ static void user_init_entry(void *param)
     vTaskDelete(NULL);
 }
 
-static __attribute__((noinline)) void call_start_cpu(uint32_t start_addr)
+__attribute__((noinline))
+static void call_start_cpu()
 {
-    int i;
     int *p;
 
     extern int _bss_start, _bss_end;
@@ -109,30 +97,6 @@ static __attribute__((noinline)) void call_start_cpu(uint32_t start_addr)
 #ifdef CONFIG_BOOTLOADER_FAST_BOOT
     REG_SET_BIT(DPORT_CTL_REG, DPORT_CTL_DOUBLE_CLK);
 #endif
-
-    esp_image_header_t *head = (esp_image_header_t *)(FLASH_BASE + (start_addr & (FLASH_SIZE - 1)));
-    esp_image_segment_header_t *segment = (esp_image_segment_header_t *)((uintptr_t)head + sizeof(esp_image_header_t));
-
-    /* old boot */
-    if (segment->load_addr == 0) {
-        head = (esp_image_header_t *)((uintptr_t)segment + sizeof(esp_image_segment_header_t) + segment->data_len);
-        segment = (esp_image_segment_header_t *)((uintptr_t)head + sizeof(esp_image_header_t));
-    }
-
-    /* The data in flash cannot be accessed by byte in this stage, so just access by word and get the segment count. */
-    uint8_t segment_count = ((*(volatile uint32_t *)head) & 0xFF00) >> 8;
-
-    for (i = 0; i < segment_count; i++) {
-        if (should_load(segment->load_addr)) {
-            uint32_t *dest = (uint32_t *)segment->load_addr;
-            uint32_t *src = (uint32_t *)((uintptr_t)segment + sizeof(esp_image_segment_header_t));
-            uint32_t size = segment->data_len / sizeof(uint32_t);
-            while (size--) {
-                *dest++ = *src++;
-            }
-        }
-        segment = (esp_image_segment_header_t *)((uintptr_t)segment + sizeof(esp_image_segment_header_t) + segment->data_len);
-    }
 
     /*
      * When finish copying IRAM program, the exception vect must be initialized.
@@ -145,6 +109,14 @@ static __attribute__((noinline)) void call_start_cpu(uint32_t start_addr)
 
 #ifndef CONFIG_BOOTLOADER_INIT_SPI_FLASH
     chip_boot();
+#elif 1
+    void esp_spi_flash_init(uint32_t spi_speed, uint32_t spi_mode);
+    esp_spi_flash_init(0, 3);
+#else
+    SET_PERI_REG_MASK(PERIPHS_SPI_FLASH_USRREG, BIT5);
+    CLEAR_PERI_REG_MASK(PERIPHS_SPI_FLASH_CTRL, SPI_FLASH_CLK_EQU_SYSCLK);
+    CLEAR_PERI_REG_MASK(PERIPHS_IO_MUX_CONF_U, SPI0_CLK_EQU_SYSCLK);
+    SET_PERI_REG_BITS(PERIPHS_SPI_FLASH_CTRL, 0xfff, 0x101, 0);
 #endif
 
     /* clear bss data */
@@ -177,10 +149,11 @@ static __attribute__((noinline)) void call_start_cpu(uint32_t start_addr)
 void IRAM_ATTR call_start_cpu_compatible()
 {
     void Cache_Read_Disable();
-    void Cache_Read_Enable(uint8_t map, uint8_t p, uint8_t v);
-    uint32_t map = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 25, 24);
+    void Cache_Read_Enable(uint8_t sub_region, uint8_t region, uint8_t cache_size);
+    uint32_t sub_region = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 25, 24);
+    uint32_t region = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 18, 16);
     Cache_Read_Disable();
-    Cache_Read_Enable(map, 0, 0);
+    Cache_Read_Enable(sub_region, region, 0);
 
-    call_start_cpu(map ? 0x00101000 : 0x00001000);
+    return call_start_cpu();
 }
