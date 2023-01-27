@@ -8,4 +8,11 @@
 #define LFS_NO_ERROR
 #define LFS_NO_WARN
 
-#define BSS_IRAM_ATTR _SECTION_ATTR_IMPL(".bss.iram1", __COUNTER__)
+#include <esp_attr.h>
+
+#ifdef __MACH__
+#undef _SECTION_ATTR_IMPL
+#define _SECTION_ATTR_IMPL(SECTION, COUNTER)
+#endif
+
+#define IRAM_BSS_ATTR _SECTION_ATTR_IMPL(".bss.iram1", __COUNTER__)

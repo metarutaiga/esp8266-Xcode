@@ -5,9 +5,9 @@
 
 #define TAG __FILE_NAME__
 
-static esp_mqtt_client_handle_t mqtt_client BSS_IRAM_ATTR;
-static void (*mqtt_receive_callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length) BSS_IRAM_ATTR;
-static void* mqtt_is_connected BSS_IRAM_ATTR;
+static esp_mqtt_client_handle_t mqtt_client IRAM_BSS_ATTR;
+static void (*mqtt_receive_callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length) IRAM_BSS_ATTR;
+static void* mqtt_is_connected IRAM_BSS_ATTR;
 
 static void mqtt_information()
 {
@@ -57,7 +57,7 @@ static void mqtt_loop(TimerHandle_t xTimer)
     struct tm timeinfo;
     time(&now);
     localtime_r(&now, &timeinfo);
-    static uint32_t now_timestamp BSS_IRAM_ATTR;
+    static uint32_t now_timestamp IRAM_BSS_ATTR;
     uint32_t timestamp = timeinfo.tm_min;
     if (now_timestamp != timestamp)
     {
@@ -68,17 +68,17 @@ static void mqtt_loop(TimerHandle_t xTimer)
 
     // Heap
     extern size_t heap_caps_get_free_size(uint32_t caps);
-    static int now_free_heap BSS_IRAM_ATTR;
+    static int now_free_heap IRAM_BSS_ATTR;
     int free_heap = heap_caps_get_free_size(0);
     if (now_free_heap != free_heap)
     {
         now_free_heap = free_heap;
-        sprintf(number + 64, "%d.%d", free_heap, heap_caps_get_free_size(4));
+        sprintf(number + 64, "%d.%05d", free_heap, heap_caps_get_free_size(4));
         mqtt_publish(mqtt_prefix(number, "ESP", "FreeHeap", 0), number + 64, 0, 0);
     }
 
     // RSSI
-    static int now_rssi BSS_IRAM_ATTR;
+    static int now_rssi IRAM_BSS_ATTR;
     int rssi = esp_wifi_get_ap_rssi();
     if (now_rssi != rssi)
     {
@@ -204,7 +204,7 @@ void mqtt_setup(const char* ip, int port)
         esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, mqtt_client);
         esp_mqtt_client_start(mqtt_client);
 
-        static TimerHandle_t timer BSS_IRAM_ATTR;
+        static TimerHandle_t timer IRAM_BSS_ATTR;
         if (timer == nullptr)
         {
             timer = xTimerCreate("MQTT Timer", 10000 / portTICK_PERIOD_MS, pdTRUE, mqtt_client, mqtt_loop);
