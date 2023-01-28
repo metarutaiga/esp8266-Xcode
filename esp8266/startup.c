@@ -19,16 +19,10 @@
 
 #include "sdkconfig.h"
 
-#include "nvs_flash.h"
-#include "tcpip_adapter.h"
-
-#include "esp_log.h"
 #include "esp_phy_init.h"
 #include "esp_heap_caps_init.h"
 #include "esp_task_wdt.h"
-#include "esp_private/wifi.h"
 #include "esp_private/esp_system_internal.h"
-#include "esp8266/eagle_soc.h"
 #include "esp8266/pin_mux_register.h"
 #include "esp8266/spi_register.h"
 
@@ -37,10 +31,6 @@
 #include "esp_task.h"
 
 #include "esp_newlib.h"
-
-extern esp_err_t esp_pthread_init(void);
-extern void chip_boot(void);
-extern int base_gpio_init(void);
 
 static void user_init_entry(void *param)
 {
@@ -57,13 +47,15 @@ static void user_init_entry(void *param)
         func[0]();
 
     esp_phy_init_clk();
+
+    extern int base_gpio_init(void);
     assert(base_gpio_init() == 0);
 
     if (esp_reset_reason_early() != ESP_RST_FAST_SW) {
         assert(esp_mac_init() == ESP_OK);
     }
 
-#if CONFIG_RESET_REASON
+#ifdef CONFIG_RESET_REASON
     esp_reset_reason_init();
 #endif
 
@@ -71,6 +63,7 @@ static void user_init_entry(void *param)
     esp_task_wdt_init();
 #endif
 
+    extern esp_err_t esp_pthread_init(void);
     assert(esp_pthread_init() == 0);
 
 #ifdef CONFIG_BOOTLOADER_FAST_BOOT
@@ -108,9 +101,10 @@ static void call_start_cpu()
         : : :"memory");
 
 #ifndef CONFIG_BOOTLOADER_INIT_SPI_FLASH
+    extern void chip_boot(void);
     chip_boot();
-#elif 1
-    void esp_spi_flash_init(uint32_t spi_speed, uint32_t spi_mode);
+#elif 0
+    extern void esp_spi_flash_init(uint32_t spi_speed, uint32_t spi_mode);
     esp_spi_flash_init(0, 3);
 #else
     SET_PERI_REG_MASK(PERIPHS_SPI_FLASH_USRREG, BIT5);

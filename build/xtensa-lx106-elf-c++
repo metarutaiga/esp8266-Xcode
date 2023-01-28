@@ -1,18 +1,25 @@
 #!/bin/bash
 
 ARGS=""
-LONGCALLS=""
-USE_GCC=0
+ARGS_GCC=""
+USE_GCC=1
 while [[ $# > 0 ]] ; do
     case $1 in
-        -fstrict-volatile-bitfields*)
+        -fstrict-volatile-bitfields)
+        ARGS_GCC=$ARGS_GCC" -fstrict-volatile-bitfields"
         ;;
-        -g*)
+        -g)
+        ARGS_GCC=$ARGS_GCC" -g"
         ;;
-        -mlongcalls*)
-        LONGCALLS="-mlongcalls"
+        -mlongcalls)
+        ARGS_GCC=$ARGS_GCC" -mlongcalls"
         ;;
-        -Wno-old-style-declaration*)
+        -Wno-old-style-declaration)
+        ARGS_GCC=$ARGS_GCC" -Wno-old-style-declaration"
+        ;;
+        *.cc)
+        ARGS=$ARGS" "$1
+        ARGS_GCC=$ARGS_GCC" -D__FILE__=\""$(basename -- $1)"\" -Wno-builtin-macro-redefined"
         ;;
         *)
         ARGS=$ARGS" "$1
@@ -20,12 +27,12 @@ while [[ $# > 0 ]] ; do
     esac
     shift
 done
-ARGS=$ARGS" -D__FILE__=__FILE_NAME__ -Wno-builtin-macro-redefined"
 
 if [ $USE_GCC -eq 1 ]; then
-# echo xtensa-lx106-elf-c++ $ARGS
-  $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-c++ $LONGCALLS $ARGS
+# echo xtensa-lx106-elf-c++ $ARGS_GCC $ARGS
+  $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-c++ $ARGS_GCC $ARGS
 else
+  ARGS=$ARGS" -D__FILE__=__FILE_NAME__ -Wno-builtin-macro-redefined"
   ARGS=$ARGS" -target xtensa-lx106-elf -mcpu=esp8266 -fuse-ld=$BUILD_PATH/xtensa-lx106-elf-lld"
   ARGS=$ARGS" -Wno-sometimes-uninitialized"
   ARGS=$ARGS" -Wno-unused-command-line-argument" 
