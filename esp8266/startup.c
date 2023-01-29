@@ -147,13 +147,15 @@ void IRAM_ATTR call_start_cpu_compatible()
 
     uint32_t bank = 0;
     SPIRead(0x3FF000, &bank, sizeof(bank));
+    bank &= 0xFF;
 
     uint32_t boot_param = 0;
-    SPIRead((bank & 0xFF) == 0 ? 0x3FD000 : 0x3FE000, &boot_param, sizeof(boot_param));
+    SPIRead(bank == 0 ? 0x3FD000 : 0x3FE000, &boot_param, sizeof(boot_param));
+    boot_param &= 0x03;
 
     void Cache_Read_Disable();
     void Cache_Read_Enable(uint8_t sub_region, uint8_t region, uint8_t cache_size);
-    switch (boot_param & 0x03)
+    switch (boot_param)
     {
     default:
     case 0:
