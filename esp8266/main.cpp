@@ -4,6 +4,7 @@
 #include <nvs_flash.h>
 #include "app/fs.h"
 #include "app/mqtt.h"
+#include "app/ota.h"
 
 #define TAG __FILE_NAME__
 
@@ -29,7 +30,7 @@ extern esp_err_t web_mqtt(httpd_req_t* req);
 extern esp_err_t web_ntp(httpd_req_t* req);
 extern esp_err_t web_reset(httpd_req_t* req);
 
-static void setup_handler(TimerHandle_t xTimer)
+static void setup_handler(TimerHandle_t timer)
 {
     // Static IP
     int fd = fs_open("ip", "r");
@@ -93,10 +94,8 @@ static void setup_handler(TimerHandle_t xTimer)
     fd = fs_open("ota", "r");
     if (fd >= 0)
     {
-#if 0
-        if (os_strcmp(fs_gets(number, 128, fd), "YES") == 0)
+        if (strcmp(fs_gets(number, 128, fd), "YES") == 0)
             ota_init(8266);
-#endif
         fs_close(fd);
     }
 
@@ -109,6 +108,8 @@ static void setup_handler(TimerHandle_t xTimer)
         ESP_LOGI(TAG, "%d: %p %8d %s", pxTaskStatusArray[i].xTaskNumber, pxTaskStatusArray[i].pxStackBase, pxTaskStatusArray[i].usStackHighWaterMark, pxTaskStatusArray[i].pcTaskName);
     }
     free(pxTaskStatusArray);
+
+    xTimerDelete(timer, 0);
 }
 
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
@@ -131,17 +132,15 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
-        static TimerHandle_t timer IRAM_BSS_ATTR;
-        if (timer == nullptr)
-        {
-            timer = xTimerCreate("WiFi Timer", 0, pdFALSE, &timer, setup_handler);
-        }
+        TimerHandle_t timer = xTimerCreate("WiFi Setup", 0, pdFALSE, (void*)"WiFi Setup", setup_handler);
         xTimerStart(timer, 0);
     }
 }
 
 extern "C" void app_main()
 {
+    ESP_LOGI(TAG, __DATE__ " " __TIME__);
+
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());

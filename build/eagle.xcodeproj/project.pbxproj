@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D60B6EA3297FA5B600C2E728 /* startup.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA2297FA5B600C2E728 /* startup.c */; };
+		D60B6EA6298519FA00C2E728 /* ota.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA5298519FA00C2E728 /* ota.c */; };
 		D668D0982976993C009ABBB9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.cpp */; };
 		D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
 		D668D0E229798737009ABBB9 /* nvs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E129798737009ABBB9 /* nvs.c */; };
@@ -23,6 +24,8 @@
 /* Begin PBXFileReference section */
 		30A9A7BB25ADC792000FA104 /* libeagle.so */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libeagle.so; sourceTree = BUILT_PRODUCTS_DIR; };
 		D60B6EA2297FA5B600C2E728 /* startup.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = startup.c; path = ../esp8266/startup.c; sourceTree = "<group>"; };
+		D60B6EA4298519FA00C2E728 /* ota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ota.h; path = ../esp8266/app/ota.h; sourceTree = "<group>"; };
+		D60B6EA5298519FA00C2E728 /* ota.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ota.c; path = ../esp8266/app/ota.c; sourceTree = "<group>"; };
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D668D0972976993C009ABBB9 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../esp8266/main.cpp; sourceTree = "<group>"; };
 		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
@@ -128,6 +131,8 @@
 				D668D0E4297A8267009ABBB9 /* fs.h */,
 				D6D3A456297BDD6E00D0222A /* mqtt.cpp */,
 				D6D3A457297BDD6E00D0222A /* mqtt.h */,
+				D60B6EA5298519FA00C2E728 /* ota.c */,
+				D60B6EA4298519FA00C2E728 /* ota.h */,
 				D6D48CC2297AA03600CAAB46 /* uart.c */,
 				D6D48CC3297AA03600CAAB46 /* uart.h */,
 			);
@@ -240,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D60B6EA6298519FA00C2E728 /* ota.c in Sources */,
 				D6D3A455297B6FF700D0222A /* system.cpp in Sources */,
 				D6D48CC4297AA03600CAAB46 /* uart.c in Sources */,
 				D6D3A458297BDD6E00D0222A /* mqtt.cpp in Sources */,

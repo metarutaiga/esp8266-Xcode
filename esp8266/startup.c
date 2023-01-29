@@ -25,6 +25,7 @@
 #include "esp_private/esp_system_internal.h"
 #include "esp8266/pin_mux_register.h"
 #include "esp8266/spi_register.h"
+#include "rom/uart.h"
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -142,12 +143,104 @@ static void call_start_cpu()
 
 void IRAM_ATTR call_start_cpu_compatible()
 {
+    void(*SPIRead)(uint32_t addr, uint32_t* dst, size_t size) = (void(*)(uint32_t, uint32_t*, uint32_t))0x40004B1C;
+
+    uint32_t bank = 0;
+    SPIRead(0x3FF000, &bank, sizeof(bank));
+
+    uint32_t boot_param = 0;
+    SPIRead((bank & 0xFF) == 0 ? 0x3FD000 : 0x3FE000, &boot_param, sizeof(boot_param));
+
     void Cache_Read_Disable();
     void Cache_Read_Enable(uint8_t sub_region, uint8_t region, uint8_t cache_size);
-    uint32_t sub_region = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 25, 24);
-    uint32_t region = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 18, 16);
-    Cache_Read_Disable();
-    Cache_Read_Enable(sub_region, region, 0);
+    switch (boot_param & 0x03)
+    {
+    default:
+    case 0:
+        Cache_Read_Disable();
+        Cache_Read_Enable(0, 0, 0);
+        break;
+    case 1:
+        Cache_Read_Disable();
+        Cache_Read_Enable(1, 0, 0);
+        break;
+    }
 
     return call_start_cpu();
+}
+
+void esp_now_deinit()
+{
+    
+}
+
+void esp_reset(esp_reset_reason_t hint)
+{
+#if 0
+    void __esp_soc_restart();
+    __esp_soc_restart();
+
+    Cache_Read_Disable();
+    CLEAR_PERI_REG_MASK(0x3FF00024, 0x67);
+    
+    __asm__ __volatile__(
+        "movi       a0, 0x40000000\n"
+        "wsr        a0, vecbase\n"
+        : : : "memory");
+
+    __asm__ __volatile__(
+        "mov        a1, 0x40000000\n"
+        : : : "memory"
+    );
+
+    rom_software_reboot();
+#elif 0
+    extern void esp_wifi_stop(void);
+    extern void pm_goto_rf_on(void);
+    extern void clockgate_watchdog(int on);
+
+    esp_wifi_stop();
+
+    uart_tx_wait_idle(1);
+    uart_tx_wait_idle(0);
+
+    vTaskDelay(40 / portTICK_RATE_MS);
+
+    pm_goto_rf_on();
+    clockgate_watchdog(0);
+    REG_WRITE(0x3ff00018, 0xffff00ff);
+    SET_PERI_REG_MASK(0x60000D48, BIT1);
+    CLEAR_PERI_REG_MASK(0x60000D48, BIT1);
+
+    uart_disable_swap_io();
+
+    vPortEnterCritical();
+    REG_WRITE(INT_ENA_WDEV, 0);
+    _xt_isr_mask(UINT32_MAX);
+
+    esp_reset_reason_set_hint(hint);
+
+    const uint32_t sp = DRAM_BASE + DRAM_SIZE - 16;
+
+    __asm__ __volatile__(
+        "mov    a1, %0\n"
+        : : "a"(sp) : "memory"
+    );
+
+    call_start_cpu_compatible();
+#else
+    uart_tx_wait_idle(0);
+    uart_tx_wait_idle(1);
+
+    esp_reset_reason_set_hint(hint);
+
+    CLEAR_WDT_REG_MASK(WDT_CTL_ADDRESS, BIT0);
+    WDT_REG_WRITE(WDT_OP_ADDRESS, 1);
+    WDT_REG_WRITE(WDT_OP_ND_ADDRESS, 1);
+    SET_PERI_REG_BITS(PERIPHS_WDT_BASEADDR + WDT_CTL_ADDRESS, WDT_CTL_RSTLEN_MASK, 7 << WDT_CTL_RSTLEN_LSB, 0);
+    SET_PERI_REG_BITS(PERIPHS_WDT_BASEADDR + WDT_CTL_ADDRESS, WDT_CTL_RSPMOD_MASK, 0 << WDT_CTL_RSPMOD_LSB, 0);
+    SET_PERI_REG_BITS(PERIPHS_WDT_BASEADDR + WDT_CTL_ADDRESS, WDT_CTL_EN_MASK, 1 << WDT_CTL_EN_LSB, 0);
+
+    while (1);
+#endif
 }

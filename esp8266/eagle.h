@@ -12,12 +12,14 @@ extern "C" {
 #include <esp_system.h>
 #include <esp_timer.h>
 #include <esp_wifi.h>
+#include <esp8266/rom_functions.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <freertos/timers.h>
 
 extern char* url_decode(char* param);
 extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
+void esp_reset(esp_reset_reason_t hint);
 inline uint32_t IRAM_ATTR esp_get_cycle_count()
 {
     uint32_t ccount;

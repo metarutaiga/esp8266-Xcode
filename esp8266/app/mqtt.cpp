@@ -15,7 +15,7 @@ static void mqtt_information()
         return;
 
     mqtt_publish(mqtt_prefix(number, "ESP", "SDK Version", 0), esp_get_idf_version(), 0, 0);
-    mqtt_publish(mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(esp_clk_cpu_freq() / 1000000, number + 64, 10), 0, 0);
+    mqtt_publish(mqtt_prefix(number, "ESP", "CPU Frequency", 0), itoa(esp_clk_cpu_freq() / FREQ_1MHZ, number + 64, 10), 0, 0);
 
     mqtt_publish(mqtt_prefix(number, "ESP", "Build", 0), build_date, 0, 0);
     mqtt_publish(mqtt_prefix(number, "ESP", "Version", 0), version, 0, 1);

@@ -399,9 +399,11 @@ esp_err_t web_reset(httpd_req_t* req)
     httpd_resp_set_hdr(req, "Location", "/");
     httpd_resp_send(req, NULL, 0);
 
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
-    esp_restart();
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
+    TimerHandle_t timer = xTimerCreate("Reset Timer", 1000 / portTICK_PERIOD_MS, pdTRUE, (void*)"Reset Timer", [](TimerHandle_t)
+    {
+        esp_reset(ESP_RST_SW);
+    });
+    xTimerStart(timer, 1000 / portTICK_PERIOD_MS);
 
     return ESP_OK;
 }
