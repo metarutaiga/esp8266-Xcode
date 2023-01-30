@@ -77,7 +77,9 @@ HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/nvs_flash/incl
 HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/spi_flash/include
 HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/tcpip_adapter/include
 HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/vfs/include
-//HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/wpa_supplicant/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/wpa_supplicant/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/wpa_supplicant/port/include
+HEADER_SEARCH_PATHS = $(inherited) ../ESP8266_RTOS_SDK/components/wpa_supplicant/src
 
 LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/app_update
 LIBRARY_SEARCH_PATHS = $(inherited) hello_world/build/bootloader_support

@@ -1,157 +1,152 @@
-#include "esp8266.h"
-#undef os_calloc
-#undef os_zalloc
-#undef os_free
-#include <crypto/utils/build_config.h>
-#include <crypto/utils/common.h>
-#include <crypto/utils/wpabuf.h>
-#include <crypto/tls.h>
-#define os_zalloc os_zalloc_iram
-#define os_calloc os_calloc_iram
-#define os_free(s) vPortFree(s, "", __LINE__)
+#include "eagle.h"
+#include <sys/socket.h>
+#include <lwip/dns.h>
+#define ESP_PLATFORM
+#include <utils/common.h>
+#include <tls/tls.h>
 #include "https.h"
+
+#define TAG __FILE_NAME__
 
 struct https_context
 {
-    void* reverse;
+    TimerHandle_t timer;
     void (*disconn)(void* arg);
     void (*recv)(void* arg, char* pusrdata, int length);
     char* host;
     char* path;
-    struct ip_addr ip;
+    ip_addr_t ip;
+    int socket;
     void* tls;
     struct tls_connection* conn;
+    void* temp;
     int need_more_data;
+    int established;
 };
 
-static void https_discon(void* arg)
+static void https_handler(TimerHandle_t timer)
 {
-    struct espconn* pespconn = arg;
-    struct https_context* context = pespconn->reverse;
+    struct https_context* context = pvTimerGetTimerID(timer);
 
-    if (context)
+    if (context->socket == -1)
     {
-        if (context->disconn)
-        {
-            context->disconn(arg);
-        }
+        context->socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+
+        int mode = 1;
+        ioctlsocket(context->socket, FIONBIO, &mode);
+
+        struct sockaddr_in sockaddr = {};
+        sockaddr.sin_family = AF_INET;
+        sockaddr.sin_port = htons(443);
+        sockaddr.sin_addr.s_addr = context->ip.addr;
+        connect(context->socket, (struct sockaddr*)&sockaddr, sizeof(sockaddr));
+    }
+    else if (context->tls == NULL)
+    {
+        context->tls = tls_init();
         if (context->tls)
         {
+            context->conn = tls_connection_init(context->tls);
             if (context->conn)
             {
-                tls_connection_deinit(context->tls, context->conn);
+                context->temp = malloc(1536);
+
+                struct wpabuf in;
+                wpabuf_set(&in, NULL, 0);
+                struct wpabuf* out = tls_connection_handshake2(context->tls, context->conn, &in, NULL, &context->need_more_data);
+                if (out)
+                {
+                    send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
+                    wpabuf_free(out);
+                }
+
+                xTimerChangePeriod(timer, 10 / portTICK_PERIOD_MS, 0);
+                return;
             }
-            tls_deinit(context->tls);
         }
-        os_free(context->host);
-        os_free(context->path);
-        os_free(context);
-        pespconn->reverse = NULL;
+        https_disconnect(context);
     }
-    os_free(pespconn->proto.tcp);
-    os_free(pespconn);
-}
-
-static void https_recv(void* arg, char* pusrdata, unsigned short length)
-{
-    struct espconn* pespconn = arg;
-    struct https_context* context = pespconn->reverse;
-
-    struct wpabuf in;
-    wpabuf_set(&in, pusrdata, length);
-    struct wpabuf* out = tls_connection_decrypt2(context->tls, context->conn, &in, &context->need_more_data);
-    if (out)
+    else if (context->established == 0)
     {
-        if (wpabuf_len(out) != 0)
-        {
-            context->recv(arg, wpabuf_mhead_u8(out), wpabuf_len(out));
-        }
-        wpabuf_free(out);
-    }
-}
-
-static void https_tls_recv(void* arg, char* pusrdata, unsigned short length)
-{
-    struct espconn* pespconn = arg;
-    struct https_context* context = pespconn->reverse;
-
-    struct wpabuf in;
-    wpabuf_set(&in, pusrdata, length);
-    struct wpabuf* out = tls_connection_handshake2(context->tls, context->conn, &in, NULL, &context->need_more_data);
-
-    if (out == NULL)
-    {
-        if (context->need_more_data == 0)
-        {
-            os_printf("%s\n", "TLS handshake failed");
-            espconn_disconnect(pespconn);
+        int length = recv(context->socket, context->temp, 1536, 0);
+        if (length < 0)
             return;
+        if (length == 0)
+        {
+            https_disconnect(context);
+            return;
+        }
+
+        struct wpabuf in;
+        wpabuf_set(&in, context->temp, length);
+        struct wpabuf* out = tls_connection_handshake2(context->tls, context->conn, &in, NULL, &context->need_more_data);
+
+        if (out == NULL)
+        {
+            if (context->need_more_data == 0)
+            {
+                ESP_LOGE(TAG, "TLS handshake failed");
+                https_disconnect(context);
+                return;
+            }
+        }
+        else
+        {
+            if (tls_connection_get_failed(context->tls, context->conn))
+            {
+                ESP_LOGE(TAG, "TLS handshake failed");
+                https_disconnect(context);
+                return;
+            }
+            if (tls_connection_established(context->tls, context->conn))
+            {
+                ESP_LOGI(TAG, "TLS handshake established");
+                wpabuf_free(out);
+
+                sprintf(context->temp,
+                        "GET /%s HTTP/1.1\r\n"
+                        "Host: %s\r\n"
+                        "\r\n", context->path, context->host);
+                https_send(context, context->temp, strlen(context->temp));
+                context->established = 1;
+                return;
+            }
+            send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
+            wpabuf_free(out);
         }
     }
     else
     {
-        if (tls_connection_get_failed(context->tls, context->conn))
+        int length = recv(context->socket, context->temp, 1536, 0);
+        if (length < 0)
+            return;
+        if (length == 0)
         {
-            os_printf("%s\n", "TLS handshake failed");
-            espconn_disconnect(pespconn);
+            https_disconnect(context);
             return;
         }
-        if (tls_connection_established(context->tls, context->conn))
+
+        struct wpabuf in;
+        wpabuf_set(&in, context->temp, length);
+        struct wpabuf* out = tls_connection_decrypt2(context->tls, context->conn, &in, &context->need_more_data);
+        if (out)
         {
-            os_printf("%s\n", "TLS handshake established");
+            if (wpabuf_len(out) != 0)
+            {
+                context->recv(context, wpabuf_mhead_u8(out), wpabuf_len(out));
+            }
             wpabuf_free(out);
-
-            char buffer[256];
-            https_send(pespconn, buffer, os_sprintf(buffer,
-                                                    "GET /%s HTTP/1.1\r\n"
-                                                    "Host: %s\r\n"
-                                                    "\r\n", context->path, context->host));
-            espconn_regist_recvcb(pespconn, https_recv);
-            return;
         }
-        espconn_regist_recvcb(pespconn, https_tls_recv);
-        espconn_sent(pespconn, wpabuf_mhead_u8(out), wpabuf_len(out));
-        wpabuf_free(out);
     }
 }
 
-static void https_tls_connect(void* arg)
+static void dns_found(const char* name, const ip_addr_t* ip, void* arg)
 {
-    struct espconn* pespconn = arg;
-    struct https_context* context = pespconn->reverse;
+    struct https_context* context = arg;
 
-    struct tls_config conf = {};
-    context->tls = tls_init(&conf);
-    if (context->tls)
-    {
-        context->conn = tls_connection_init(context->tls);
-        if (context->conn)
-        {
-            https_tls_recv(pespconn, NULL, 0);
-            return;
-        }
-    }
-
-    espconn_disconnect(pespconn);
-}
-
-static void https_dns_found(const char* name, ip_addr_t* ipaddr, void* arg)
-{
-    struct espconn* pespconn = arg;
-
-    if (ipaddr)
-    {
-        pespconn->proto.tcp = os_zalloc(sizeof(esp_tcp));
-        os_memcpy(pespconn->proto.tcp->remote_ip, ipaddr, 4);
-        pespconn->proto.tcp->remote_port = 443;
-        espconn_regist_connectcb(pespconn, https_tls_connect);
-        espconn_regist_disconcb(pespconn, https_discon);
-        espconn_regist_recvcb(pespconn, https_tls_recv);
-        espconn_connect(pespconn);
-        return;
-    }
-
-    https_discon(pespconn);
+    context->ip = *ip;
+    context->timer = xTimerCreate("HTTPS", 1000 / portTICK_PERIOD_MS, pdTRUE, context, https_handler);
+    xTimerStart(context->timer, 0);
 }
 
 void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int length), void (*disconn)(void* arg))
@@ -167,38 +162,58 @@ void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int 
     char* host = strsep(&token, ":/");
     char* path = token;
 
-    if (os_strncmp(https, "https", 5) == 0)
+    if (strncmp(https, "https", 5) == 0)
     {
-        struct espconn* esp_conn = os_zalloc(sizeof(struct espconn));
-        esp_conn->type = ESPCONN_TCP;
-        esp_conn->state = ESPCONN_NONE;
-
-        struct https_context* context = esp_conn->reverse = os_zalloc(sizeof(struct https_context));
+        struct https_context* context = calloc(1, sizeof(struct https_context));
         context->disconn = disconn;
         context->recv = recv;
         context->host = strdup(host);
         context->path = strdup(path);
-        espconn_gethostbyname(esp_conn, context->host, &context->ip, https_dns_found);
+        context->socket = -1;
+        dns_gethostbyname(context->host, &context->ip, dns_found, context);
     }
 
-    os_free(buffer);
+    free(buffer);
 }
 
 void https_disconnect(void* arg)
 {
-    struct espconn* pespconn = arg;
+    struct https_context* context = arg;
 
-    espconn_disconnect(pespconn);
+    if (context)
+    {
+        xTimerDelete(context->timer, 0);
+        if (context->disconn)
+        {
+            context->disconn(arg);
+        }
+        if (context->tls)
+        {
+            if (context->conn)
+            {
+                tls_connection_deinit(context->tls, context->conn);
+            }
+            tls_deinit(context->tls);
+        }
+        free(context->host);
+        free(context->path);
+        free(context->temp);
+        free(context);
+    }
+
+    ESP_LOGE(TAG, "Disconnect");
 }
 
 void https_send(void* arg, const void* data, int length)
 {
-    struct espconn* pespconn = arg;
-    struct https_context* context = pespconn->reverse;
+    struct https_context* context = arg;
 
     struct wpabuf in;
     wpabuf_set(&in, data, length);
     struct wpabuf* out = tls_connection_encrypt(context->tls, context->conn, &in);
-    espconn_sent(pespconn, wpabuf_mhead_u8(out), wpabuf_len(out));
-    wpabuf_free(out);
+    if (out)
+    {
+        send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
+        wpabuf_free(out);
+    }
 }
