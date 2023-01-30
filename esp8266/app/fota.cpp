@@ -1,47 +1,45 @@
-#include "esp8266.h"
-extern "C" {
-#include <spi_flash.h>
-#include <upgrade.h>
-}
+#include "eagle.h"
 #include <string>
+#include <spi_flash.h>
 #include "https.h"
 #include "fota.h"
+
+#define TAG __FILE_NAME__
 
 struct fota_context
 {
     int address;
     int offset;
     int size;
+    void* temp;
     string header;
 };
 
-static void fota_recv(void* arg, char* pusrdata, int length)
+static void fota_recv(void* arg, char* data, int length)
 {
-    struct espconn* pespconn = (struct espconn*)arg;
-    void** reserve = (void**)pespconn->reverse;
-    struct fota_context* context = (struct fota_context*)*reserve;
+    void** other_context = (void**)arg;
+    struct fota_context* context = (struct fota_context*)*other_context;
 
     if (context == NULL)
     {
-        *reserve = context = new fota_context;
-        partition_item_t partition_item = {};
-        if (system_upgrade_userbin_check() == UPGRADE_FW_BIN1)
-            system_partition_get_item(SYSTEM_PARTITION_OTA_2, &partition_item);
-        if (system_upgrade_userbin_check() == UPGRADE_FW_BIN2)
-            system_partition_get_item(SYSTEM_PARTITION_OTA_1, &partition_item);
-        context->address = partition_item.addr - 0x1000;
+        *other_context = context = new fota_context;
+
+        uint32_t sub_region = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 25, 24);
+
+        context->address = (sub_region == 0) ? 0x100000 : 0x000000;
         context->offset = 0;
         context->size = 0;
+        context->temp = realloc(context->temp, 1536);
     }
 
     if (context->size == 0)
     {
-        context->header += string(pusrdata, length);
+        context->header += string(data, length);
         size_t pos = context->header.find(string("\r\n\r\n"));
         if (pos == string::npos)
             return;
         int skip = length - (context->header.length() - (pos + 4));
-        pusrdata += skip;
+        data += skip;
         length -= skip;
 
         // Content-Length:
@@ -50,7 +48,7 @@ static void fota_recv(void* arg, char* pusrdata, int length)
             context->size = strtol(context->header.data() + pos + sizeof("Content-Length: ") - 1, 0, 10);
         if (context->size == 0)
         {
-            espconn_disconnect(pespconn);
+            https_disconnect(arg);
             return;
         }
         context->header = string();
@@ -58,16 +56,11 @@ static void fota_recv(void* arg, char* pusrdata, int length)
             return;
     }
 
-    ETS_GPIO_INTR_DISABLE();
-    if (context->offset == 0)
-    {
-        system_upgrade_init();
-        system_upgrade_flag_set(UPGRADE_FLAG_START);
-    }
+    vPortETSIntrLock();
     if (context->offset < 0x1000 && context->offset + length >= 0x1000)
     {
         int skip = 0x1000 - context->offset;
-        pusrdata += skip;
+        data += skip;
         length -= skip;
         context->address += skip;
         context->offset += skip;
@@ -79,40 +72,47 @@ static void fota_recv(void* arg, char* pusrdata, int length)
         {
             spi_flash_erase_sector((context->address + length) / SPI_FLASH_SEC_SIZE);
         }
-        system_upgrade((uint8*)pusrdata, length);
-        os_printf("%d/%d\n", context->offset + length, context->size);
+        spi_flash_write(context->address, data, length);
+        ESP_LOGI(TAG, "%d/%d", context->offset + length, context->size);
     }
-    ETS_GPIO_INTR_ENABLE();
+    vPortETSIntrUnlock();
     context->address += length;
     context->offset += length;
-
     if (context->offset == context->size)
     {
-        system_upgrade_flag_set(UPGRADE_FLAG_FINISH);
-        espconn_disconnect(pespconn);
+        uint32_t boot_param = 0xFFFFE7FC;
+        switch (GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 25, 24))
+        {
+        case 0:
+            ESP_LOGI(TAG, "USER2");
+            boot_param |= 0x01;
+            spi_flash_erase_sector(0x3FD000 / SPI_FLASH_SEC_SIZE);
+            spi_flash_write(0x3FD000, &boot_param, sizeof(boot_param));
+            spi_flash_write(0x3FF000, "", 1);
+            break;
+        case 2:
+            ESP_LOGI(TAG, "USER1");
+            boot_param &= ~0x01;
+            spi_flash_erase_sector(0x3FD000 / SPI_FLASH_SEC_SIZE);
+            spi_flash_write(0x3FD000, &boot_param, sizeof(boot_param));
+            spi_flash_write(0x3FF000, "", 1);
+            break;
+        }
+
+        vTaskDelay(1000 / portTICK_PERIOD_MS);
+        esp_reset(ESP_RST_SW);
     }
 }
 
 static void fota_disconn(void* arg)
 {
-    struct espconn* pespconn = (struct espconn*)arg;
-    void** reserve = (void**)pespconn->reverse;
-    struct fota_context* context = (struct fota_context*)*reserve;
+    void** other_context = (void**)arg;
+    struct fota_context* context = (struct fota_context*)*other_context;
 
     delete context;
-
-    if (system_upgrade_flag_check() == UPGRADE_FLAG_FINISH)
-    {
-        system_upgrade_deinit();
-        system_upgrade_reboot();
-    }
-    if (system_upgrade_flag_check() != UPGRADE_FLAG_START)
-    {
-        system_upgrade_deinit();
-    }
 }
 
 void fota(const char* url)
 {
-    https_connect(url, fota_recv, fota_disconn);
+    https_connect(url, nullptr, fota_recv, fota_disconn);
 }

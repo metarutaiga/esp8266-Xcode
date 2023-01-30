@@ -111,8 +111,8 @@ static void ota_handler(TimerHandle_t timer)
                 uint32_t sub_region = GET_PERI_REG_BITS(CACHE_FLASH_CTRL_REG, 25, 24);
 
                 context->address = (sub_region == 0) ? 0x100000 : 0x000000;
-                context->size = strtol(content_size, NULL, 10);
                 context->offset = 0;
+                context->size = strtol(content_size, NULL, 10);
                 context->temp = realloc(context->temp, 1536);
 
                 context->tcp_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);

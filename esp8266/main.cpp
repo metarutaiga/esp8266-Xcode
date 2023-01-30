@@ -66,7 +66,7 @@ static void setup_handler(TimerHandle_t timer)
     httpd_register_uri_handler(httpd_server, &web_system_uri);
 #ifdef DEMO
     // HTTPS
-    https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](void* arg, char* data, int length)
+    https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", "Connection: close", [](void* arg, char* data, int length)
     {
         for (int i = 0; i < length; ++i)
         {

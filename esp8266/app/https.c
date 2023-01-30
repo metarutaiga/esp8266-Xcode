@@ -10,11 +10,12 @@
 
 struct https_context
 {
-    TimerHandle_t timer;
+    void* other_context;
     void (*disconn)(void* arg);
     void (*recv)(void* arg, char* pusrdata, int length);
     char* host;
     char* path;
+    char* attr;
     ip_addr_t ip;
     int socket;
     void* tls;
@@ -102,7 +103,8 @@ static void https_handler(void* arg)
                 sprintf(context->temp,
                         "GET /%s HTTP/1.1\r\n"
                         "Host: %s\r\n"
-                        "\r\n", context->path, context->host);
+                        "%s%s"
+                        "\r\n", context->path, context->host, context->attr ? context->attr : "", context->attr ? "\r\n" : "");
                 https_send(context, context->temp, strlen(context->temp));
                 break;
             }
@@ -153,7 +155,7 @@ static void dns_found(const char* name, const ip_addr_t* ip, void* arg)
     https_disconnect(context);
 }
 
-void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int length), void (*disconn)(void* arg))
+void https_connect(const char* url, const char* attr, void (*recv)(void* arg, char* pusrdata, int length), void (*disconn)(void* arg))
 {
     char* buffer = strdup(url);
     if (buffer == NULL)
@@ -173,6 +175,7 @@ void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int 
         context->recv = recv;
         context->host = strdup(host);
         context->path = strdup(path);
+        context->attr = attr ? strdup(attr) : NULL;
         context->socket = -1;
         dns_gethostbyname(context->host, &context->ip, dns_found, context);
     }
@@ -202,8 +205,9 @@ void https_disconnect(void* arg)
             }
             tls_deinit(context->tls);
         }
-        free(context->host);
         free(context->path);
+        free(context->host);
+        free(context->attr);
         free(context->temp);
         free(context);
     }
