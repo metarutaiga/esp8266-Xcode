@@ -10,5 +10,5 @@ fi
 
 cd hello_world
 make menuconfig
-make
+make -j
 cd ..

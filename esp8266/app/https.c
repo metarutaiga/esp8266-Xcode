@@ -21,61 +21,55 @@ struct https_context
     struct tls_connection* conn;
     void* temp;
     int need_more_data;
-    int established;
 };
 
-static void https_handler(TimerHandle_t timer)
+static void https_handler(void* arg)
 {
-    struct https_context* context = pvTimerGetTimerID(timer);
+    struct https_context* context = arg;
 
-    if (context->socket == -1)
+    context->socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
+    if (context->socket < 0)
+        goto final;
+
+    struct sockaddr_in sockaddr = {};
+    sockaddr.sin_family = AF_INET;
+    sockaddr.sin_port = htons(443);
+    sockaddr.sin_addr.s_addr = context->ip.addr;
+    if (connect(context->socket, (struct sockaddr*)&sockaddr, sizeof(sockaddr)) < 0)
+        goto final;
+
+    context->tls = tls_init();
+    if (context->tls == NULL)
+        goto final;
+    context->conn = tls_connection_init(context->tls);
+    if (context->conn == NULL)
+        goto final;
+    context->temp = malloc(1536);
+    if (context->temp == NULL)
+        goto final;
+
+    // Hello
+    struct wpabuf in;
+    wpabuf_set(&in, NULL, 0);
+    struct wpabuf* out = tls_connection_handshake2(context->tls, context->conn, &in, NULL, &context->need_more_data);
+
+    if (out)
     {
-        context->socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-
-        int mode = 1;
-        ioctlsocket(context->socket, FIONBIO, &mode);
-
-        struct sockaddr_in sockaddr = {};
-        sockaddr.sin_family = AF_INET;
-        sockaddr.sin_port = htons(443);
-        sockaddr.sin_addr.s_addr = context->ip.addr;
-        connect(context->socket, (struct sockaddr*)&sockaddr, sizeof(sockaddr));
-    }
-    else if (context->tls == NULL)
-    {
-        context->tls = tls_init();
-        if (context->tls)
+        if (wpabuf_len(out) != 0)
         {
-            context->conn = tls_connection_init(context->tls);
-            if (context->conn)
-            {
-                context->temp = malloc(1536);
-
-                struct wpabuf in;
-                wpabuf_set(&in, NULL, 0);
-                struct wpabuf* out = tls_connection_handshake2(context->tls, context->conn, &in, NULL, &context->need_more_data);
-                if (out)
-                {
-                    send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
-                    wpabuf_free(out);
-                }
-
-                xTimerChangePeriod(timer, 10 / portTICK_PERIOD_MS, 0);
-                return;
-            }
+            send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
         }
-        https_disconnect(context);
+        wpabuf_free(out);
     }
-    else if (context->established == 0)
+
+    // Handshake
+    for (;;)
     {
         int length = recv(context->socket, context->temp, 1536, 0);
         if (length < 0)
-            return;
+            goto final;
         if (length == 0)
-        {
-            https_disconnect(context);
-            return;
-        }
+            goto final;
 
         struct wpabuf in;
         wpabuf_set(&in, context->temp, length);
@@ -86,8 +80,7 @@ static void https_handler(TimerHandle_t timer)
             if (context->need_more_data == 0)
             {
                 ESP_LOGE(TAG, "TLS handshake failed");
-                https_disconnect(context);
-                return;
+                goto final;
             }
         }
         else
@@ -95,12 +88,15 @@ static void https_handler(TimerHandle_t timer)
             if (tls_connection_get_failed(context->tls, context->conn))
             {
                 ESP_LOGE(TAG, "TLS handshake failed");
-                https_disconnect(context);
-                return;
+                goto final;
             }
             if (tls_connection_established(context->tls, context->conn))
             {
                 ESP_LOGI(TAG, "TLS handshake established");
+                if (wpabuf_len(out) != 0)
+                {
+                    send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
+                }
                 wpabuf_free(out);
 
                 sprintf(context->temp,
@@ -108,27 +104,26 @@ static void https_handler(TimerHandle_t timer)
                         "Host: %s\r\n"
                         "\r\n", context->path, context->host);
                 https_send(context, context->temp, strlen(context->temp));
-                context->established = 1;
-                return;
+                break;
             }
             send(context->socket, wpabuf_mhead_u8(out), wpabuf_len(out), 0);
             wpabuf_free(out);
         }
     }
-    else
+
+    // Established
+    for (;;)
     {
         int length = recv(context->socket, context->temp, 1536, 0);
         if (length < 0)
-            return;
+            goto final;
         if (length == 0)
-        {
-            https_disconnect(context);
-            return;
-        }
+            goto final;
 
         struct wpabuf in;
         wpabuf_set(&in, context->temp, length);
-        struct wpabuf* out = tls_connection_decrypt2(context->tls, context->conn, &in, &context->need_more_data);
+        struct wpabuf* out = tls_connection_decrypt2(context->tls, context->conn, &in, NULL);
+
         if (out)
         {
             if (wpabuf_len(out) != 0)
@@ -138,15 +133,24 @@ static void https_handler(TimerHandle_t timer)
             wpabuf_free(out);
         }
     }
+
+final:
+    https_disconnect(context);
+    vTaskDelete(NULL);
 }
 
 static void dns_found(const char* name, const ip_addr_t* ip, void* arg)
 {
     struct https_context* context = arg;
 
-    context->ip = *ip;
-    context->timer = xTimerCreate("HTTPS", 1000 / portTICK_PERIOD_MS, pdTRUE, context, https_handler);
-    xTimerStart(context->timer, 0);
+    if (ip)
+    {
+        context->ip = *ip;
+        xTaskCreate(&https_handler, "https_handler", 6144, context, 5, NULL);
+        return;
+    }
+
+    https_disconnect(context);
 }
 
 void https_connect(const char* url, void (*recv)(void* arg, char* pusrdata, int length), void (*disconn)(void* arg))
@@ -182,7 +186,10 @@ void https_disconnect(void* arg)
 
     if (context)
     {
-        xTimerDelete(context->timer, 0);
+        if (context->socket >= 0)
+        {
+            close(context->socket);
+        }
         if (context->disconn)
         {
             context->disconn(arg);
@@ -201,7 +208,7 @@ void https_disconnect(void* arg)
         free(context);
     }
 
-    ESP_LOGE(TAG, "Disconnect");
+    ESP_LOGI(TAG, "HTTPS Disconnected");
 }
 
 void https_send(void* arg, const void* data, int length)

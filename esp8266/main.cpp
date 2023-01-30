@@ -3,6 +3,7 @@
 #include <lwip/apps/sntp.h>
 #include <nvs_flash.h>
 #include "app/fs.h"
+#include "app/https.h"
 #include "app/mqtt.h"
 #include "app/ota.h"
 
@@ -63,7 +64,16 @@ static void setup_handler(TimerHandle_t timer)
     // HTTP
     httpd_uri_t web_system_uri = { .uri = "/setup", .method = HTTP_GET, .handler = web_system };
     httpd_register_uri_handler(httpd_server, &web_system_uri);
-
+#ifdef DEMO
+    // HTTPS
+    https_connect("https://raw.githubusercontent.com/metarutaiga/esp8266-Xcode/master/LICENSE.txt", [](void* arg, char* data, int length)
+    {
+        for (int i = 0; i < length; ++i)
+        {
+            ets_putc(data[i]);
+        }
+    }, nullptr);
+#endif
     // MQTT
     fd = fs_open("mqtt", "r");
     if (fd >= 0)

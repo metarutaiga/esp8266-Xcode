@@ -29,6 +29,9 @@ while [[ $# > 0 ]] ; do
         -Wno-old-style-declaration)
         ARGS_GCC=$ARGS_GCC" -Wno-old-style-declaration"
         ;;
+        *md5-internal.c|*sha1-internal.c)
+        ARGS=$ARGS" "$1" -mtext-section-literals"
+        ;;
         *.c)
         ARGS=$ARGS" "$1
         ARGS_GCC=$ARGS_GCC" -D__FILE__=\""$(basename -- $1)"\" -Wno-builtin-macro-redefined"
