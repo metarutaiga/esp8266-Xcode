@@ -5,6 +5,29 @@
 /*  Default entry point:  */
 ENTRY(call_start_cpu_compatible);
 
+PROVIDE(__wrap_MD5Final = 0x40009900);
+PROVIDE(__wrap_MD5Init = 0x40009818);
+PROVIDE(__wrap_MD5Update = 0x40009834);
+PROVIDE(__wrap_SHA1Transform = 0x4000a364);
+PROVIDE(__wrap_SHA1Init = 0x4000b584);
+PROVIDE(__wrap_SHA1Update = 0x4000b5a8);
+PROVIDE(__wrap_SHA1Final = 0x4000b648);
+
+PROVIDE(__wrap_md5_vector = 0x400097ac);
+PROVIDE(__wrap_hmac_md5_vector = 0x4000a160);
+PROVIDE(__wrap_hmac_md5 = 0x4000a2cc);
+PROVIDE(__wrap_sha1_vector = 0x4000a2ec);
+PROVIDE(__wrap_pbkdf2_sha1 = 0x4000b840);
+PROVIDE(__wrap_hmac_sha1_vector = 0x4000b8b4);
+PROVIDE(__wrap_hmac_sha1 = 0x4000ba28);
+PROVIDE(__wrap_sha1_prf = 0x4000ba48);
+PROVIDE(__wrap_rc4_skip = 0x4000dd68);
+
+PROVIDE(__wrap_Te0 = 0x4000f078);
+PROVIDE(__wrap_rcons = 0x4000f478);
+PROVIDE(__wrap_Td0 = 0x4000f488);
+PROVIDE(__wrap_Td4s = 0x4000f888);
+
 SECTIONS
 {
   /* RTC data section holds RTC wake data/rodata

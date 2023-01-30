@@ -125,6 +125,7 @@
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = a;
+				GCC_PREFIX_HEADER = sdkconfig.h;
 			};
 			name = Debug;
 		};
@@ -133,6 +134,7 @@
 			baseConfigurationReference = D69FFA41293F8A6600CC7E75 /* ClangPlatform.esp8266.xcconfig */;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = a;
+				GCC_PREFIX_HEADER = sdkconfig.h;
 			};
 			name = Release;
 		};

@@ -11,6 +11,7 @@
 		D60B6EA6298519FA00C2E728 /* ota.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA5298519FA00C2E728 /* ota.c */; };
 		D60B6EA9298668DA00C2E728 /* https.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA8298668DA00C2E728 /* https.c */; };
 		D60B6EAC29877A2B00C2E728 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAB29877A2B00C2E728 /* fota.cpp */; };
+		D60B6EB02987C60800C2E728 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAF2987C60800C2E728 /* crypto.c */; };
 		D668D0982976993C009ABBB9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.cpp */; };
 		D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
 		D668D0E229798737009ABBB9 /* nvs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E129798737009ABBB9 /* nvs.c */; };
@@ -32,6 +33,7 @@
 		D60B6EA8298668DA00C2E728 /* https.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = https.c; path = ../esp8266/app/https.c; sourceTree = "<group>"; };
 		D60B6EAA29877A2B00C2E728 /* fota.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fota.h; path = ../esp8266/app/fota.h; sourceTree = "<group>"; };
 		D60B6EAB29877A2B00C2E728 /* fota.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fota.cpp; path = ../esp8266/app/fota.cpp; sourceTree = "<group>"; };
+		D60B6EAF2987C60800C2E728 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto.c; path = ../esp8266/lost/crypto.c; sourceTree = "<group>"; };
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D668D0972976993C009ABBB9 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../esp8266/main.cpp; sourceTree = "<group>"; };
 		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 		D668D0DE297934CE009ABBB9 /* lost */ = {
 			isa = PBXGroup;
 			children = (
+				D60B6EAF2987C60800C2E728 /* crypto.c */,
 				D6D48CBA297A861500CAAB46 /* lfs_util.c */,
 				D668D0DF297934D8009ABBB9 /* libcpp.cpp */,
 				D6D48CBD297A9C7100CAAB46 /* lost.c */,
@@ -259,6 +262,7 @@
 				D6D3A455297B6FF700D0222A /* system.cpp in Sources */,
 				D6D48CC4297AA03600CAAB46 /* uart.c in Sources */,
 				D60B6EAC29877A2B00C2E728 /* fota.cpp in Sources */,
+				D60B6EB02987C60800C2E728 /* crypto.c in Sources */,
 				D60B6EA9298668DA00C2E728 /* https.c in Sources */,
 				D6D3A458297BDD6E00D0222A /* mqtt.cpp in Sources */,
 				D668D0E229798737009ABBB9 /* nvs.c in Sources */,

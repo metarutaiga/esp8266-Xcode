@@ -194,6 +194,30 @@ OTHER_LDFLAGS = $(inherited) -lwpa_supplicant
 //OTHER_LDFLAGS = $(inherited) -lgcc
 OTHER_LDFLAGS = $(inherited) -Wl,--end-group
 
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,MD5Final
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,MD5Init
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,MD5Update
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,SHA1Transform
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,SHA1Init
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,SHA1Update
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,SHA1Final
+
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,md5_vector
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,hmac_md5_vector
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,hmac_md5
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,sha1_vector
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,pbkdf2_sha1
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,hmac_sha1_vector
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,hmac_sha1
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,sha1_prf
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,rc4_skip
+
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,rijndaelKeySetupEnc
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,Te0
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,Td0
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,Td4s
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,rcons
+
 OTHER_LDFLAGS[config=Release] = $(inherited) -Wl,--gc-sections
 
 ARCHS = riscv32
