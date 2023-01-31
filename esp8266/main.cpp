@@ -9,6 +9,8 @@
 
 #define TAG __FILE_NAME__
 
+extern "C" const char* const __wrap_default_ssid __attribute__((alias("wifi_format")));
+
 extern const char* const version __attribute__((weak));
 extern const char* const build_date __attribute__((weak));
 extern const char* const web_css __attribute__((weak));

@@ -1,17 +1,31 @@
 #include "eagle.h"
 #include <esp_private/wifi.h>
+#define USE_ESP_MQTT 0
+#if USE_ESP_MQTT
 #include <mqtt_client.h>
+#else
+#include <sys/socket.h>
+#define mqtt_connected mqtt_connected_unused
+#define mqtt_publish mqtt_publish_unused
+#include <freertos-mqtt/mqtt-service.h>
+#undef mqtt_connected
+#undef mqtt_publish
+#endif
 #include "mqtt.h"
 
 #define TAG __FILE_NAME__
 
+#if USE_ESP_MQTT
 static esp_mqtt_client_handle_t mqtt_client IRAM_BSS_ATTR;
+#else
+static void* mqtt_client IRAM_BSS_ATTR;
+#endif
 static void (*mqtt_receive_callback)(const char* topic, uint32_t topic_len, const char* data, uint32_t length) IRAM_BSS_ATTR;
-static void* mqtt_is_connected IRAM_BSS_ATTR;
+static bool mqtt_is_connected;
 
 static void mqtt_information()
 {
-    if (mqtt_is_connected == NULL)
+    if (mqtt_is_connected == false)
         return;
 
     mqtt_publish(mqtt_prefix(number, "ESP", "SDK Version", 0), esp_get_idf_version(), 0, 0);
@@ -49,7 +63,7 @@ static void mqtt_information()
 
 static void mqtt_loop(TimerHandle_t xTimer)
 {
-    if (mqtt_is_connected == NULL)
+    if (mqtt_is_connected == false)
         return;
 
     // Time
@@ -94,7 +108,8 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
     char* output = pointer;
     pointer += sprintf(pointer, "%s", thisname);
     pointer += sprintf(pointer, "/%s", prefix);
-    while (const char* name = va_arg(args, char*))
+    const char* name;
+    while ((name = va_arg(args, char*)))
     {
         pointer += sprintf(pointer, "/%s", name);
     }
@@ -104,7 +119,7 @@ char* mqtt_prefix(char* pointer, const char* prefix, ...)
 
 void mqtt_publish(const char* topic, const void* data, int length, int retain)
 {
-    if (mqtt_is_connected == NULL)
+    if (mqtt_is_connected == false)
         return;
 
     char* temp_topic = NULL;
@@ -128,7 +143,11 @@ void mqtt_publish(const char* topic, const void* data, int length, int retain)
         temp_data[length] = 0;
         data = temp_data;
     }
+#if USE_ESP_MQTT
     esp_mqtt_client_publish(mqtt_client, topic, (char*)data, length, 0, retain);
+#else
+    mqtt_publish_with_length(topic, (char*)data, length, 0, retain);
+#endif
     free(temp_topic);
     free(temp_data);
 }
@@ -138,6 +157,7 @@ void mqtt_receive(void (*callback)(const char* topic, uint32_t topic_len, const 
     mqtt_receive_callback = callback;
 }
 
+#if USE_ESP_MQTT
 static void mqtt_event_handler_cb(esp_mqtt_event_handle_t event)
 {
     esp_mqtt_client_handle_t client = event->client;
@@ -185,11 +205,54 @@ static void mqtt_event_handler(void* handler_args, esp_event_base_t base, int32_
     ESP_LOGD(TAG, "Event dispatched from event loop base=%s, event_id=%d", base, event_id);
     mqtt_event_handler_cb((esp_mqtt_event_handle_t)event_data);
 }
+#else
+static void mqtt_event_handler(mqtt_event_data_t* event)
+{
+    switch (event->type)
+    {
+    case MQTT_EVENT_TYPE_CONNECTED:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_CONNECTED");
+        mqtt_is_connected = true;
+        mqtt_publish(mqtt_prefix(number, "connected", 0), "true", 0, 1);
+        mqtt_subscribe(mqtt_prefix(number, "set", "#", 0));
+        mqtt_information();
+        break;
+    case MQTT_EVENT_TYPE_DISCONNECTED:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_DISCONNECTED");
+        mqtt_is_connected = false;
+        break;
+    case MQTT_EVENT_TYPE_SUBSCRIBED:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_SUBSCRIBED");
+        break;
+    case MQTT_EVENT_TYPE_UNSUBSCRIBED:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_UNSUBSCRIBED");
+        break;
+    case MQTT_EVENT_TYPE_PUBLISH:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_PUBLISH");
+        if (mqtt_receive_callback)
+            mqtt_receive_callback(event->topic, event->topic_length, event->data, event->data_length);
+        break;
+    case MQTT_EVENT_TYPE_PUBLISHED:
+        ESP_LOGD(TAG, "MQTT_EVENT_TYPE_PUBLISHED");
+        break;
+    case MQTT_EVENT_TYPE_EXITED:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_EXITED");
+        break;
+    case MQTT_EVENT_TYPE_PUBLISH_CONTINUATION:
+        ESP_LOGI(TAG, "MQTT_EVENT_TYPE_PUBLISH_CONTINUATION");
+        break;
+    default:
+        ESP_LOGI(TAG, "Other event id:%d", event->type);
+        break;
+    }
+}
+#endif
 
 void mqtt_setup(const char* ip, int port)
 {
-    if (mqtt_client == nullptr)
+    if (mqtt_client == NULL)
     {
+#if USE_ESP_MQTT
         esp_mqtt_client_config_t mqtt_cfg =
         {
             .host = ip,
@@ -203,9 +266,23 @@ void mqtt_setup(const char* ip, int port)
         mqtt_client = esp_mqtt_client_init(&mqtt_cfg);
         esp_mqtt_client_register_event(mqtt_client, (esp_mqtt_event_id_t)ESP_EVENT_ANY_ID, mqtt_event_handler, mqtt_client);
         esp_mqtt_client_start(mqtt_client);
+#else
+        ip_addr_t ip_addr;
+        inet_pton(AF_INET, ip, &ip_addr);
 
+        static mqtt_connect_info_t info IRAM_BSS_ATTR;
+        info.client_id = thisname;
+        info.keepalive = 60;
+        info.will_topic = strdup(mqtt_prefix(number, "connected", 0));
+        info.will_message = "false";
+        info.will_retain = 1;
+
+        ESP_LOGI(TAG, "%s", info.will_topic);
+        mqtt_init(malloc(512), 512, malloc(512), 512);
+        mqtt_connect(&ip_addr, port, 1, &info, mqtt_event_handler);
+#endif
         static TimerHandle_t timer IRAM_BSS_ATTR;
-        if (timer == nullptr)
+        if (timer == NULL)
         {
             timer = xTimerCreate("MQTT Timer", 10000 / portTICK_PERIOD_MS, pdTRUE, mqtt_client, mqtt_loop);
         }
@@ -215,5 +292,5 @@ void mqtt_setup(const char* ip, int port)
 
 bool mqtt_connected()
 {
-    return mqtt_is_connected != NULL;
+    return mqtt_is_connected;
 }

@@ -103,6 +103,8 @@ SECTIONS
     /* Code marked as runnning out of IRAM */
     _iram_text_start = ABSOLUTE(.);
 
+    *( .data.g_wifi_nvs .data.sa_query_recv_action .data.vendor_recv_action .data.ht_recv_action .data.ba_recv_action .data.sa_query_send_action .data.vendor_send_action .data.ht_send_action .data.ba_send_action .data.g_phyFuns .data.chip_v6_phyops .data.pTxRx .data.sniffer_enable .data.s_putchar_func .data.MQTT_EVENTS .data.__global_locale_ptr .data._tzname .data.IP_EVENT .data.WIFI_EVENT)
+
     *( .iram1  .iram1.* EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2-fde.* *libgcc.a:unwind-dw2.* *libspi_flash.a:spi_flash_raw.*) .literal EXCLUDE_FILE(*libpp.a *libphy.a *libgcc.a:unwind-dw2-fde.* *libgcc.a:unwind-dw2.* *libspi_flash.a:spi_flash_raw.*) .text)
     *libpp.a:( .literal  .literal.*  .text  .text.*)
     *libphy.a:( .literal  .literal.*  .text  .text.*)
