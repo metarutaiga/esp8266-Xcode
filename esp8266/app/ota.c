@@ -80,7 +80,7 @@ static void ota_handler(TimerHandle_t timer)
                 vTaskDelay(1000 / portTICK_PERIOD_MS);
                 esp_reset(ESP_RST_SW);
             }
-            close(context->tcp_socket);
+            closesocket(context->tcp_socket);
             context->tcp_socket = -1;
 
             free(context->temp);

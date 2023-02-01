@@ -75,7 +75,7 @@ static void httpd_handler(void* arg)
                 }
                 if (fd >= 0)
                 {
-                    close(fd);
+                    closesocket(fd);
                     ESP_LOGE(TAG, "httpd is full (%d)", fd);
                 }
             }
@@ -141,7 +141,7 @@ static void httpd_handler(void* arg)
                     }
                     if (closed)
                     {
-                        close(fd);
+                        closesocket(fd);
                         free(reqs[i]);
                         fds[i] = -1;
                         reqs[i] = NULL;
@@ -159,7 +159,7 @@ final:
         int fd = fds[i];
         if (fd >= 0)
         {
-            close(fd);
+            closesocket(fd);
         }
         httpd_req_t* req = reqs[i];
         if (req)
@@ -170,7 +170,7 @@ final:
     }
     if (listen_fd >= 0)
     {
-        close(listen_fd);
+        closesocket(listen_fd);
     }
     vTaskDelete(NULL);
 }

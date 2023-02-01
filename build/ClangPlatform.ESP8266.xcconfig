@@ -220,6 +220,19 @@ OTHER_LDFLAGS = $(inherited) -Wl,-wrap,Td0
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,Td4s
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,rcons
 
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,esp_vfs_dev_uart_register
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,esp_vfs_register_fd_range
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_open_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_write_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_lseek_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_read_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_close_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_fstat_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_stat_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_link_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_unlink_r
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,_rename_r
+
 OTHER_LDFLAGS[config=Release] = $(inherited) -Wl,--gc-sections
 
 ARCHS = riscv32

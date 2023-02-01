@@ -192,7 +192,7 @@ void https_disconnect(void* arg)
     {
         if (context->socket >= 0)
         {
-            close(context->socket);
+            closesocket(context->socket);
         }
         if (context->disconn)
         {
