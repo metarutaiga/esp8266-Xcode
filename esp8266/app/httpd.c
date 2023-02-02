@@ -317,6 +317,7 @@ esp_err_t httpd_resp_send_chunk(httpd_req_t* r, const char* buf, ssize_t buf_len
         int length = send(r->method, buf, buf_len, 0);
         if (length < 0)
         {
+            free(temp);
             return ESP_FAIL;
         }
         buf += length;
