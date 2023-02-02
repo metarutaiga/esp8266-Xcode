@@ -26,6 +26,8 @@ done
 echo xtensa-lx106-elf-ld $ARGS
 if [ -f "xtensa-lx106-elf/bin/xtensa-lx106-elf-ld" ]; then
   xtensa-lx106-elf/bin/xtensa-lx106-elf-ld $ARGS
+  exit $?
 else
   xtensa-lx106-elf-ld $ARGS
+  exit $?
 fi

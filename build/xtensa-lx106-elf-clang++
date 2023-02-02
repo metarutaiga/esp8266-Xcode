@@ -17,3 +17,4 @@ ARGS=$ARGS" -target xtensa-lx106-elf -mcpu=esp8266"
 
 echo esp-clang/bin/clang++ $ARGS
 esp-clang/bin/clang++ $ARGS
+exit $?

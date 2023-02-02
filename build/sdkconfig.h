@@ -12,4 +12,11 @@
 
 #include <esp_attr.h>
 
+#undef _SECTION_ATTR_IMPL
+#if defined(__XTENSA__)
+#define _SECTION_ATTR_IMPL(SECTION, COUNTER) __attribute__((section(SECTION "." _COUNTER_STRINGIFY(COUNTER))))
+#else
+#define _SECTION_ATTR_IMPL(SECTION, COUNTER)
+#endif
+
 #define IRAM_BSS_ATTR _SECTION_ATTR_IMPL(".bss.iram1", __COUNTER__)

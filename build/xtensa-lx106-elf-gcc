@@ -46,6 +46,7 @@ done
 if [ $USE_GCC -eq 1 ]; then
 # echo xtensa-lx106-elf-gcc $ARGS_GCC $ARGS
   $BUILD_PATH/xtensa-lx106-elf/bin/xtensa-lx106-elf-gcc $ARGS_GCC $ARGS
+  exit $?
 else
   ARGS=$ARGS" -D__FILE__=__FILE_NAME__ -Wno-builtin-macro-redefined"
   ARGS=$ARGS" -target xtensa-lx106-elf -mcpu=esp8266 -fuse-ld=$BUILD_PATH/xtensa-lx106-elf-lld"
@@ -61,4 +62,5 @@ else
 
 # echo clang $ARGS
   clang $ARGS
+  exit $?
 fi

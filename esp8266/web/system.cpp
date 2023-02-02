@@ -1,6 +1,7 @@
 #include "eagle.h"
 #include <esp_http_server.h>
 #include "app/fs.h"
+#include "app/rtc.h"
 
 esp_err_t web_system(httpd_req_t* req)
 {
@@ -405,5 +406,17 @@ esp_err_t web_reset(httpd_req_t* req)
     });
     xTimerStart(timer, 1000 / portTICK_PERIOD_MS);
 
+    return ESP_OK;
+}
+
+esp_err_t web_rtc(httpd_req_t* req)
+{
+    for (int i = -256; i < 512; i += 4)
+    {
+        uint32_t data = 0;
+        rtc_read(i, &data, sizeof(uint32_t));
+        if (httpd_resp_send_chunk(req, number, sprintf(number, "%-3d:%08X\n", i, data)) != ESP_OK)
+            return ESP_FAIL;
+    }
     return ESP_OK;
 }

@@ -30,6 +30,8 @@ done
 echo llvm-ar $ARGS
 if [ -f "esp-clang/bin/llvm-ar" ]; then
   esp-clang/bin/llvm-ar r $ARGS
+  exit $?
 else
   llvm-ar $ARGS
+  exit $?
 fi

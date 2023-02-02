@@ -6,10 +6,13 @@
 #include "app/https.h"
 #include "app/mqtt.h"
 #include "app/ota.h"
+#include "app/rtc.h"
 
 #define TAG __FILE_NAME__
 
+#if defined(__XTENSA__)
 extern "C" const char* const __wrap_default_ssid __attribute__((alias("wifi_format")));
+#endif
 
 extern const char* const version __attribute__((weak));
 extern const char* const build_date __attribute__((weak));
@@ -32,8 +35,9 @@ extern esp_err_t web_ota(httpd_req_t* req);
 extern esp_err_t web_mqtt(httpd_req_t* req);
 extern esp_err_t web_ntp(httpd_req_t* req);
 extern esp_err_t web_reset(httpd_req_t* req);
+extern esp_err_t web_rtc(httpd_req_t* req);
 
-static void setup_handler(TimerHandle_t timer)
+static void setup_handler(void)
 {
     // Static IP
     int fd = fs_open("ip", "r");
@@ -96,8 +100,9 @@ static void setup_handler(TimerHandle_t timer)
         zone = fs_gets(number, 128, fd);
         fs_close(fd);
     }
+    free((void*)sntp_getservername(0));
     sntp_setoperatingmode(SNTP_OPMODE_POLL);
-    sntp_setservername(0, ntp.c_str());
+    sntp_setservername(0, strdup(ntp.c_str()));
     sntp_init();
     setenv("TZ", zone.c_str(), 1);
     tzset();
@@ -120,8 +125,6 @@ static void setup_handler(TimerHandle_t timer)
         ESP_LOGI(TAG, "%d: %p %8d %s", pxTaskStatusArray[i].xTaskNumber, pxTaskStatusArray[i].pxStackBase, pxTaskStatusArray[i].usStackHighWaterMark, pxTaskStatusArray[i].pcTaskName);
     }
     free(pxTaskStatusArray);
-
-    xTimerDelete(timer, 0);
 }
 
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)
@@ -144,8 +147,7 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
-        TimerHandle_t timer = xTimerCreate("WiFi Setup", 0, pdFALSE, (void*)"WiFi Setup", setup_handler);
-        xTimerStart(timer, 0);
+        setup_handler();
     }
 }
 
@@ -159,6 +161,7 @@ extern "C" void app_main()
 
     // Component
     fs_init();
+    rtc_begin();
 
     // WiFi
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
@@ -212,6 +215,7 @@ extern "C" void app_main()
     httpd_uri_t web_mqtt_uri = { .uri = "/mqtt", .method = HTTP_GET, .handler = web_mqtt };
     httpd_uri_t web_ntp_uri = { .uri = "/ntp", .method = HTTP_GET, .handler = web_ntp };
     httpd_uri_t web_reset_uri = { .uri = "/reset", .method = HTTP_GET, .handler = web_reset };
+    httpd_uri_t web_rtc_uri = { .uri = "/rtc", .method = HTTP_GET, .handler = web_rtc, .user_ctx = (void*)"text/plain; charset=utf-8" };
     httpd_register_uri_handler(httpd_server, &web_system_uri);
     httpd_register_uri_handler(httpd_server, &web_ssid_uri);
     httpd_register_uri_handler(httpd_server, &web_ip_uri);
@@ -219,4 +223,5 @@ extern "C" void app_main()
     httpd_register_uri_handler(httpd_server, &web_mqtt_uri);
     httpd_register_uri_handler(httpd_server, &web_ntp_uri);
     httpd_register_uri_handler(httpd_server, &web_reset_uri);
+    httpd_register_uri_handler(httpd_server, &web_rtc_uri);
 }

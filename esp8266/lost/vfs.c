@@ -2,6 +2,7 @@
 #include <sys/lock.h>
 #include <esp8266/uart_struct.h>
 #include <esp_vfs.h>
+#include <lwip/sockets.h>
 
 void esp_vfs_dev_uart_register(void)
 {
@@ -10,6 +11,11 @@ void esp_vfs_dev_uart_register(void)
 esp_err_t esp_vfs_register_fd_range(const esp_vfs_t* vfs, void* ctx, int min_fd, int max_fd)
 {
     return ESP_FAIL;
+}
+
+int esp_vfs_select(int nfds, fd_set* readfds, fd_set* writefds, fd_set* errorfds, struct timeval* timeout)
+{
+    return lwip_select(nfds, readfds, writefds, errorfds, timeout);
 }
 
 int _open_r(struct _reent* r, const char* path, int flags, int mode)
@@ -21,16 +27,13 @@ int _open_r(struct _reent* r, const char* path, int flags, int mode)
 
 ssize_t _write_r(struct _reent* r, int fd, const void* data, size_t size)
 {
-    if (fd == 0)
-    {
+    if (fd == 0) {
         static _lock_t write_lock IRAM_BSS_ATTR;
         const char* text = data;
         __lock_acquire_recursive(write_lock);
-        for (size_t i = 0; i < size; ++i)
-        {
+        for (size_t i = 0; i < size; ++i) {
             char c = text[i];
-            if (c == '\n')
-            {
+            if (c == '\n') {
                 while (uart0.status.txfifo_cnt >= 127);
                 uart0.fifo.rw_byte = '\r';
             }
@@ -60,8 +63,7 @@ int _close_r(struct _reent* r, int fd)
 
 int _fstat_r(struct _reent* r, int fd, struct stat* st)
 {
-    if (fd == 0)
-    {
+    if (fd == 0) {
         st->st_mode = S_IFCHR;
         return 0;
     }

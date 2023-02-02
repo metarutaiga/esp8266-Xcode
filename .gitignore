@@ -10,3 +10,5 @@ build/*.tar.gz
 build/*.tar.xz
 esp8266.xcworkspace/xcshareddata/
 esp8266.xcworkspace/xcuserdata/
+xcschememanagement.plist
+*.xcscheme

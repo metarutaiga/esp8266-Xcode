@@ -25,6 +25,7 @@
 		D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBA297A861500CAAB46 /* lfs_util.c */; };
 		D6D48CBE297A9C7100CAAB46 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBD297A9C7100CAAB46 /* lost.c */; };
 		D6D48CC4297AA03600CAAB46 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CC2297AA03600CAAB46 /* uart.c */; };
+		D6E27670298BAED90025E428 /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6E2766E298BAED90025E428 /* rtc.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,8 @@
 		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6D753FB2959402C007D8981 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6E2766E298BAED90025E428 /* rtc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rtc.c; path = ../esp8266/app/rtc.c; sourceTree = "<group>"; };
+		D6E2766F298BAED90025E428 /* rtc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rtc.h; path = ../esp8266/app/rtc.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +161,8 @@
 				D6D3A457297BDD6E00D0222A /* mqtt.h */,
 				D60B6EA5298519FA00C2E728 /* ota.c */,
 				D60B6EA4298519FA00C2E728 /* ota.h */,
+				D6E2766E298BAED90025E428 /* rtc.c */,
+				D6E2766F298BAED90025E428 /* rtc.h */,
 				D6D48CC2297AA03600CAAB46 /* uart.c */,
 				D6D48CC3297AA03600CAAB46 /* uart.h */,
 			);
@@ -283,6 +288,7 @@
 				D668D0982976993C009ABBB9 /* main.cpp in Sources */,
 				D60B6EA3297FA5B600C2E728 /* startup.c in Sources */,
 				D668D0E6297A8267009ABBB9 /* fs.c in Sources */,
+				D6E27670298BAED90025E428 /* rtc.c in Sources */,
 				D6D48CBE297A9C7100CAAB46 /* lost.c in Sources */,
 				D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */,
 				D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */,
