@@ -142,7 +142,12 @@ static void httpd_handler(void* arg)
                     if (closed)
                     {
                         closesocket(fd);
-                        free(reqs[i]);
+                        httpd_req_t* req = reqs[i];
+                        if (req)
+                        {
+                            free(req->user_ctx);
+                            free(req);
+                        }
                         fds[i] = -1;
                         reqs[i] = NULL;
                         ESP_LOGI(TAG, "%d is disconnected", fd);
