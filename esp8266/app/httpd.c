@@ -12,7 +12,7 @@ struct httpd_uri_node
     struct httpd_uri_node* next;
     httpd_uri_t uri_handler;
 };
-static struct httpd_uri_node* uri_node IRAM_ATTR;
+static struct httpd_uri_node* uri_node IRAM_BSS_ATTR;
 
 static void httpd_handler(void* arg)
 {
