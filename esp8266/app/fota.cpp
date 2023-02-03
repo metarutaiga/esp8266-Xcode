@@ -11,7 +11,7 @@ struct fota_context
     int address;
     int offset;
     int size;
-    void* temp;
+    void* temp = nullptr;
     string header;
 };
 
@@ -115,4 +115,9 @@ static void fota_disconn(void* arg)
 void fota(const char* url)
 {
     https_connect(url, nullptr, fota_recv, fota_disconn);
+}
+
+void fota_callback(void* arg)
+{
+    https_callback(arg, fota_recv, fota_disconn);
 }

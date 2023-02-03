@@ -229,3 +229,11 @@ void https_send(void* arg, const void* data, int length)
         wpabuf_free(out);
     }
 }
+
+void https_callback(void* arg, void (*recv)(void* arg, char* pusrdata, int length), void (*disconn)(void* arg))
+{
+    struct https_context* context = arg;
+
+    context->disconn = disconn;
+    context->recv = recv;
+}
