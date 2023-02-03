@@ -29,7 +29,6 @@ extern "C" const char* const __wrap_default_ssid = wifi_format;
 httpd_handle_t httpd_server IRAM_BSS_ATTR;
 extern esp_err_t web_system(httpd_req_t* req);
 extern esp_err_t web_ssid(httpd_req_t* req);
-extern esp_err_t web_ip(httpd_req_t* req);
 extern esp_err_t web_ota(httpd_req_t* req);
 extern esp_err_t web_mqtt(httpd_req_t* req);
 extern esp_err_t web_ntp(httpd_req_t* req);
@@ -40,34 +39,6 @@ extern "C" void app_wifi() __attribute__((weak));
 extern "C" void app_wifi() {}
 static void wifi_handler(void)
 {
-    // Static IP
-    int fd = fs_open("ip", "r");
-    if (fd >= 0)
-    {
-#if 0
-        struct ip_info now_info = {};
-        wifi_get_ip_info(STATION_IF, &now_info);
-
-        struct ip_info set_info = {};
-        set_info.ip.addr = ipaddr_addr(fs_gets(number, 128, fd));
-        set_info.gw.addr = ipaddr_addr(fs_gets(number, 128, fd));
-        set_info.netmask.addr = ipaddr_addr(fs_gets(number, 128, fd));
-        ip_addr_t dns = { ipaddr_addr(fs_gets(number, 128, fd)) };
-
-        if (IPADDR_NONE != set_info.ip.addr &&
-            now_info.ip.addr != set_info.ip.addr &&
-            now_info.netmask.addr == set_info.netmask.addr &&
-            now_info.gw.addr == set_info.gw.addr)
-        {
-            wifi_station_dhcpc_stop();
-            wifi_set_ip_info(STATION_IF, &set_info);
-            system_station_got_ip_set(&now_info.ip, &now_info.netmask, &now_info.gw);
-            espconn_dns_setserver(0, &dns);
-        }
-#endif
-        fs_close(fd);
-    }
-
     // HTTP
     httpd_uri_t web_system_uri = { .uri = "/setup", .method = HTTP_GET, .handler = web_system };
     httpd_register_uri_handler(httpd_server, &web_system_uri);
@@ -82,7 +53,7 @@ static void wifi_handler(void)
     }, nullptr);
 #endif
     // MQTT
-    fd = fs_open("mqtt", "r");
+    int fd = fs_open("mqtt", "r");
     if (fd >= 0)
     {
         string mqtt = fs_gets(number, 128, fd);
@@ -215,7 +186,6 @@ extern "C" void app_main()
     ESP_LOGI(TAG, "Registering URI handlers");
     httpd_uri_t web_system_uri = { .uri = "/", .method = HTTP_GET, .handler = web_system };
     httpd_uri_t web_ssid_uri = { .uri = "/ssid", .method = HTTP_GET, .handler = web_ssid };
-    httpd_uri_t web_ip_uri = { .uri = "/ip", .method = HTTP_GET, .handler = web_ip };
     httpd_uri_t web_ota_uri = { .uri = "/ota", .method = HTTP_GET, .handler = web_ota };
     httpd_uri_t web_mqtt_uri = { .uri = "/mqtt", .method = HTTP_GET, .handler = web_mqtt };
     httpd_uri_t web_ntp_uri = { .uri = "/ntp", .method = HTTP_GET, .handler = web_ntp };
@@ -223,7 +193,6 @@ extern "C" void app_main()
     httpd_uri_t web_rtc_uri = { .uri = "/rtc", .method = HTTP_GET, .handler = web_rtc, .user_ctx = (void*)"text/plain; charset=utf-8" };
     httpd_register_uri_handler(httpd_server, &web_system_uri);
     httpd_register_uri_handler(httpd_server, &web_ssid_uri);
-    httpd_register_uri_handler(httpd_server, &web_ip_uri);
     httpd_register_uri_handler(httpd_server, &web_ota_uri);
     httpd_register_uri_handler(httpd_server, &web_mqtt_uri);
     httpd_register_uri_handler(httpd_server, &web_ntp_uri);

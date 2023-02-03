@@ -56,86 +56,6 @@ esp_err_t web_system(httpd_req_t* req)
         return ESP_FAIL;
     html.clear();
 
-    tcpip_adapter_ip_info_t ip_info = {};
-    tcpip_adapter_dns_info_t dns_info = {};
-    tcpip_adapter_get_ip_info(TCPIP_ADAPTER_IF_STA, &ip_info);
-    tcpip_adapter_get_dns_info(TCPIP_ADAPTER_IF_STA, TCPIP_ADAPTER_DNS_MAIN, &dns_info);
-
-    // IP
-    string ip;
-    string gateway;
-    string subnet;
-    string dns;
-    fd = fs_open("ip", "r");
-    if (fd >= 0)
-    {
-        ip = fs_gets(number, 128, fd);
-        gateway = fs_gets(number, 128, fd);
-        subnet = fs_gets(number, 128, fd);
-        dns = fs_gets(number, 128, fd);
-        fs_close(fd);
-    }
-    if (ip.empty())
-    {
-        sprintf(number, IPSTR, IP2STR(&ip_info.ip));
-        ip = number;
-    }
-    if (gateway.empty())
-    {
-        sprintf(number, IPSTR, IP2STR(&ip_info.gw));
-        gateway = number;
-    }
-    if (subnet.empty())
-    {
-        sprintf(number, IPSTR, IP2STR(&ip_info.netmask));
-        subnet = number;
-    }
-    if (dns.empty())
-    {
-        sprintf(number, IPSTR, IP2STR(&dns_info.ip));
-        dns = number;
-    }
-    html += "<form method='get' action='ip'>";
-    html +=     "<tr>";
-    html +=         "<td>";
-    html +=             "<label>IP</label>";
-    html +=         "</td>";
-    html +=         "<td>";
-    html +=             "<input name='ip' length=32 value='" + ip + "'>";
-    html +=         "</td>";
-    html +=     "</tr>";
-    html +=     "<tr>";
-    html +=         "<td>";
-    html +=             "<label>Gateway</label>";
-    html +=         "</td>";
-    html +=         "<td>";
-    html +=             "<input name='gateway' length=32 value='" + gateway + "'>";
-    html +=         "</td>";
-    html +=     "</tr>";
-    html +=     "<tr>";
-    html +=         "<td>";
-    html +=             "<label>Subnet</label>";
-    html +=         "</td>";
-    html +=         "<td>";
-    html +=             "<input name='subnet' length=32 value='" + subnet + "'>";
-    html +=         "</td>";
-    html +=     "</tr>";
-    html +=     "<tr>";
-    html +=         "<td>";
-    html +=             "<label>DNS</label>";
-    html +=         "</td>";
-    html +=         "<td>";
-    html +=             "<input name='dns' length=32 value='" + dns + "'>";
-    html +=         "</td>";
-    html +=         "<td>";
-    html +=             "<input type='submit'>";
-    html +=         "</td>";
-    html +=     "</tr>";
-    html += "</form>";
-    if (httpd_resp_send_chunk(req, html.data(), html.length()) != ESP_OK)
-        return ESP_FAIL;
-    html.clear();
-
     // OTA
     string ota;
     fd = fs_open("ota", "r");
@@ -284,33 +204,6 @@ esp_err_t web_ssid(httpd_req_t* req)
     value[0] = 0; httpd_query_key_value(buffer, "pass", value, 64); text += url_decode(value); text += '\n';
 
     int fd = fs_open("ssid", "w");
-    if (fd >= 0)
-    {
-        fs_write(text.data(), text.length(), fd);
-        fs_close(fd);
-    }
-
-    return ESP_OK;
-}
-
-esp_err_t web_ip(httpd_req_t* req)
-{
-    httpd_resp_set_status(req, "302 Found");
-    httpd_resp_set_hdr(req, "Location", "/");
-    httpd_resp_send(req, NULL, 0);
-
-    size_t len;
-    char buffer[(len = httpd_req_get_url_query_len(req) + 1)];
-    httpd_req_get_url_query_str(req, buffer, len);
-
-    string text;
-    char value[64];
-    value[0] = 0; httpd_query_key_value(buffer, "ip", value, 64); text += url_decode(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "gateway", value, 64); text += url_decode(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "subnet", value, 64); text += url_decode(value); text += '\n';
-    value[0] = 0; httpd_query_key_value(buffer, "dns", value, 64); text += url_decode(value); text += '\n';
-
-    int fd = fs_open("ip", "w");
     if (fd >= 0)
     {
         fs_write(text.data(), text.length(), fd);
