@@ -213,7 +213,7 @@ void https_disconnect(void* arg)
         free(context);
     }
 
-    ESP_LOGI(TAG, "HTTPS Disconnected");
+    ESP_LOGI(TAG, "HTTPS disconnected");
 }
 
 void https_send(void* arg, const void* data, int length)
