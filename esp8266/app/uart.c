@@ -82,8 +82,8 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
 
     gpio_isr_handler_add(rx, uart_rx, context);
     gpio_isr_handler_add(tx, NULL, NULL);
-    gpio_set_direction(rx, GPIO_MODE_DEF_INPUT);
-    gpio_set_direction(tx, GPIO_MODE_DEF_OUTPUT);
+    gpio_set_direction(rx, GPIO_MODE_INPUT);
+    gpio_set_direction(tx, GPIO_MODE_OUTPUT);
     gpio_set_intr_type(rx, GPIO_INTR_ANYEDGE);
     gpio_set_intr_type(tx, GPIO_INTR_DISABLE);
     gpio_pullup_en(rx);
@@ -96,7 +96,7 @@ static void uart_wait_until(int begin, int cycle)
 {
     while (esp_get_cycle_count() - begin < cycle)
     {
-        vTaskDelay(1);
+        vTaskDelay(0);
     }
 }
 

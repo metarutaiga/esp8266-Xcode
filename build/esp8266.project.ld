@@ -208,7 +208,7 @@ SECTIONS
     _stext = .;
     _text_start = ABSOLUTE(.);
 
-    *(.rodata.__func__* .rodata.__FUNCTION__* .rodata.*str1.1)
+    *(.rodata.__func__* .rodata.__FUNCTION__* .rodata.*str1.1*)
     *libcore.a:user_interface.o(.rodata2.2)
     *libesp_event.a:(.rodata)
     *libhttp_parser.a:http_parser.o(.rodata.normal_url_char .rodata.tokens .rodata.unhex)

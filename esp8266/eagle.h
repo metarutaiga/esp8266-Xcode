@@ -26,10 +26,14 @@ inline uint32_t IRAM_ATTR esp_get_cycle_count()
     __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
     return ccount;
 }
+inline int32_t esp_timer_get_time_ms()
+{
+    return (int32_t)(esp_timer_get_time() / 1000);
+}
 
-extern const char* const version;
-extern const char* const build_date;
-extern const char* const web_css;
+extern const char version[];
+extern const char build_date[];
+extern const char web_css[];
 extern char thisname[16];
 extern char number[128];
 

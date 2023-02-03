@@ -1,4 +1,5 @@
 #include "eagle.h"
+#include <driver/gpio.h>
 #include <esp_http_server.h>
 #include <lwip/apps/sntp.h>
 #include <nvs_flash.h>
@@ -10,24 +11,22 @@
 
 #define TAG __FILE_NAME__
 
-#if defined(__XTENSA__)
-extern "C" const char* const __wrap_default_ssid __attribute__((alias("wifi_format")));
-#endif
-
-extern const char* const version __attribute__((weak));
-extern const char* const build_date __attribute__((weak));
-extern const char* const web_css __attribute__((weak));
-extern const char* const wifi_format __attribute__((weak));
-extern const char* const pass_format __attribute__((weak));
-const char* const version = "1.00";
-const char* const build_date = __DATE__ " " __TIME__;
-const char* const web_css = "";
-const char* const wifi_format = "ESP8266_%02X%02X%02X";
-const char* const pass_format = "8266ESP_%02X%02X%02X";
+extern const char version[] __attribute__((weak));
+extern const char build_date[] __attribute__((weak));
+extern const char web_css[] __attribute__((weak));
+extern const char wifi_format[] __attribute__((weak));
+extern const char pass_format[] __attribute__((weak));
+const char version[] RODATA_STR_ATTR = "1.00";
+const char build_date[] RODATA_STR_ATTR = __DATE__ " " __TIME__;
+const char web_css[] RODATA_STR_ATTR = "";
+const char wifi_format[] RODATA_STR_ATTR = "ESP8266_%02X%02X%02X";
+const char pass_format[] RODATA_STR_ATTR = "8266ESP_%02X%02X%02X";
 char thisname[16] = "";
 char number[128] = "";
 
-static httpd_handle_t httpd_server IRAM_BSS_ATTR;
+extern "C" const char* const __wrap_default_ssid = wifi_format;
+
+httpd_handle_t httpd_server IRAM_BSS_ATTR;
 extern esp_err_t web_system(httpd_req_t* req);
 extern esp_err_t web_ssid(httpd_req_t* req);
 extern esp_err_t web_ip(httpd_req_t* req);
@@ -37,7 +36,9 @@ extern esp_err_t web_ntp(httpd_req_t* req);
 extern esp_err_t web_reset(httpd_req_t* req);
 extern esp_err_t web_rtc(httpd_req_t* req);
 
-static void setup_handler(void)
+extern "C" void app_wifi() __attribute__((weak));
+extern "C" void app_wifi() {}
+static void wifi_handler(void)
 {
     // Static IP
     int fd = fs_open("ip", "r");
@@ -116,6 +117,8 @@ static void setup_handler(void)
         fs_close(fd);
     }
 
+    app_wifi();
+
     // Dump task
     size_t uxArraySize = uxTaskGetNumberOfTasks();
     TaskStatus_t* pxTaskStatusArray = (TaskStatus_t*)malloc(uxArraySize * sizeof(TaskStatus_t));
@@ -147,19 +150,21 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 
         ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
 
-        setup_handler();
+        wifi_handler();
     }
 }
 
+extern "C" void app_setup() __attribute__((weak));
+extern "C" void app_setup() {}
 extern "C" void app_main()
 {
-    ESP_LOGI(TAG, __DATE__ " " __TIME__);
-
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
+    ESP_ERROR_CHECK(gpio_install_isr_service(0));
 
     // Component
+    ESP_LOGI(TAG, build_date);
     fs_init();
     rtc_begin();
 
@@ -224,4 +229,6 @@ extern "C" void app_main()
     httpd_register_uri_handler(httpd_server, &web_ntp_uri);
     httpd_register_uri_handler(httpd_server, &web_reset_uri);
     httpd_register_uri_handler(httpd_server, &web_rtc_uri);
+
+    app_setup();
 }

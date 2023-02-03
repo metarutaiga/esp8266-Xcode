@@ -1,6 +1,7 @@
 #pragma once
 
 #pragma clang diagnostic ignored "-Wmacro-redefined"
+#pragma clang diagnostic ignored "-Wsection"
 
 #define __ESP_FILE__ __FILE_NAME__
 
@@ -20,3 +21,4 @@
 #endif
 
 #define IRAM_BSS_ATTR _SECTION_ATTR_IMPL(".bss.iram1", __COUNTER__)
+#define RODATA_STR_ATTR _SECTION_ATTR_IMPL(".rodata.str1.1", __COUNTER__)

@@ -1,0 +1,233 @@
+diff --git a/components/bootloader_support/include/esp_image_format.h b/components/bootloader_support/include/esp_image_format.h
+index c427cffa..98e7bf23 100644
+--- a/components/bootloader_support/include/esp_image_format.h
++++ b/components/bootloader_support/include/esp_image_format.h
+@@ -37,7 +37,7 @@ typedef enum {
+ } esp_image_spi_mode_t;
+ 
+ /* SPI flash clock frequency */
+-enum {
++typedef enum {
+     ESP_IMAGE_SPI_SPEED_40M,
+     ESP_IMAGE_SPI_SPEED_26M,
+     ESP_IMAGE_SPI_SPEED_20M,
+diff --git a/components/freertos/port/esp8266/panic.c b/components/freertos/port/esp8266/panic.c
+index f3421fc6..f953ba07 100644
+--- a/components/freertos/port/esp8266/panic.c
++++ b/components/freertos/port/esp8266/panic.c
+@@ -106,7 +106,7 @@ static inline void panic_frame(XtExcFrame *frame)
+     }
+ 
+     PANIC("\r\nBacktrace: %p:%p ", i_pc, i_sp);
+-    while(xt_retaddr_callee(i_pc, i_sp, i_lr, &o_pc, &o_sp)) {
++    while(xt_retaddr_callee(i_pc, i_sp, i_lr, &o_pc, &o_sp) && i_sp != o_sp) {
+         PANIC("%p:%p ", o_pc, o_sp);
+         i_pc = o_pc;
+         i_sp = o_sp;
+diff --git a/components/wpa_supplicant/component.mk b/components/wpa_supplicant/component.mk
+index b12a57f5..08a285ca 100644
+--- a/components/wpa_supplicant/component.mk
++++ b/components/wpa_supplicant/component.mk
+@@ -35,7 +39,11 @@ ifneq ($(CONFIG_WPA_11KV_SUPPORT), y)
+     src/esp_supplicant/esp_scan.o
+ endif
+ 
+-CFLAGS += -DCONFIG_DPP -DCONFIG_WPA3_SAE -DCONFIG_IEEE80211W -DESP_SUPPLICANT -DIEEE8021X_EAPOL -DEAP_PEER_METHOD -DEAP_TLS -DEAP_TTLS -DEAP_PEAP -DEAP_MSCHAPv2 -DUSE_WPA2_TASK -DCONFIG_WPS2 -DCONFIG_WPS_PIN -DUSE_WPS_TASK -DESPRESSIF_USE -DESP8266_WORKAROUND -DCONFIG_ECC -DCONFIG_WNM -D__ets__ -Wno-strict-aliasing
++CFLAGS += -DCONFIG_DPP -DCONFIG_IEEE80211W -DESP_SUPPLICANT -DIEEE8021X_EAPOL -DEAP_PEER_METHOD -DEAP_TLS -DEAP_TTLS -DEAP_PEAP -DEAP_MSCHAPv2 -DUSE_WPA2_TASK -DCONFIG_WPS2 -DCONFIG_WPS_PIN -DUSE_WPS_TASK -DESPRESSIF_USE -DESP8266_WORKAROUND -DCONFIG_ECC -DCONFIG_WNM -D__ets__ -Wno-strict-aliasing
++
++ifeq ($(CONFIG_ESP8266_WIFI_ENABLE_WPA3_SAE), y)
++    CFLAGS += -DCONFIG_WPA3_SAE
++endif
+ 
+ src/crypto/crypto_ops.o: CFLAGS += -Wno-cast-function-type 
+ 
+diff --git a/components/wpa_supplicant/port/include/supplicant_opt.h b/components/wpa_supplicant/port/include/supplicant_opt.h
+index b70ffd4c..30cd5cfa 100644
+--- a/components/wpa_supplicant/port/include/supplicant_opt.h
++++ b/components/wpa_supplicant/port/include/supplicant_opt.h
+@@ -20,6 +20,7 @@
+ #if CONFIG_WPA_MBEDTLS_CRYPTO
+ #define USE_MBEDTLS_CRYPTO 1
+ #else
++#define CONFIG_SHA256
+ #define CONFIG_TLS_INTERNAL_CLIENT
+ #define CONFIG_TLSV12
+ #endif
+diff --git a/components/wpa_supplicant/src/esp_supplicant/esp_wpa_main.c b/components/wpa_supplicant/src/esp_supplicant/esp_wpa_main.c
+index 7b37a6c0..46929125 100644
+--- a/components/wpa_supplicant/src/esp_supplicant/esp_wpa_main.c
++++ b/components/wpa_supplicant/src/esp_supplicant/esp_wpa_main.c
+@@ -193,7 +193,9 @@ static void wpa_sta_disconnected_cb(uint8_t reason_code)
+         case WIFI_REASON_ASSOC_FAIL:
+         case WIFI_REASON_CONNECTION_FAIL:
+         case WIFI_REASON_HANDSHAKE_TIMEOUT:
++#ifdef CONFIG_WPA3_SAE
+             esp_wpa3_free_sae_data();
++#endif
+             wpa_sta_clear_curr_pmksa();
+             break;
+         default:
+diff --git a/components/wpa_supplicant/src/tls/tlsv1_client_read.c b/components/wpa_supplicant/src/tls/tlsv1_client_read.c
+index a585f206..7974e00d 100755
+--- a/components/wpa_supplicant/src/tls/tlsv1_client_read.c
++++ b/components/wpa_supplicant/src/tls/tlsv1_client_read.c
+@@ -28,6 +28,43 @@ static int tls_process_server_hello_done(struct tlsv1_client *conn, u8 ct,
+ 					 const u8 *in_data, size_t *in_len);
+ 
+ 
++static int tls_process_server_hello_extensions(struct tlsv1_client *conn,
++					       const u8 *pos, size_t len)
++{
++	const u8 *end = pos + len;
++
++	wpa_hexdump(MSG_MSGDUMP, "TLSv1: ServerHello extensions",
++		    pos, len);
++	while (pos < end) {
++		u16 ext, elen;
++
++		if (end - pos < 4) {
++			wpa_printf(MSG_INFO, "TLSv1: Truncated ServerHello extension header");
++			return -1;
++		}
++
++		ext = WPA_GET_BE16(pos);
++		pos += 2;
++		elen = WPA_GET_BE16(pos);
++		pos += 2;
++
++		if (elen > end - pos) {
++			wpa_printf(MSG_INFO, "TLSv1: Truncated ServerHello extension");
++			return -1;
++		}
++
++		wpa_printf(MSG_DEBUG, "TLSv1: ServerHello ExtensionType %u",
++			   ext);
++		wpa_hexdump(MSG_DEBUG, "TLSv1: ServerHello extension data",
++			    pos, elen);
++
++		pos += elen;
++	}
++
++	return 0;
++}
++
++
+ static int tls_process_server_hello(struct tlsv1_client *conn, u8 ct,
+ 				    const u8 *in_data, size_t *in_len)
+ {
+@@ -166,6 +203,23 @@ static int tls_process_server_hello(struct tlsv1_client *conn, u8 ct,
+ 	}
+ 	pos++;
+ 
++	if (end - pos >= 2) {
++		u16 ext_len;
++
++		ext_len = WPA_GET_BE16(pos);
++		pos += 2;
++		if (end - pos < ext_len) {
++			wpa_printf(MSG_INFO,
++				   "TLSv1: Invalid ServerHello extension length: %u (left: %u)",
++				   ext_len, (unsigned int) (end - pos));
++			goto decode_error;
++		}
++
++		if (tls_process_server_hello_extensions(conn, pos, ext_len))
++			goto decode_error;
++		pos += ext_len;
++	}
++
+ 	if (end != pos) {
+ 		/* TODO: ServerHello extensions */
+ 		wpa_hexdump(MSG_DEBUG, "TLSv1: Unexpected extra data in the "
+diff --git a/components/wpa_supplicant/src/tls/tlsv1_client_write.c b/components/wpa_supplicant/src/tls/tlsv1_client_write.c
+index 53a1b338..d3df24c4 100755
+--- a/components/wpa_supplicant/src/tls/tlsv1_client_write.c
++++ b/components/wpa_supplicant/src/tls/tlsv1_client_write.c
+@@ -48,6 +48,7 @@ u8 * tls_send_client_hello(struct tlsv1_client *conn, size_t *out_len)
+ 	u8 *hello, *end, *pos, *hs_length, *hs_start, *rhdr;
+ 	struct os_time now;
+ 	size_t len, i;
++	u8 *ext_start;
+ 
+ 	wpa_printf(MSG_DEBUG, "TLSv1: Send ClientHello");
+ 	*out_len = 0;
+@@ -102,12 +103,54 @@ u8 * tls_send_client_hello(struct tlsv1_client *conn, size_t *out_len)
+ 	*pos++ = 1;
+ 	*pos++ = TLS_COMPRESSION_NULL;
+ 
++	/* Extension */
++	ext_start = pos;
++	pos += 2;
++
++	/* Maximum Fragment Length Negotiation */
++	WPA_PUT_BE16(pos, TLS_EXT_MAX_FRAGMENT_LENGTH);
++	pos += 2;
++	WPA_PUT_BE16(pos, 1);
++	pos += 2;
++	/* 4096 */
++	*pos++ = 4;
++
++#ifdef CONFIG_TLSV12
++	if (conn->rl.tls_version >= TLS_VERSION_1_2) {
++		/*
++		 * Add signature_algorithms extension since we support only
++		 * SHA256 (and not the default SHA1) with TLSv1.2.
++		 */
++		/* ExtensionsType extension_type = signature_algorithms(13) */
++		WPA_PUT_BE16(pos, TLS_EXT_SIGNATURE_ALGORITHMS);
++		pos += 2;
++		/* opaque extension_data<0..2^16-1> length */
++		WPA_PUT_BE16(pos, 8);
++		pos += 2;
++		/* supported_signature_algorithms<2..2^16-2> length */
++		WPA_PUT_BE16(pos, 6);
++		pos += 2;
++		/* supported_signature_algorithms */
++		*pos++ = TLS_HASH_ALG_SHA512;
++		*pos++ = TLS_SIGN_ALG_RSA;
++		*pos++ = TLS_HASH_ALG_SHA384;
++		*pos++ = TLS_SIGN_ALG_RSA;
++		*pos++ = TLS_HASH_ALG_SHA256;
++		*pos++ = TLS_SIGN_ALG_RSA;
++	}
++#endif /* CONFIG_TLSV12 */
++
+ 	if (conn->client_hello_ext) {
+ 		os_memcpy(pos, conn->client_hello_ext,
+ 			  conn->client_hello_ext_len);
+ 		pos += conn->client_hello_ext_len;
+ 	}
+ 
++	if (pos == ext_start + 2)
++		pos -= 2; /* no extensions */
++	else
++		WPA_PUT_BE16(ext_start, pos - ext_start - 2);
++
+ 	WPA_PUT_BE24(hs_length, pos - hs_length - 3);
+ 	tls_verify_hash_add(&conn->verify, hs_start, pos - hs_start);
+ 
+diff --git a/components/wpa_supplicant/src/tls/tlsv1_common.h b/components/wpa_supplicant/src/tls/tlsv1_common.h
+index f28c0cdc..76abfc7e 100644
+--- a/components/wpa_supplicant/src/tls/tlsv1_common.h
++++ b/components/wpa_supplicant/src/tls/tlsv1_common.h
+@@ -169,6 +169,7 @@ enum {
+ #define TLS_EXT_TRUSTED_CA_KEYS			3 /* RFC 4366 */
+ #define TLS_EXT_TRUNCATED_HMAC			4 /* RFC 4366 */
+ #define TLS_EXT_STATUS_REQUEST			5 /* RFC 4366 */
++#define TLS_EXT_SIGNATURE_ALGORITHMS		13 /* RFC 5246 */
+ #define TLS_EXT_SESSION_TICKET			35 /* RFC 4507 */
+ 
+ #define TLS_EXT_PAC_OPAQUE TLS_EXT_SESSION_TICKET /* EAP-FAST terminology */
+diff --git a/make/project.mk b/make/project.mk
+index c06835b2..a5973d1d 100644
+--- a/make/project.mk
++++ b/make/project.mk
+@@ -329,7 +329,7 @@ endif
+ 
+ # If we have `version.txt` then prefer that for extracting IDF version
+ ifeq ("$(wildcard ${IDF_PATH}/version.txt)","")
+-IDF_VER_T := $(shell cd ${IDF_PATH} && git describe --always --tags --dirty)
++IDF_VER_T := $(shell cd ${IDF_PATH} && git describe --always --tags)
+ else
+ IDF_VER_T := $(shell cat ${IDF_PATH}/version.txt)
+ endif

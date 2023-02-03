@@ -13,13 +13,30 @@
 		D60B6EAC29877A2B00C2E728 /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAB29877A2B00C2E728 /* fota.cpp */; };
 		D60B6EAE2987B70100C2E728 /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAD2987B70100C2E728 /* httpd.c */; };
 		D60B6EB02987C60800C2E728 /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAF2987C60800C2E728 /* crypto.c */; };
-		D60B6EBA2989641E00C2E728 /* libfreertos-mqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D60B6EB92989641E00C2E728 /* libfreertos-mqtt.a */; };
 		D60B6EBC298AA71500C2E728 /* vfs.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EBB298AA71500C2E728 /* vfs.c */; };
+		D6238D9A298CC0E200BEF5DB /* libfreertos-mqtt.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6238D99298CC0E200BEF5DB /* libfreertos-mqtt.a */; };
+		D6238D9C298CC0E200BEF5DB /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D6238D9B298CC0E200BEF5DB /* liblittlefs.a */; };
+		D6238DA7298CDA2200BEF5DB /* fota.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAB29877A2B00C2E728 /* fota.cpp */; };
+		D6238DA8298CDA2200BEF5DB /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E5297A8267009ABBB9 /* fs.c */; };
+		D6238DA9298CDA2200BEF5DB /* httpd.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAD2987B70100C2E728 /* httpd.c */; };
+		D6238DAA298CDA2200BEF5DB /* https.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA8298668DA00C2E728 /* https.c */; };
+		D6238DAB298CDA2200BEF5DB /* mqtt.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D3A456297BDD6E00D0222A /* mqtt.c */; };
+		D6238DAC298CDA2200BEF5DB /* ota.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA5298519FA00C2E728 /* ota.c */; };
+		D6238DAD298CDA2200BEF5DB /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6E2766E298BAED90025E428 /* rtc.c */; };
+		D6238DAE298CDA2200BEF5DB /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CC2297AA03600CAAB46 /* uart.c */; };
+		D6238DAF298CDA2200BEF5DB /* crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EAF2987C60800C2E728 /* crypto.c */; };
+		D6238DB0298CDA2200BEF5DB /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBA297A861500CAAB46 /* lfs_util.c */; };
+		D6238DB1298CDA2200BEF5DB /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
+		D6238DB2298CDA2200BEF5DB /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBD297A9C7100CAAB46 /* lost.c */; };
+		D6238DB3298CDA2200BEF5DB /* nvs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E129798737009ABBB9 /* nvs.c */; };
+		D6238DB4298CDA2200BEF5DB /* vfs.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EBB298AA71500C2E728 /* vfs.c */; };
+		D6238DB5298CDA2200BEF5DB /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D3A454297B6FF700D0222A /* system.cpp */; };
+		D6238DB6298CDA2200BEF5DB /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.cpp */; };
+		D6238DB7298CDA2200BEF5DB /* startup.c in Sources */ = {isa = PBXBuildFile; fileRef = D60B6EA2297FA5B600C2E728 /* startup.c */; };
 		D668D0982976993C009ABBB9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0972976993C009ABBB9 /* main.cpp */; };
 		D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D668D0DF297934D8009ABBB9 /* libcpp.cpp */; };
 		D668D0E229798737009ABBB9 /* nvs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E129798737009ABBB9 /* nvs.c */; };
 		D668D0E6297A8267009ABBB9 /* fs.c in Sources */ = {isa = PBXBuildFile; fileRef = D668D0E5297A8267009ABBB9 /* fs.c */; };
-		D668D0E8297A84BC009ABBB9 /* liblittlefs.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D668D0E7297A84BC009ABBB9 /* liblittlefs.a */; };
 		D6D3A455297B6FF700D0222A /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D6D3A454297B6FF700D0222A /* system.cpp */; };
 		D6D3A458297BDD6E00D0222A /* mqtt.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D3A456297BDD6E00D0222A /* mqtt.c */; };
 		D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBA297A861500CAAB46 /* lfs_util.c */; };
@@ -39,9 +56,9 @@
 		D60B6EAB29877A2B00C2E728 /* fota.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = fota.cpp; path = ../esp8266/app/fota.cpp; sourceTree = "<group>"; };
 		D60B6EAD2987B70100C2E728 /* httpd.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = httpd.c; path = ../esp8266/app/httpd.c; sourceTree = "<group>"; };
 		D60B6EAF2987C60800C2E728 /* crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto.c; path = ../esp8266/lost/crypto.c; sourceTree = "<group>"; };
-		D60B6EB72989120900C2E728 /* libfreertos-mqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libfreertos-mqtt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		D60B6EB92989641E00C2E728 /* libfreertos-mqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libfreertos-mqtt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D60B6EBB298AA71500C2E728 /* vfs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = vfs.c; path = ../esp8266/lost/vfs.c; sourceTree = "<group>"; };
+		D6238D99298CC0E200BEF5DB /* libfreertos-mqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = "libfreertos-mqtt.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6238D9B298CC0E200BEF5DB /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D627776B295B33050092DFB5 /* libeagle.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libeagle.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D668D0972976993C009ABBB9 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = ../esp8266/main.cpp; sourceTree = "<group>"; };
 		D668D0B52976A107009ABBB9 /* sdkconfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sdkconfig.h; sourceTree = "<group>"; };
@@ -49,7 +66,6 @@
 		D668D0E129798737009ABBB9 /* nvs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = nvs.c; path = ../esp8266/lost/nvs.c; sourceTree = "<group>"; };
 		D668D0E4297A8267009ABBB9 /* fs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fs.h; path = ../esp8266/app/fs.h; sourceTree = "<group>"; };
 		D668D0E5297A8267009ABBB9 /* fs.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = fs.c; path = ../esp8266/app/fs.c; sourceTree = "<group>"; };
-		D668D0E7297A84BC009ABBB9 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6728E8D2925E37D0055855B /* ClangPlatform.esp8266.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ClangPlatform.esp8266.xcconfig; sourceTree = "<group>"; };
 		D6D3A454297B6FF700D0222A /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = system.cpp; path = ../esp8266/web/system.cpp; sourceTree = "<group>"; };
 		D6D3A456297BDD6E00D0222A /* mqtt.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mqtt.c; path = ../esp8266/app/mqtt.c; sourceTree = "<group>"; };
@@ -59,10 +75,6 @@
 		D6D48CBD297A9C7100CAAB46 /* lost.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lost.c; path = ../esp8266/lost/lost.c; sourceTree = "<group>"; };
 		D6D48CC2297AA03600CAAB46 /* uart.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = uart.c; path = ../esp8266/app/uart.c; sourceTree = "<group>"; };
 		D6D48CC3297AA03600CAAB46 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uart.h; path = ../esp8266/app/uart.h; sourceTree = "<group>"; };
-		D6D753F52959402C007D8981 /* libcrypto.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libcrypto.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6D753F72959402C007D8981 /* liblittlefs.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblittlefs.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6D753F92959402C007D8981 /* liblwip.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = liblwip.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		D6D753FB2959402C007D8981 /* libmqtt.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libmqtt.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6E2766E298BAED90025E428 /* rtc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rtc.c; path = ../esp8266/app/rtc.c; sourceTree = "<group>"; };
 		D6E2766F298BAED90025E428 /* rtc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rtc.h; path = ../esp8266/app/rtc.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,8 +84,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D60B6EBA2989641E00C2E728 /* libfreertos-mqtt.a in Frameworks */,
-				D668D0E8297A84BC009ABBB9 /* liblittlefs.a in Frameworks */,
+				D6238D9A298CC0E200BEF5DB /* libfreertos-mqtt.a in Frameworks */,
+				D6238D9C298CC0E200BEF5DB /* liblittlefs.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,13 +102,8 @@
 		300264BD24266097004559E0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D60B6EB92989641E00C2E728 /* libfreertos-mqtt.a */,
-				D60B6EB72989120900C2E728 /* libfreertos-mqtt.a */,
-				D668D0E7297A84BC009ABBB9 /* liblittlefs.a */,
-				D6D753F52959402C007D8981 /* libcrypto.a */,
-				D6D753F72959402C007D8981 /* liblittlefs.a */,
-				D6D753F92959402C007D8981 /* liblwip.a */,
-				D6D753FB2959402C007D8981 /* libmqtt.a */,
+				D6238D99298CC0E200BEF5DB /* libfreertos-mqtt.a */,
+				D6238D9B298CC0E200BEF5DB /* liblittlefs.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -197,9 +204,9 @@
 			productReference = 30A9A7BB25ADC792000FA104 /* libeagle.so */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
-		D627776A295B33050092DFB5 /* eagle (lib) */ = {
+		D627776A295B33050092DFB5 /* eagle_lib */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle (lib)" */;
+			buildConfigurationList = D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle_lib" */;
 			buildPhases = (
 				D6277768295B33050092DFB5 /* Sources */,
 				D6277769295B33050092DFB5 /* Frameworks */,
@@ -208,7 +215,7 @@
 			);
 			dependencies = (
 			);
-			name = "eagle (lib)";
+			name = eagle_lib;
 			productName = eagle;
 			productReference = D627776B295B33050092DFB5 /* libeagle.a */;
 			productType = "com.apple.product-type.library.static";
@@ -243,7 +250,7 @@
 			projectRoot = "";
 			targets = (
 				30A9A7BA25ADC792000FA104 /* eagle */,
-				D627776A295B33050092DFB5 /* eagle (lib) */,
+				D627776A295B33050092DFB5 /* eagle_lib */,
 			);
 		};
 /* End PBXProject section */
@@ -266,7 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n#python3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ndd if=$PROJECT_DIR/hello_world/build/ota_data_initial.bin of=libeagle-0x0000.bin bs=1 seek=0 count=0x1000\ndd if=$PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin of=libeagle-0x0000.bin bs=1 seek=0 conv=notrunc\nprintf '\\x02\\x60' | dd of=libeagle-0x0000.bin bs=1 seek=2 count=2 conv=notrunc\ncat libeagle-0x01000.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n#python3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ndd if=/dev/zero of=libTaiSEIA-0x0000.bin bs=1 seek=0 count=0x1000 conv=notrunc\ndd if=$PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin of=libeagle-0x0000.bin bs=1 seek=0 conv=notrunc\nprintf '\\x02\\x60' | dd of=libeagle-0x0000.bin bs=1 seek=2 count=2 conv=notrunc\ncat libeagle-0x01000.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -299,6 +306,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6238DA7298CDA2200BEF5DB /* fota.cpp in Sources */,
+				D6238DA8298CDA2200BEF5DB /* fs.c in Sources */,
+				D6238DA9298CDA2200BEF5DB /* httpd.c in Sources */,
+				D6238DAA298CDA2200BEF5DB /* https.c in Sources */,
+				D6238DAB298CDA2200BEF5DB /* mqtt.c in Sources */,
+				D6238DAC298CDA2200BEF5DB /* ota.c in Sources */,
+				D6238DAD298CDA2200BEF5DB /* rtc.c in Sources */,
+				D6238DAE298CDA2200BEF5DB /* uart.c in Sources */,
+				D6238DAF298CDA2200BEF5DB /* crypto.c in Sources */,
+				D6238DB0298CDA2200BEF5DB /* lfs_util.c in Sources */,
+				D6238DB1298CDA2200BEF5DB /* libcpp.cpp in Sources */,
+				D6238DB2298CDA2200BEF5DB /* lost.c in Sources */,
+				D6238DB3298CDA2200BEF5DB /* nvs.c in Sources */,
+				D6238DB4298CDA2200BEF5DB /* vfs.c in Sources */,
+				D6238DB5298CDA2200BEF5DB /* system.cpp in Sources */,
+				D6238DB6298CDA2200BEF5DB /* main.cpp in Sources */,
+				D6238DB7298CDA2200BEF5DB /* startup.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,6 +379,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANGPLATFORM_DIR = $PROJECT_DIR;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -420,6 +445,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANGPLATFORM_DIR = $PROJECT_DIR;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -491,7 +517,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle (lib)" */ = {
+		D627776E295B33050092DFB5 /* Build configuration list for PBXNativeTarget "eagle_lib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D627776C295B33050092DFB5 /* Debug */,

@@ -194,6 +194,10 @@ esp_err_t httpd_register_uri_handler(httpd_handle_t handle, const httpd_uri_t* u
         if (strcmp(node->uri_handler.uri, uri_handler->uri) == 0)
         {
             memcpy(&node->uri_handler, uri_handler, sizeof(httpd_uri_t));
+            if (node->uri_handler.user_ctx == NULL)
+            {
+                node->uri_handler.user_ctx = "text/html";
+            }
             return ESP_OK;
         }
         node = node->next;

@@ -61,7 +61,7 @@ static void mqtt_information()
     mqtt_publish(mqtt_prefix(number, "ESP", "ResetReason", 0), reason, 0, 0);
 }
 
-static void mqtt_loop(TimerHandle_t xTimer)
+static void mqtt_loop(TimerHandle_t timer)
 {
     if (mqtt_is_connected == false)
         return;

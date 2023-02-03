@@ -15,10 +15,16 @@ if [ ! -d "esp-clang/xtensa-lx106-elf" ]; then
   ln -s ../xtensa-lx106-elf/xtensa-lx106-elf esp-clang/xtensa-lx106-elf
 fi
 
-#printf '\xB2\x00' | dd of=libpp.a bs=1 seek=0x3BC5E count=2 conv=notrunc
-#printf 'wifi'     | dd of=libpp.a bs=1 seek=0x2DE6 count=4 conv=notrunc
-#printf '\x05\x00' | dd of=libpp.a bs=1 seek=0x36AA count=2 conv=notrunc
-#printf '\x14\x00' | dd of=libpp.a bs=1 seek=0x3D46 count=2 conv=notrunc
-#printf '\x32\x00' | dd of=libpp.a bs=1 seek=0x3D52 count=2 conv=notrunc
-#printf '\x9C\x05' | dd of=libpp.a bs=1 seek=0xDAEA count=2 conv=notrunc
-#printf '\x5B\x00' | dd of=libpp.a bs=1 seek=0xDAEE count=2 conv=notrunc
+if [ ! -f "patchsdk.ok" ]; then
+  echo ok > patchsdk.ok
+  cd ../ESP8266_RTOS_SDK
+  patch < ../build/patchsdk
+  cd ../build
+  printf 'wifi'     | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0x2DE6 count=4 conv=notrunc
+  printf '\x05\x00' | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0x36AA count=2 conv=notrunc
+  printf '\x14\x00' | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0x3D46 count=2 conv=notrunc
+  printf '\x32\x00' | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0x3D52 count=2 conv=notrunc
+  printf '\x9C\x05' | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0xDAEA count=2 conv=notrunc
+  printf '\x5B\x00' | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0xDAEE count=2 conv=notrunc
+  printf '\xB2\x00' | dd of=../ESP8266_RTOS_SDK/components/esp8266/lib/libpp.a bs=1 seek=0x3BC5E count=2 conv=notrunc
+fi
