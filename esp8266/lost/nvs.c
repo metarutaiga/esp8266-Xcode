@@ -110,7 +110,7 @@ static const uint16_t g_wifi_cfg_size[39] = {
 #   undef _
 };
 
-static const char* const g_wifi_cfg_name[39] = {
+static const char* const g_wifi_cfg_name[39] __attribute__((unused)) = {
 #   define _(a, b, c, d, e) e
     NVS_WIFI_CFG
 #   undef _

@@ -273,7 +273,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n#python3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ndd if=/dev/zero of=libTaiSEIA-0x0000.bin bs=1 seek=0 count=0x1000 conv=notrunc\ndd if=$PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin of=libeagle-0x0000.bin bs=1 seek=0 conv=notrunc\nprintf '\\x02\\x60' | dd of=libeagle-0x0000.bin bs=1 seek=2 count=2 conv=notrunc\ncat libeagle-0x01000.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
+			shellScript = "cd $TARGET_BUILD_DIR\npython3 -m esptool elf2image libeagle.so --version=2 --flash_freq 40m --flash_mode dout --flash_size 4MB-c1\n#python3 -m esptool elf2image libeagle.so --version=3 --flash_freq 40m --flash_mode dout --flash_size 4MB\n\ndd if=/dev/zero of=libeagle-0x0000.bin bs=1 seek=0 count=0x1000 conv=notrunc\ndd if=$PROJECT_DIR/../ESP8266_RTOS_SDK/components/esp8266/firmware/boot_v1.7.bin of=libeagle-0x0000.bin bs=1 seek=0 conv=notrunc\nprintf '\\x02\\x60' | dd of=libeagle-0x0000.bin bs=1 seek=2 count=2 conv=notrunc\ncat libeagle-0x01000.bin >>libeagle-0x0000.bin\nmv libeagle-0x0000.bin libeagle.bin\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

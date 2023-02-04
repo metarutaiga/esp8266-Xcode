@@ -22,9 +22,13 @@ extern uint32_t lfs_crc(uint32_t crc, const void* buffer, size_t size);
 void esp_reset(esp_reset_reason_t hint);
 inline uint32_t IRAM_ATTR esp_get_cycle_count()
 {
+#if defined(__XTENSA__)
     uint32_t ccount;
     __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
     return ccount;
+#else
+    return 0;
+#endif
 }
 inline int32_t esp_timer_get_time_ms()
 {
