@@ -116,37 +116,21 @@ static const char* const g_wifi_cfg_name[39] = {
 #   undef _
 };
 
+extern void* g_wifi_nvs;
+
 void __wrap_wifi_nvs_init()
 {
-#if 0
-    uint8_t* g_wifi_nvs = wifi_nvs_get();
-    memset(g_wifi_nvs, 0, 1024 + 12);
-    if (g_wifi_menuconfig[20] == 100) {
-        nvs_open("nvs.net80211", 1, &g_wifi_nvs_init[256 + 2]);
-        wifi_nvs_load();
-    }
-#endif
 }
 
 void __wrap_wifi_nvs_deinit()
 {
-#if 0
-    uint8_t* g_wifi_nvs = wifi_nvs_get();
-    g_wifi_nvs[0] = 0;
-    if (g_wifi_menuconfig[20] == 100) {
-        if (g_wifi_nvs_init[256 + 2]) {
-            nvs_close(g_wifi_nvs_init[256 + 2]);
-        }
-    }
-#endif
 }
 
 void __wrap_wifi_nvs_set(uint32_t index, uint32_t value)
 {
     if (index > 38)
         return;
-    extern void* wifi_nvs_get();
-    uint8_t* s_wifi_nvs = wifi_nvs_get();
+    uint8_t* s_wifi_nvs = g_wifi_nvs;
     switch (g_wifi_cfg_type[index]) {
     case 0: // nvs_set_u8
     case 1: // nvs_set_i8
@@ -166,23 +150,17 @@ void __wrap_wifi_nvs_set(uint32_t index, uint32_t value)
     }
 }
 
+void* __wrap_wifi_nvs_get()
+{
+    return g_wifi_nvs;
+}
+
 uint16_t __wrap_wifi_nvs_get_sta_listen_interval()
 {
-    extern void* wifi_nvs_get();
-    uint16_t* s_wifi_nvs = wifi_nvs_get();
+    uint16_t* s_wifi_nvs = g_wifi_nvs;
     return s_wifi_nvs[g_wifi_cfg_address[10] / sizeof(uint16_t)];
 }
 
 void __wrap_wifi_nvs_commit()
 {
-#if 0
-    if (g_wifi_menuconfig[20] != 0) {
-        if (g_ic[256 + 121] == 0) {
-            uint8_t* g_wifi_nvs = wifi_nvs_get();
-            if (g_wifi_nvs[0] != 0) {
-                nvs_commit(g_wifi_nvs_init[256 + 2]);
-            }
-        }
-    }
-#endif
 }
