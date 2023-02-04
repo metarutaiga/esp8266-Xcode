@@ -72,6 +72,7 @@ extern char number[128];
     __pgm_adjust_offset(*__pgm_cast_u32ptr(addr), addr, res)
 
 #define pgm_read_byte(addr)                 (__extension__({uint32_t res; pgm_read_with_offset(addr, res); (uint8_t)res;}))
+#define pgm_read_word(addr)                 (__extension__({uint32_t res; pgm_read_with_offset(addr, res); (uint16_t)res;}))
 #ifdef __cplusplus
     #define pgm_read_dword_aligned(addr)    (*reinterpret_cast<const uint32_t*>(addr))
     #define pgm_read_float_aligned(addr)    (*reinterpret_cast<const float*>(addr))

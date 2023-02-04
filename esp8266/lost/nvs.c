@@ -50,3 +50,139 @@ esp_err_t nvs_flash_secure_init(nvs_sec_cfg_t* cfg) { return ESP_FAIL; }
 esp_err_t nvs_flash_secure_init_partition(const char *partition_label, nvs_sec_cfg_t* cfg) { return ESP_FAIL; }
 esp_err_t nvs_flash_generate_keys(const esp_partition_t* partition, nvs_sec_cfg_t* cfg) { return ESP_FAIL; }
 esp_err_t nvs_flash_read_security_cfg(const esp_partition_t* partition, nvs_sec_cfg_t* cfg) { return ESP_FAIL; }
+
+#define NVS_WIFI_CFG \
+    _( 0, 0, 0,    1,   "opmode"), \
+    _( 1, 7, 4,    36,  "sta.ssid"), \
+    _( 2, 7, 40,   6,   "sta.mac"), \
+    _( 3, 0, 46,   1,   "sta.authmode"), \
+    _( 4, 6, 47,   65,  "sta.pswd"), \
+    _( 5, 7, 112,  32,  "sta.pmk"), \
+    _( 6, 0, 144,  1,   "sta.chan"), \
+    _( 7, 0, 145,  1,   "auto.conn"), \
+    _( 8, 0, 146,  1,   "bssid.set"), \
+    _( 9, 7, 147,  6,   "sta.bssid"), \
+    _(10, 2, 154,  2,   "sta.lis_intval"), \
+    _(11, 0, 156,  1,   "sta.phym"), \
+    _(12, 0, 157,  1,   "sta.phybw"), \
+    _(13, 7, 158,  2,   "sta.apsw"), \
+    _(14, 7, 160,  700, "sta.apinfo"), \
+    _(15, 0, 860,  1,   "sta.scan_method"), \
+    _(16, 0, 861,  1,   "sta.sort_method"), \
+    _(17, 1, 862,  1,   "sta.minrssi"), \
+    _(18, 0, 863,  1,   "sta.minauth"), \
+    _(19, 7, 868,  36,  "ap.ssid"), \
+    _(20, 7, 904,  6,   "ap.mac"), \
+    _(21, 6, 910,  65,  "ap.passwd"), \
+    _(22, 7, 975,  32,  "ap.pmk"), \
+    _(23, 0, 1007, 1,   "ap.chan"), \
+    _(24, 0, 1008, 1,   "ap.authmode"), \
+    _(25, 0, 1009, 1,   "ap.hidden"), \
+    _(26, 0, 1010, 1,   "ap.max.conn"), \
+    _(27, 2, 1012, 2,   "bcn.interval"), \
+    _(28, 0, 1014, 1,   "ap.phym"), \
+    _(29, 0, 1015, 1,   "ap.phybw"), \
+    _(30, 0, 1016, 1,   "ap.sndchan"), \
+    _(31, 0, 1,    1,   "lorate"), \
+    _(32, 0, 864,  1,   "sta.pmf_e"), \
+    _(33, 0, 865,  1,   "sta.pmf_r"), \
+    _(34, 0, 1017, 1,   "ap.pmf_e"), \
+    _(35, 0, 1018, 1,   "ap.pmf_r"), \
+    _(36, 7, 1020, 12,  "country"), \
+    _(37, 0, 866,  1,   "sta.rm_e"), \
+    _(38, 0, 867,  1,   "sta.btm_e"), \
+
+static const uint8_t g_wifi_cfg_type[39] = {
+#   define _(a, b, c, d, e) b
+    NVS_WIFI_CFG
+#   undef _
+};
+
+static const uint16_t g_wifi_cfg_address[39] = {
+#   define _(a, b, c, d,e ) c
+    NVS_WIFI_CFG
+#   undef _
+};
+
+static const uint16_t g_wifi_cfg_size[39] = {
+#   define _(a, b, c, d, e) d
+    NVS_WIFI_CFG
+#   undef _
+};
+
+static const char* const g_wifi_cfg_name[39] = {
+#   define _(a, b, c, d, e) e
+    NVS_WIFI_CFG
+#   undef _
+};
+
+void __wrap_wifi_nvs_init()
+{
+#if 0
+    uint8_t* g_wifi_nvs = wifi_nvs_get();
+    memset(g_wifi_nvs, 0, 1024 + 12);
+    if (g_wifi_menuconfig[20] == 100) {
+        nvs_open("nvs.net80211", 1, &g_wifi_nvs_init[256 + 2]);
+        wifi_nvs_load();
+    }
+#endif
+}
+
+void __wrap_wifi_nvs_deinit()
+{
+#if 0
+    uint8_t* g_wifi_nvs = wifi_nvs_get();
+    g_wifi_nvs[0] = 0;
+    if (g_wifi_menuconfig[20] == 100) {
+        if (g_wifi_nvs_init[256 + 2]) {
+            nvs_close(g_wifi_nvs_init[256 + 2]);
+        }
+    }
+#endif
+}
+
+void __wrap_wifi_nvs_set(uint32_t index, uint32_t value)
+{
+    if (index > 38)
+        return;
+    extern void* wifi_nvs_get();
+    uint8_t* s_wifi_nvs = wifi_nvs_get();
+    switch (g_wifi_cfg_type[index]) {
+    case 0: // nvs_set_u8
+    case 1: // nvs_set_i8
+    case 2: // nvs_set_u16
+        memcpy(s_wifi_nvs + g_wifi_cfg_address[index], &value, g_wifi_cfg_size[index]);
+        break;
+    case 3:
+    case 4:
+    case 5:
+        break;
+    case 6: // strncpy
+        strncpy(s_wifi_nvs + g_wifi_cfg_address[index], (void*)value, g_wifi_cfg_size[index]);
+        break;
+    case 7: // memcpy
+        memcpy(s_wifi_nvs + g_wifi_cfg_address[index], (void*)value, g_wifi_cfg_size[index]);
+        break;
+    }
+}
+
+uint16_t __wrap_wifi_nvs_get_sta_listen_interval()
+{
+    extern void* wifi_nvs_get();
+    uint16_t* s_wifi_nvs = wifi_nvs_get();
+    return s_wifi_nvs[g_wifi_cfg_address[10] / sizeof(uint16_t)];
+}
+
+void __wrap_wifi_nvs_commit()
+{
+#if 0
+    if (g_wifi_menuconfig[20] != 0) {
+        if (g_ic[256 + 121] == 0) {
+            uint8_t* g_wifi_nvs = wifi_nvs_get();
+            if (g_wifi_nvs[0] != 0) {
+                nvs_commit(g_wifi_nvs_init[256 + 2]);
+            }
+        }
+    }
+#endif
+}

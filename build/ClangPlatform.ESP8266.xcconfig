@@ -196,6 +196,14 @@ OTHER_LDFLAGS = $(inherited) -lwpa_supplicant
 
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,default_ssid
 
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,s_wifi_nvs
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,wifi_nvs_init
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,wifi_nvs_deinit
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,wifi_nvs_set
+//OTHER_LDFLAGS = $(inherited) -Wl,-wrap,wifi_nvs_get
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,wifi_nvs_get_sta_listen_interval
+OTHER_LDFLAGS = $(inherited) -Wl,-wrap,wifi_nvs_commit
+
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,MD5Final
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,MD5Init
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,MD5Update
