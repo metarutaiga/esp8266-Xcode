@@ -277,8 +277,7 @@ void mqtt_setup(const char* ip, int port)
         info.will_message = "false";
         info.will_retain = 1;
 
-        ESP_LOGI(TAG, "%s", info.will_topic);
-        mqtt_init(malloc(512), 512, malloc(512), 512);
+        mqtt_init(malloc(256), 256, malloc(512), 512);
         mqtt_connect(&ip_addr, port, 1, &info, mqtt_event_handler);
 #endif
         static TimerHandle_t timer IRAM_BSS_ATTR;

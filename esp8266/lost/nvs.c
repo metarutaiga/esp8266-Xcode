@@ -1,4 +1,7 @@
-#include "nvs.h"
+#include "eagle.h"
+#include <nvs.h>
+
+#define TAG __FILE_NAME__
 
 esp_err_t nvs_open(const char* name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle) { return ESP_FAIL; }
 esp_err_t nvs_open_from_partition(const char *part_name, const char* name, nvs_open_mode_t open_mode, nvs_handle_t *out_handle) { return ESP_FAIL; }
@@ -33,7 +36,7 @@ nvs_iterator_t nvs_entry_next(nvs_iterator_t iterator) { return NULL; }
 void nvs_entry_info(nvs_iterator_t iterator, nvs_entry_info_t *out_info) {}
 void nvs_release_iterator(nvs_iterator_t iterator) {}
 
-#include "nvs_flash.h"
+#include <nvs_flash.h>
 
 esp_err_t nvs_flash_init(void) { return ESP_FAIL; }
 esp_err_t nvs_flash_init_partition(const char *partition_label) { return ESP_FAIL; }
