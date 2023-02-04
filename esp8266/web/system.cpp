@@ -62,87 +62,6 @@ bool web_system(void* arg, const char* url, int line)
     }
     case 2:
     {
-        struct ip_info info = {};
-        wifi_get_ip_info(STATION_IF, &info);
-        ip_addr_t dns_server = espconn_dns_getserver(0);
-
-        // IP
-        string ip;
-        string gateway;
-        string subnet;
-        string dns;
-        int fd = fs_open("ip", "r");
-        if (fd >= 0)
-        {
-            ip = fs_gets(number, 128, fd);
-            gateway = fs_gets(number, 128, fd);
-            subnet = fs_gets(number, 128, fd);
-            dns = fs_gets(number, 128, fd);
-            fs_close(fd);
-        }
-        if (ip.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&info.ip));
-            ip = number;
-        }
-        if (gateway.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&info.gw));
-            gateway = number;
-        }
-        if (subnet.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&info.netmask));
-            subnet = number;
-        }
-        if (dns.empty())
-        {
-            os_sprintf(number, IPSTR, IP2STR(&dns_server));
-            dns = number;
-        }
-        html += "<form method='get' action='ip'>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>IP</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='ip' length=32 value='" + ip + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>Gateway</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='gateway' length=32 value='" + gateway + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>Subnet</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='subnet' length=32 value='" + subnet + "'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html +=     "<tr>";
-        html +=         "<td>";
-        html +=             "<label>DNS</label>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input name='dns' length=32 value='" + dns + "'>";
-        html +=         "</td>";
-        html +=         "<td>";
-        html +=             "<input type='submit'>";
-        html +=         "</td>";
-        html +=     "</tr>";
-        html += "</form>";
-        if (httpd_chunk_send(arg, 3, html.data(), html.length()) == false)
-            return true;
-        html.clear();
-    }
-    case 3:
-    {
         // OTA
         string ota;
         int fd = fs_open("ota", "r");
@@ -164,11 +83,11 @@ bool web_system(void* arg, const char* url, int line)
         html +=         "</td>";
         html +=     "</tr>";
         html += "</form>";
-        if (httpd_chunk_send(arg, 4, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 3, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
-    case 4:
+    case 3:
     {
         // MQTT
         string mqtt;
@@ -205,11 +124,11 @@ bool web_system(void* arg, const char* url, int line)
         html +=         "</td>";
         html +=     "</tr>";
         html += "</form>";
-        if (httpd_chunk_send(arg, 5, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 4, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
-    case 5:
+    case 4:
     {
         // NTP
         string ntp;
@@ -250,11 +169,11 @@ bool web_system(void* arg, const char* url, int line)
         html +=         "</td>";
         html +=     "</tr>";
         html += "</form>";
-        if (httpd_chunk_send(arg, 6, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 5, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
-    case 6:
+    case 5:
     {
         html += "</table>";
         html += sntp_get_real_time(sntp_get_current_timestamp());
@@ -267,7 +186,7 @@ bool web_system(void* arg, const char* url, int line)
         // Tail
         html += "</body>";
         html += "</html>";
-        if (httpd_chunk_send(arg, 7, html.data(), html.length()) == false)
+        if (httpd_chunk_send(arg, 6, html.data(), html.length()) == false)
             return true;
         html.clear();
     }
