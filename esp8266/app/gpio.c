@@ -1,7 +1,5 @@
 #include "eagle.h"
 #include <driver/gpio.h>
-#include <esp8266/gpio_register.h>
-#include <esp8266/pin_mux_register.h>
 #include "gpio.h"
 
 struct gpio_handler

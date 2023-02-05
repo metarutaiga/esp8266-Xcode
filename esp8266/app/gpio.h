@@ -4,6 +4,8 @@
 extern "C" {
 #endif
 
+#include <esp8266/gpio_register.h>
+
 #undef GPIO_PIN_ADDR
 #undef GPIO_EN_OUTPUT
 #undef GPIO_DIS_OUTPUT

@@ -1,6 +1,4 @@
 #include "eagle.h"
-#include <driver/gpio.h>
-#include <esp8266/gpio_register.h>
 #include "gpio.h"
 #include "uart.h"
 
