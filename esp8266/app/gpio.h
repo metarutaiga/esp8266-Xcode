@@ -4,8 +4,6 @@
 extern "C" {
 #endif
 
-#define DIRECT_GPIO 1
-#if DIRECT_GPIO
 #undef GPIO_PIN_ADDR
 #undef GPIO_EN_OUTPUT
 #undef GPIO_DIS_OUTPUT
@@ -20,7 +18,6 @@ extern "C" {
     uint32_t address = (set) ? GPIO_OUT_W1TS_ADDRESS : GPIO_OUT_W1TC_ADDRESS; \
     GPIO_REG_WRITE(address, BIT(gpio)); \
 }
-#endif
 
 void gpio_regist(int gpio, void (*handler)(void* arg, int up), void* arg);
 void gpio_pullup(int gpio, bool pullup);

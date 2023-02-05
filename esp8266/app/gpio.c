@@ -4,8 +4,6 @@
 #include <esp8266/pin_mux_register.h>
 #include "gpio.h"
 
-#if DIRECT_GPIO
-
 struct gpio_handler
 {
     void (*handler)(void* arg, int up);
@@ -156,5 +154,3 @@ void gpio_pullup(int gpio, bool pullup)
         PIN_PULLUP_DIS(mux);
     }
 }
-
-#endif

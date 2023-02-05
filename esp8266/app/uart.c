@@ -20,16 +20,10 @@ struct uart_context
     uint8_t buffer[1];
 };
 
-#if DIRECT_GPIO
 static void IRAM_ATTR uart_rx(void* arg, int up)
 {
     struct uart_context* context = arg;
-#else
-static void IRAM_ATTR uart_rx(void* arg)
-{
-    struct uart_context* context = arg;
-    int up = gpio_get_level(context->rx);
-#endif
+
     uint32_t cycle = esp_get_cycle_count();
     int last_cycle;
     int current_cycle = cycle - context->last_cycle;
@@ -108,23 +102,12 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
     context->last_cycle = esp_get_cycle_count() - context->baud_cycle / 2;
     context->buffer_size = buffer_size;
 
-#if DIRECT_GPIO
     gpio_regist(rx, uart_rx, context);
     gpio_regist(tx, NULL, NULL);
     GPIO_DIS_OUTPUT(rx);
     GPIO_EN_OUTPUT(tx);
     gpio_pullup(rx, true);
     gpio_pullup(tx, true);
-#else
-    gpio_isr_handler_add(rx, uart_rx, context);
-    gpio_isr_handler_remove(tx);
-    gpio_set_direction(rx, GPIO_MODE_INPUT);
-    gpio_set_direction(tx, GPIO_MODE_OUTPUT);
-    gpio_set_intr_type(rx, GPIO_INTR_ANYEDGE);
-    gpio_set_intr_type(tx, GPIO_INTR_DISABLE);
-    gpio_set_pull_mode(rx, GPIO_PULLUP_ONLY);
-    gpio_set_pull_mode(tx, GPIO_PULLUP_ONLY);
-#endif
 
 #ifdef DEMO
     TimerHandle_t timer = xTimerCreate("uart", 1000 / portTICK_PERIOD_MS, pdTRUE, context, uart_debug);
@@ -150,19 +133,11 @@ int uart_send(void* uart, const void* buffer, int length)
     for (int i = 0; i < length; ++i)
     {
         uint8_t c = ((uint8_t*)buffer)[i];
-#if DIRECT_GPIO
         GPIO_OUTPUT_SET(context->tx, 0);
-#else
-        gpio_set_level(context->tx, 0);
-#endif
         uart_wait_until(begin, cycle += context->baud_cycle);
         for (int i = 0; i < 8; ++i)
         {
-#if DIRECT_GPIO
             GPIO_OUTPUT_SET(context->tx, c & BIT(i) ? 1 : 0);
-#else
-            gpio_set_level(context->tx, c & BIT(i) ? 1 : 0);
-#endif
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
         switch (context->parity)
@@ -170,29 +145,17 @@ int uart_send(void* uart, const void* buffer, int length)
         default:
             break;
         case 'E':
-#if DIRECT_GPIO
             GPIO_OUTPUT_SET(context->tx, (__builtin_popcount(c) & 1));
-#else
-            gpio_set_level(context->tx, (__builtin_popcount(c) & 1));
-#endif
             uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         case 'O':
-#if DIRECT_GPIO
             GPIO_OUTPUT_SET(context->tx, (__builtin_popcount(c) & 1) ^ 1);
-#else
-            gpio_set_level(context->tx, (__builtin_popcount(c) & 1) ^ 1);
-#endif
             uart_wait_until(begin, cycle += context->baud_cycle);
             break;
         }
         for (int i = 0; i < context->stop; ++i)
         {
-#if DIRECT_GPIO
             GPIO_OUTPUT_SET(context->tx, 1);
-#else
-            gpio_set_level(context->tx, 1);
-#endif
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
         uart_wait_until(begin, cycle += context->baud_cycle / 2);
@@ -262,4 +225,14 @@ int uart_recv(void* uart, void* buffer, int length)
     }
 
     return recv;
+}
+
+void uart_reset(void* uart)
+{
+    struct uart_context* context = uart;
+
+    context->bit = -1;
+    context->head = 0;
+    context->tail = 0;
+    context->last_cycle = esp_get_cycle_count() - context->baud_cycle / 2;
 }
