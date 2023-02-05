@@ -24,6 +24,25 @@ index f3421fc6..f953ba07 100644
          PANIC("%p:%p ", o_pc, o_sp);
          i_pc = o_pc;
          i_sp = o_sp;
+diff --git a/components/freertos/port/esp8266/port.c b/components/freertos/port/esp8266/port.c
+index 89c2da3f..5c8d3cdb 100644
+--- a/components/freertos/port/esp8266/port.c
++++ b/components/freertos/port/esp8266/port.c
+@@ -153,12 +153,13 @@ void IRAM_ATTR xPortSysTickHandle(void *p)
+      * So add code here to calibrate system time.
+      */
+     ccount = soc_get_ccount();
++    soc_set_ccount(0);
++
+     us = ccount / g_esp_ticks_per_us;
+   
+     g_esp_os_us += us;
+     g_esp_os_cpu_clk += ccount;
+ 
+-    soc_set_ccount(0);
+     soc_set_ccompare(_xt_tick_divisor);
+ 
+     ticks = us / 1000 / portTICK_PERIOD_MS;
 diff --git a/components/wpa_supplicant/component.mk b/components/wpa_supplicant/component.mk
 index b12a57f5..08a285ca 100644
 --- a/components/wpa_supplicant/component.mk
