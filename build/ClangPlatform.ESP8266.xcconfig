@@ -191,7 +191,6 @@ OTHER_LDFLAGS = $(inherited) -ltcpip_adapter
 //OTHER_LDFLAGS = $(inherited) -lwear_levelling
 //OTHER_LDFLAGS = $(inherited) -lwifi_provisioning
 OTHER_LDFLAGS = $(inherited) -lwpa_supplicant
-//OTHER_LDFLAGS = $(inherited) -lgcc
 //OTHER_LDFLAGS = $(inherited) -Wl,--end-group
 
 OTHER_LDFLAGS = $(inherited) -Wl,-wrap,default_ssid

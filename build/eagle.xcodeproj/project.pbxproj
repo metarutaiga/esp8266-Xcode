@@ -43,6 +43,8 @@
 		D6D48CBE297A9C7100CAAB46 /* lost.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CBD297A9C7100CAAB46 /* lost.c */; };
 		D6D48CC4297AA03600CAAB46 /* uart.c in Sources */ = {isa = PBXBuildFile; fileRef = D6D48CC2297AA03600CAAB46 /* uart.c */; };
 		D6E27670298BAED90025E428 /* rtc.c in Sources */ = {isa = PBXBuildFile; fileRef = D6E2766E298BAED90025E428 /* rtc.c */; };
+		D6E7E388298F869D00E3B5F7 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6E7E387298F869D00E3B5F7 /* gpio.c */; };
+		D6E7E389298F869D00E3B5F7 /* gpio.c in Sources */ = {isa = PBXBuildFile; fileRef = D6E7E387298F869D00E3B5F7 /* gpio.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +79,8 @@
 		D6D48CC3297AA03600CAAB46 /* uart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = uart.h; path = ../esp8266/app/uart.h; sourceTree = "<group>"; };
 		D6E2766E298BAED90025E428 /* rtc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = rtc.c; path = ../esp8266/app/rtc.c; sourceTree = "<group>"; };
 		D6E2766F298BAED90025E428 /* rtc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = rtc.h; path = ../esp8266/app/rtc.h; sourceTree = "<group>"; };
+		D6E7E386298F869D00E3B5F7 /* gpio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gpio.h; path = ../esp8266/app/gpio.h; sourceTree = "<group>"; };
+		D6E7E387298F869D00E3B5F7 /* gpio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gpio.c; path = ../esp8266/app/gpio.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,6 +165,8 @@
 				D60B6EAA29877A2B00C2E728 /* fota.h */,
 				D668D0E5297A8267009ABBB9 /* fs.c */,
 				D668D0E4297A8267009ABBB9 /* fs.h */,
+				D6E7E387298F869D00E3B5F7 /* gpio.c */,
+				D6E7E386298F869D00E3B5F7 /* gpio.h */,
 				D60B6EAD2987B70100C2E728 /* httpd.c */,
 				D60B6EA8298668DA00C2E728 /* https.c */,
 				D60B6EA7298668DA00C2E728 /* https.h */,
@@ -298,6 +304,7 @@
 				D6E27670298BAED90025E428 /* rtc.c in Sources */,
 				D6D48CBE297A9C7100CAAB46 /* lost.c in Sources */,
 				D668D0E0297934D8009ABBB9 /* libcpp.cpp in Sources */,
+				D6E7E388298F869D00E3B5F7 /* gpio.c in Sources */,
 				D6D48CBB297A861500CAAB46 /* lfs_util.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,6 +329,7 @@
 				D6238DB4298CDA2200BEF5DB /* vfs.c in Sources */,
 				D6238DB5298CDA2200BEF5DB /* system.cpp in Sources */,
 				D6238DB6298CDA2200BEF5DB /* main.cpp in Sources */,
+				D6E7E389298F869D00E3B5F7 /* gpio.c in Sources */,
 				D6238DB7298CDA2200BEF5DB /* startup.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

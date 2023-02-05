@@ -4,10 +4,12 @@
 #include <lwip/apps/sntp.h>
 #include <nvs_flash.h>
 #include "app/fs.h"
+#include "app/gpio.h"
 #include "app/https.h"
 #include "app/mqtt.h"
 #include "app/ota.h"
 #include "app/rtc.h"
+#include "app/uart.h"
 
 #define TAG __FILE_NAME__
 
@@ -132,7 +134,10 @@ extern "C" void app_main()
     ESP_ERROR_CHECK(nvs_flash_init());
     ESP_ERROR_CHECK(esp_netif_init());
     ESP_ERROR_CHECK(esp_event_loop_create_default());
+#if DIRECT_GPIO
+#else
     ESP_ERROR_CHECK(gpio_install_isr_service(0));
+#endif
 
     // Component
     ESP_LOGI(TAG, build_date);
@@ -198,6 +203,9 @@ extern "C" void app_main()
     httpd_register_uri_handler(httpd_server, &web_ntp_uri);
     httpd_register_uri_handler(httpd_server, &web_reset_uri);
     httpd_register_uri_handler(httpd_server, &web_rtc_uri);
-
+#ifdef DEMO
+    // UART
+    uart_init(2, 0, 9600, 8, NULL, 1, 256);
+#endif
     app_setup();
 }
