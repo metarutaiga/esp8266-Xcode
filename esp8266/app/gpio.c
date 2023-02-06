@@ -4,32 +4,31 @@
 
 struct gpio_handler
 {
-    void (*handler)(void* arg, int up);
+    void (*handler)(void* arg, int down, uint32_t cycle);
     void* arg;
 };
 static struct gpio_handler handlers[16] IRAM_BSS_ATTR;
 
 static void IRAM_ATTR gpio_handler(void* arg)
 {
+    uint32_t cycle = esp_get_cycle_count();
     uint32_t gpio_status = GPIO_REG_READ(GPIO_STATUS_ADDRESS);
     if (gpio_status == 0)
         return;
     GPIO_REG_WRITE(GPIO_STATUS_W1TC_ADDRESS, gpio_status);
-    vPortETSIntrLock();
     for (int i = 0; i < 16; ++i)
     {
         if (gpio_status & BIT(i))
         {
             if (handlers[i].handler)
             {
-                handlers[i].handler(handlers[i].arg, GPIO_INPUT_GET(i));
+                handlers[i].handler(handlers[i].arg, GPIO_INPUT_GET(i), cycle);
             }
         }
     }
-    vPortETSIntrUnlock();
 }
 
-void gpio_regist(int gpio, void (*handler)(void* arg, int up), void* arg)
+void gpio_regist(int gpio, void (*handler)(void* arg, int down, uint32_t cycle), void* arg)
 {
     if (gpio < 0 || gpio > 16)
         return;

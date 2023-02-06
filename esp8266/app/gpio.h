@@ -21,7 +21,7 @@ extern "C" {
     GPIO_REG_WRITE(address, BIT(gpio)); \
 }
 
-void gpio_regist(int gpio, void (*handler)(void* arg, int up), void* arg);
+void gpio_regist(int gpio, void (*handler)(void* arg, int down, uint32_t cycle), void* arg);
 void gpio_pullup(int gpio, bool pullup);
 
 #ifdef __cplusplus

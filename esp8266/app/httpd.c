@@ -257,15 +257,15 @@ esp_err_t httpd_resp_send(httpd_req_t* r, const char* buf, ssize_t buf_len)
         char header[128];
         int length = sprintf(header,
                              "HTTP/1.1 %s\r\n"
-                             "%s%s"
-                             "%s%s"
                              "Content-Type: %s\r\n"
+                             "%s%s"
+                             "%s%s"
                              "\r\n",
                              r->aux ? (char*)r->aux : "200 OK",
+                             (char*)((httpd_uri_t*)r->sess_ctx)->user_ctx,
                              r->user_ctx ? (char*)r->user_ctx : "",
                              r->user_ctx ? "\r\n" : "",
-                             "", "",
-                             (char*)((httpd_uri_t*)r->sess_ctx)->user_ctx);
+                             "", "");
         send(r->method, header, length, 0);
         r->content_len += length;
     }
@@ -295,15 +295,15 @@ esp_err_t httpd_resp_send_chunk(httpd_req_t* r, const char* buf, ssize_t buf_len
         char header[128];
         int length = sprintf(header,
                              "HTTP/1.1 %s\r\n"
-                             "%s%s"
-                             "%s%s"
                              "Content-Type: %s\r\n"
+                             "%s%s"
+                             "%s%s"
                              "\r\n",
                              r->aux ? (char*)r->aux : "200 OK",
+                             (char*)((httpd_uri_t*)r->sess_ctx)->user_ctx,
                              r->user_ctx ? (char*)r->user_ctx : "",
                              r->user_ctx ? "\r\n" : "",
-                             "Transfer-Encoding: chunked", "\r\n",
-                             (char*)((httpd_uri_t*)r->sess_ctx)->user_ctx);
+                             "Transfer-Encoding: chunked", "\r\n");
         send(r->method, header, length, 0);
         r->content_len += length;
     }

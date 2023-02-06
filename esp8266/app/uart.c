@@ -18,11 +18,10 @@ struct uart_context
     uint8_t buffer[1];
 };
 
-static void IRAM_ATTR uart_rx(void* arg, int up)
+static void IRAM_ATTR uart_rx(void* arg, int down, uint32_t cycle)
 {
     struct uart_context* context = arg;
 
-    uint32_t cycle = esp_get_cycle_count();
     int last_cycle;
     int current_cycle = cycle - context->last_cycle;
     int previous_cycle = current_cycle - context->baud_cycle;
@@ -30,7 +29,7 @@ static void IRAM_ATTR uart_rx(void* arg, int up)
     {
         if (context->bit == -1)
         {
-            context->bit = 0;
+            context->bit = down ? -1 : 0;
             context->last_cycle = cycle + context->baud_cycle / 2;
             context->buffer[context->head] = 0xFF;
             return;
@@ -40,11 +39,11 @@ static void IRAM_ATTR uart_rx(void* arg, int up)
             int space;
             if (last_cycle < previous_cycle)
             {
-                space = up;
+                space = down;
             }
             else
             {
-                space = up ^ 1;
+                space = down ^ 1;
             }
             if (space)
             {
