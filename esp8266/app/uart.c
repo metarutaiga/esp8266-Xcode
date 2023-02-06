@@ -125,7 +125,6 @@ int uart_send(void* uart, const void* buffer, int length)
 {
     struct uart_context* context = uart;
 
-    vPortETSIntrLock();
     int begin = esp_get_cycle_count();
     int cycle = 0;
     for (int i = 0; i < length; ++i)
@@ -158,7 +157,6 @@ int uart_send(void* uart, const void* buffer, int length)
         }
         uart_wait_until(begin, cycle += context->baud_cycle / 2);
     }
-    vPortETSIntrUnlock();
 
     return length;
 }
