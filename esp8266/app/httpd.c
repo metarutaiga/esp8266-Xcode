@@ -194,10 +194,6 @@ esp_err_t httpd_register_uri_handler(httpd_handle_t handle, const httpd_uri_t* u
         if (strcmp(node->uri_handler.uri, uri_handler->uri) == 0)
         {
             memcpy(&node->uri_handler, uri_handler, sizeof(httpd_uri_t));
-            if (node->uri_handler.user_ctx == NULL)
-            {
-                node->uri_handler.user_ctx = "text/html";
-            }
             return ESP_OK;
         }
         node = node->next;
@@ -206,10 +202,6 @@ esp_err_t httpd_register_uri_handler(httpd_handle_t handle, const httpd_uri_t* u
     node->next = uri_node;
     uri_node = node;
     memcpy(&node->uri_handler, uri_handler, sizeof(httpd_uri_t));
-    if (node->uri_handler.user_ctx == NULL)
-    {
-        node->uri_handler.user_ctx = "text/html";
-    }
     return ESP_OK;
 }
 
@@ -254,6 +246,8 @@ esp_err_t httpd_resp_send(httpd_req_t* r, const char* buf, ssize_t buf_len)
 {
     if (r->content_len == 0)
     {
+        httpd_uri_t* uri = r->sess_ctx;
+
         char header[128];
         int length = sprintf(header,
                              "HTTP/1.1 %s\r\n"
@@ -262,7 +256,7 @@ esp_err_t httpd_resp_send(httpd_req_t* r, const char* buf, ssize_t buf_len)
                              "%s%s"
                              "\r\n",
                              r->aux ? (char*)r->aux : "200 OK",
-                             (char*)((httpd_uri_t*)r->sess_ctx)->user_ctx,
+                             uri->user_ctx ? (char*)uri->user_ctx : "text/html",
                              r->user_ctx ? (char*)r->user_ctx : "",
                              r->user_ctx ? "\r\n" : "",
                              "", "");
@@ -292,6 +286,8 @@ esp_err_t httpd_resp_send_chunk(httpd_req_t* r, const char* buf, ssize_t buf_len
 {
     if (r->content_len == 0)
     {
+        httpd_uri_t* uri = r->sess_ctx;
+
         char header[128];
         int length = sprintf(header,
                              "HTTP/1.1 %s\r\n"
@@ -300,7 +296,7 @@ esp_err_t httpd_resp_send_chunk(httpd_req_t* r, const char* buf, ssize_t buf_len
                              "%s%s"
                              "\r\n",
                              r->aux ? (char*)r->aux : "200 OK",
-                             (char*)((httpd_uri_t*)r->sess_ctx)->user_ctx,
+                             uri->user_ctx ? (char*)uri->user_ctx : "text/html",
                              r->user_ctx ? (char*)r->user_ctx : "",
                              r->user_ctx ? "\r\n" : "",
                              "Transfer-Encoding: chunked", "\r\n");

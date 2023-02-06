@@ -209,15 +209,17 @@ SECTIONS
     _text_start = ABSOLUTE(.);
 
     *(.rodata.__func__* .rodata.__FUNCTION__* .rodata.*str1.1*)
-    *libcore.a:user_interface.o(.rodata2.2)
-    *libesp_event.a:(.rodata)
+    *libpp.a:(.rodata2.*)
+    *libnet80211.a:(.rodata2.*)
+
     *libhttp_parser.a:http_parser.o(.rodata.normal_url_char .rodata.tokens .rodata.unhex)
     *liblwip.a:(.rodata.ip_addr_any .rodata.ip_addr_broadcast .rodata.ethbroadcast .rodata.ethzero)
-    *libnet80211.a:(.rodata .rodata.g_wifi_nvs_cfg .rodata2.*)
+    *libnet80211.a:(.rodata)
     *libphy.a:phy_chip_v6.o(.rodata)
-    *libpp.a:(.rodata .rodata2.*)
+    *libpp.a:(.rodata)
+    *(.rodata..L__const.*_uri)
     *libwpa_supplicant.a:tlsv1_common.o(.rodata.tls_ciphers .rodata.tls_cipher_suites)
-    *(.rodata.cst* .rodata..L* .rodata.err_to_errno_table .rodata.phy_init_data .rodata.__sf_fake_stderr .rodata.__sf_fake_stdout .rodata.__sf_fake_stdin .rodata.__default_global_locale .rodata.__month_lengths .rodata._ctype_)
+    *(.rodata..L* .rodata.err_to_errno_table .rodata.phy_init_data .rodata.__sf_fake_stderr .rodata.__sf_fake_stdout .rodata.__sf_fake_stdin .rodata.__default_global_locale .rodata.__month_lengths .rodata._ctype_)
     *(.rodata.K .rodata.Td0 .rodata.Td4s .rodata.Te0 .rodata.crc*)
     *(.rodata.[a-z]*)
     *(.rodata .rodata.* .rodata2 .rodata2.*)
