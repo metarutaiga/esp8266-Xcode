@@ -117,13 +117,18 @@ static void uart_wait_until(int begin, int cycle)
 {
     while (esp_get_cycle_count() - begin < cycle)
     {
-        vTaskDelay(0);
+        portYIELD();
     }
 }
 
-int uart_send(void* uart, const void* buffer, int length)
+int uart_send(void* uart, const void* buffer, int length, bool disable_interrupt)
 {
     struct uart_context* context = uart;
+
+    if (disable_interrupt)
+    {
+        vPortETSIntrLock();
+    }
 
     int begin = esp_get_cycle_count();
     int cycle = 0;
@@ -156,6 +161,11 @@ int uart_send(void* uart, const void* buffer, int length)
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
         uart_wait_until(begin, cycle += context->baud_cycle / 2);
+    }
+
+    if (disable_interrupt)
+    {
+        vPortETSIntrUnlock();
     }
 
     return length;
