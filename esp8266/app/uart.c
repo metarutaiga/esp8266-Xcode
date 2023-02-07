@@ -1,4 +1,6 @@
 #include "eagle.h"
+#include <driver/gpio.h>
+#include <esp8266/uart_struct.h>
 #include "gpio.h"
 #include "uart.h"
 
@@ -101,10 +103,20 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
 
     gpio_regist(rx, uart_rx, context);
     gpio_regist(tx, NULL, NULL);
-    GPIO_DIS_OUTPUT(rx);
-    GPIO_EN_OUTPUT(tx);
     gpio_pullup(rx, true);
     gpio_pullup(tx, true);
+    if (rx >= 0) GPIO_DIS_OUTPUT(rx);
+    if (tx >= 0) GPIO_EN_OUTPUT(tx);
+
+    if (tx == -2)
+    {
+        PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_UART1_TXD_BK);
+        uart1.clk_div.div_int = UART_CLK_FREQ / baud;
+        uart1.conf0.bit_num = 3;
+        uart1.conf0.parity = parity != 'O' ? 0 : 1;
+        uart1.conf0.parity_en = parity == 0 ? 0 : 1;
+        uart1.conf0.stop_bit_num = stop == 2 ? 3 : 1;
+    }
 
 #ifdef DEMO
     TimerHandle_t timer = xTimerCreate("uart", 1000 / portTICK_PERIOD_MS, pdTRUE, context, uart_debug);
@@ -124,6 +136,18 @@ static void uart_wait_until(int begin, int cycle)
 int uart_send(void* uart, const void* buffer, int length, bool disable_interrupt)
 {
     struct uart_context* context = uart;
+
+    if (context->tx == -2)
+    {
+        const char* text = buffer;
+        for (size_t i = 0; i < length; ++i)
+        {
+            char c = text[i];
+            while (uart1.status.txfifo_cnt >= 127);
+            uart1.fifo.rw_byte = c;
+        }
+        return length;
+    }
 
     if (disable_interrupt)
     {

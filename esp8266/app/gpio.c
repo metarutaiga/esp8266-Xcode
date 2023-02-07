@@ -67,6 +67,9 @@ void gpio_regist(int gpio, void (*handler)(void* arg, int down, uint32_t cycle),
     case 15:
         PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_GPIO15);
         break;
+    default:
+        vPortETSIntrUnlock();
+        return;
     }
     GPIO_DIS_OUTPUT(gpio);
 
