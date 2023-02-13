@@ -20,9 +20,12 @@ extern "C" {
     uint32_t address = (set) ? GPIO_OUT_W1TS_ADDRESS : GPIO_OUT_W1TC_ADDRESS; \
     GPIO_REG_WRITE(address, BIT(gpio)); \
 }
+#define PIN_PULLDWN_DIS(PIN_NAME)   CLEAR_PERI_REG_MASK(PIN_NAME, PERIPHS_IO_MUX_PULLDWN)
+#define PIN_PULLDWN_EN(PIN_NAME)    SET_PERI_REG_MASK(PIN_NAME, PERIPHS_IO_MUX_PULLDWN)
 
-void gpio_regist(int gpio, void (*handler)(void* arg, int down, uint32_t cycle), void* arg);
+void gpio_regist(int gpio, int type, void (*handler)(void* arg, int down, uint32_t cycle), void* arg);
 void gpio_pullup(int gpio, bool pullup);
+void gpio_pulldown(int gpio, bool pulldown);
 
 #ifdef __cplusplus
 }
