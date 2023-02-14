@@ -7,6 +7,8 @@
 
 #define UART_RX_ONE_BIT 0
 
+#define TAG __FILE_NAME__
+
 struct uart_context
 {
     int head;
@@ -132,11 +134,13 @@ static void uart_debug(TaskHandle_t timer)
     int length = uart_recv(context, buffer, 128);
     if (length > 0)
     {
+        char* output = malloc(length * 2 + 16);
         for (int i = 0; i < length; ++i)
         {
-            printf("%02x", buffer[i]);
+            sprintf(output + i * 2, "%02x", buffer[i]);
         }
-        printf("\n");
+        ESP_LOGI(TAG, "%d:%s", length, output);
+        free(output);
     }
 }
 #endif
@@ -222,7 +226,7 @@ int uart_send(void* uart, const void* buffer, int length, bool disable_interrupt
     if (context->tx == -2)
     {
         const char* text = buffer;
-        for (size_t i = 0; i < length; ++i)
+        for (int i = 0; i < length; ++i)
         {
             char c = text[i];
             while (uart1.status.txfifo_cnt >= 127);
@@ -286,7 +290,7 @@ int uart_recv(void* uart, void* buffer, int length)
         if (buffer)
         {
             char* text = buffer;
-            for (size_t i = 0; i < length; ++i)
+            for (int i = 0; i < length; ++i)
             {
                 if (uart0.status.rxfifo_cnt == 0)
                 {

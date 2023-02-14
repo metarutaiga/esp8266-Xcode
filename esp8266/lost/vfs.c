@@ -1,6 +1,7 @@
 #include "eagle.h"
 #include <sys/lock.h>
 #include <esp8266/uart_struct.h>
+#include <esp8266/uart_register.h>
 #include <esp_vfs.h>
 #include <lwip/sockets.h>
 
@@ -29,8 +30,17 @@ ssize_t _write_r(struct _reent* r, int fd, const void* data, size_t size)
 {
     if (fd == 0) {
         static _lock_t write_lock IRAM_BSS_ATTR;
-        const char* text = data;
         __lock_acquire_recursive(write_lock);
+        bool swapped = GET_PERI_REG_BITS(UART_SWAP_REG, 2, 2);
+        uint32_t div_int = 0;
+        if (swapped) {
+            div_int = uart0.clk_div.div_int;
+            while (uart0.status.txfifo_cnt != 0);
+            ets_delay_us(1000);
+            CLEAR_PERI_REG_MASK(UART_SWAP_REG, BIT2);
+            uart0.clk_div.div_int = UART_CLK_FREQ / CONFIG_ESP_CONSOLE_UART_BAUDRATE;
+        }
+        const char* text = data;
         for (size_t i = 0; i < size; ++i) {
             char c = text[i];
             if (c == '\n') {
@@ -39,6 +49,12 @@ ssize_t _write_r(struct _reent* r, int fd, const void* data, size_t size)
             }
             while (uart0.status.txfifo_cnt >= 127);
             uart0.fifo.rw_byte = c;
+        }
+        if (swapped) {
+            while (uart0.status.txfifo_cnt != 0);
+            ets_delay_us(1000);
+            SET_PERI_REG_MASK(UART_SWAP_REG, BIT2);
+            uart0.clk_div.div_int = div_int;
         }
         __lock_release_recursive(write_lock);
         return size;
