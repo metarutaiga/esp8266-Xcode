@@ -157,7 +157,7 @@ void mqtt_setup(const char* ip, int port)
         MQTT_OnConnected(mqtt_client, [](uint32_t* args)
         {
             mqtt_is_connected = mqtt_client;
-            MQTT_Publish(mqtt_client, mqtt_prefix(number, "connected", 0), "true", 0, 0, 1);
+            mqtt_publish(mqtt_prefix(number, "connected", 0), "true", 0, 1);
             MQTT_Subscribe(mqtt_client, mqtt_prefix(number, "set", "#", 0), 0);
             mqtt_information();
 
