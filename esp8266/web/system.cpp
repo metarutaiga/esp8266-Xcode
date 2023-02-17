@@ -351,5 +351,6 @@ bool web_rtc(void* arg, const char* url, int stage)
         httpd_chunk_send(arg, stage + 1, number, os_sprintf(number, "%-3d:%08X\n", stage - 64, data));
         return true;
     }
+
     return false;
 }

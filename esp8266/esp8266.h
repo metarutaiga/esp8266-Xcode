@@ -27,6 +27,8 @@ extern "C" {
     uint32_t address = (set) ? GPIO_OUT_W1TS_ADDRESS : GPIO_OUT_W1TC_ADDRESS; \
     GPIO_REG_WRITE(address, BIT(gpio)); \
 }
+#define PIN_PULLDWN_DIS(PIN_NAME)   CLEAR_PERI_REG_MASK(PIN_NAME, PERIPHS_IO_MUX_PULLUP2)
+#define PIN_PULLDWN_EN(PIN_NAME)    SET_PERI_REG_MASK(PIN_NAME, PERIPHS_IO_MUX_PULLUP2)
 #endif
 
 extern void ets_write_char(char c);
@@ -42,6 +44,8 @@ inline uint32_t IRAM_FLASH_ATTR esp_get_cycle_count()
     __asm__ __volatile__("rsr %0,ccount":"=a"(ccount));
     return ccount;
 }
+extern size_t xPortGetFreeHeapSize(void);
+extern size_t xPortGetFreeHeapSizeRegion(int region);
 
 extern const char version[];
 extern const char build_date[];

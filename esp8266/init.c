@@ -140,3 +140,37 @@ void delay(unsigned int ms)
             break;
     }
 }
+
+uint32 IRAM_FLASH_ATTR user_iram_memory_is_enabled(void)
+{
+    return 1;
+}
+
+size_t xPortGetFreeHeapSizeRegion(int region)
+{
+    extern void prvInsertBlockIntoUsedList();
+    uint32_t* handle = *((uint32_t**)prvInsertBlockIntoUsedList - 1);
+    switch (region)
+    {
+    case 0:
+    {
+        void* temp = os_malloc_dram(4);
+        uint32_t top = handle[16];
+        uint32_t size = handle[17];
+        size_t free = size - ((uint32_t)temp - top);
+        os_free(temp);
+        return free;
+    }
+    case 1:
+    {
+        void* temp = os_malloc_iram(4);
+        uint32_t top = handle[18];
+        uint32_t size = handle[19];
+        size_t free = size - ((uint32_t)temp - top);
+        os_free(temp);
+        return free;
+    }
+    default:
+        return 0;
+    }
+}

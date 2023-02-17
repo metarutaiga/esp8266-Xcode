@@ -4,7 +4,7 @@ MEMORY
 {
   dport0_0_seg :                        org = 0x3FF00000, len = 0x10
   dram0_0_seg :                         org = 0x3FFE8000, len = 0x14000
-  iram1_0_seg :                         org = 0x40100000, len = 0x8000
+  iram1_0_seg :                         org = 0x40100000, len = 0xC000
   irom0_0_seg :                         org = 0x40201010, len = 0xFEFF0
 }
 
@@ -103,10 +103,6 @@ SECTIONS
     *(.init.literal)
     *(.init)
     *libnet80211.a:ieee80211_input.o(.data)
-    *homekit.o(.data..compoundliteral*)
-    *libcJSON.a:cJSON.o(.data.global_hooks)
-    *libesp-homekit.a:server.o(.data.homekit_http_parser_settings)
-    *libhttp-parser.a:http_parser.o(.data.max_header_size)
     *liblwip.a:dhcpserver.o(.data.dhcps_lease_time)
     *liblwip.a:sntp.o(.data.sntp_update_delay)
     *liblwip.a:tcp.o(.data.tcp_next_iss.iss)
@@ -114,15 +110,15 @@ SECTIONS
     *libnet80211.a:ieee80211_action.o(.data)
     *libphy.a:phy_sleep.o(.data)
     *libnet80211.a:wl_chm.o(.text)
-    *libc.a:(.literal .literal.*)
-    *libgcc.a:(.literal .literal.*)
-    *liblwip.a:(.literal .literal.*)
+/*  *libc.a:(.literal .literal.*)  */
+/*  *libgcc.a:(.literal .literal.*)  */
+/*  *liblwip.a:(.literal .literal.*)  */
     *libmain.a:(.literal .literal.*)
     *libphy.a:(.literal .literal.*)
     *libpp.a:(.literal .literal.*)
-    *libc.a:(.text .text.*)
-    *libgcc.a:(.text .text.*)
-    *liblwip.a:(.text .text.*)
+/*  *libc.a:(.text .text.*)  */
+/*  *libgcc.a:(.text .text.*)  */
+/*  *liblwip.a:(.text .text.*)  */
     *libmain.a:(.text .text.*)
     *libphy.a:(.text .text.*)
     *libpp.a:(.text .text.*)
@@ -217,10 +213,10 @@ SECTIONS
     *(.jcr)
     *(.rodata.CSWTCH*)
     *liblwip.a:etharp.o(.rodata.eth*)
-    *libphy.a:phy_chip_v6.o(.rodata)
-    *libphy.a:phy_chip_v6_ana.o(.rodata)
-    *libphy.a:phy_chip_v6_cal.o(.rodata)
-    *libpp.a:pp.o(.rodata)
+/*  *libphy.a:phy_chip_v6.o(.rodata)  */
+/*  *libphy.a:phy_chip_v6_ana.o(.rodata)  */
+/*  *libphy.a:phy_chip_v6_cal.o(.rodata)  */
+/*  *libpp.a:pp.o(.rodata)  */
     *libnet80211.a:wl_cnx.o(.rodata)
     _data_end = ABSOLUTE(.);
   } >dram0_0_seg :dram0_0_phdr
@@ -231,16 +227,10 @@ SECTIONS
 
     *(.sdk.version)
     *(*.rodata.__func__* *.rodata.str* *.pstr* EXCLUDE_FILE(ieee80211_phy.o ieee80211_crypto_tkip.o ieee80211_crypto_wep.o memp.o tcp.o) *.irom.text* *.rodata.sntp_asctime_r.*)
-    *libesp-homekit.a:server.o(.rodata.*response* .rodata.*.http_headers .rodata..L.str.*)
     *libcrypto.a:base64.o(.rodata.base64_table)
     *libmain.a:mem_manager.o(.rodata)
-    *libsodium.a:(.rodata.PAD .rodata._pad0 .rodata._crypto_sign_ed25519_ref10_hinit.DOM2PREFIX)
     *libnet80211.a:ieee80211_phy.o(*.irom.text*)
-    *libhttp-parser.a:http_parser.o(.rodata.normal_url_char .rodata.tokens .rodata.unhex)
     *(*.rodata *.rodata.SP* *.rodata.bigbyte *.rodata.cst* *.rodata.mon_lengths *.rodata.pc* *.rodata.tls_cipher* *.rodata..* *.rodata.phy_data *.rodata.mktime._DAYS_BEFORE_MONTH *.rodata.user_pre_init.at_partition_table *.irom.text*)
-    *libsodium.a:(.rodata.*25519*)
-    *libsodium.a:(.rodata.*)
-    *libesp-homekit.a:crypto.o(.rodata.*)
     *(*.rodata.K *.rodata.lfs_crc.*)
     *(*.rodata.[a-z]*)
     *(*.rodata.*)

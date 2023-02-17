@@ -70,6 +70,8 @@ void wifi(System_Event_t* event)
         {
             ntp = fs_gets(number, 128, fd);
             zone = fs_gets(number, 128, fd);
+            if (zone.find("GMT-") == 0)
+                zone = zone.substr(4);
             fs_close(fd);
         }
         sntp_setservername(0, ntp.data());

@@ -77,11 +77,12 @@ static void mqtt_loop()
 
     // Heap
     static int now_free_heap IRAM_ATTR = 0;
-    int free_heap = system_get_free_heap_size();
+    int free_heap = xPortGetFreeHeapSize();
     if (now_free_heap != free_heap)
     {
         now_free_heap = free_heap;
-        mqtt_publish(mqtt_prefix(number, "ESP", "FreeHeap", 0), itoa(free_heap, number + 64, 10), 0, 0);
+        os_sprintf(number + 64, "%d.%05d", free_heap, xPortGetFreeHeapSize() - xPortGetFreeHeapSizeRegion(1));
+        mqtt_publish(mqtt_prefix(number, "ESP", "FreeHeap", 0), number + 64, 0, 0);
     }
 
     // RSSI

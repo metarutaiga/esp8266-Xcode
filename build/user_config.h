@@ -38,6 +38,7 @@
 #define LFS_NO_DEBUG
 #define LFS_NO_ERROR
 #define LFS_NO_WARN
+#define printf os_printf_plus
 #include "littlefs/lfs.h"
 #endif
 
@@ -84,14 +85,27 @@
 #undef IRAM_ATTR
 #define __STRINGIZE_NX(A) #A
 #define __STRINGIZE(A) __STRINGIZE_NX(A)
+
+#if defined(__XTENSA__)
 #define ICACHE_FLASH_ATTR   __attribute__((section(".irom0.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define ICACHE_RODATA_ATTR  __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define PROGMEM             __attribute__((section(".irom.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define IRAM_FLASH_ATTR     __attribute__((section(".iram0.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
 #define IRAM_ATTR           __attribute__((section(".iram.text." __FILE_NAME__ "." __STRINGIZE(__LINE__))))
+#else
+#define ICACHE_FLASH_ATTR
+#define ICACHE_RODATA_ATTR
+#define PROGMEM
+#define IRAM_FLASH_ATTR
+#define IRAM_ATTR
+#endif
 
-#define pgm_adjust_offset(addr, res)    __asm__("ssa8l\t%1\nsrl\t%0, %1" : "=r"(res) : "r"(addr))
-#define pgm_read_byte(addr)             (__extension__({uint32_t res; pgm_adjust_offset((uint32_t)addr, res); res;}))
-#define pgm_read_dword_aligned(addr)    (*(const uint32_t*)(addr))
+#define pgm_adjust_offset(addr, res) \
+    uint32_t word = *(const uint32_t*)((uint32_t)addr & ~3); \
+    uint32_t shift = ((uint32_t)addr & 3) * 8; \
+    res = word >> shift;
+#define pgm_read_byte(addr)                 (__extension__({uint32_t res; pgm_adjust_offset(addr, res); (uint8_t)res;}))
+#define pgm_read_word(addr)                 (__extension__({uint32_t res; pgm_adjust_offset(addr, res); (uint16_t)res;}))
+#define pgm_read_dword_aligned(addr)        (*(const uint32_t*)(addr))
 
 #endif

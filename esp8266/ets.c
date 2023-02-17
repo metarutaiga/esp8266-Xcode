@@ -22,7 +22,7 @@ bool ets_run_once(uint32_t bit_count)
     {
         tab_task* tab = &ets_tab_task[priority - 1];
         os_event_t* event = &tab->event[tab->offset++];
-        if (tab->size == tab->offset)
+        if (tab->offset == tab->size)
         {
             tab->offset = 0;
         }
