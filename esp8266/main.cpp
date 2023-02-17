@@ -25,7 +25,7 @@ extern const char version[] ICACHE_RODATA_ATTR = "1.00";
 extern const char build_date[] ICACHE_RODATA_ATTR = __DATE__ " " __TIME__;
 extern const char wifi_format[] ICACHE_RODATA_ATTR = "ESP8266_%02X%02X%02X";
 extern const char pass_format[] ICACHE_RODATA_ATTR = "8266ESP_%02X%02X%02X";
-char thisname[16] = "";
+char thisname[24] = "";
 char number[128] = "";
 
 extern "C" void app_wifi(System_Event_t* event) __attribute__((weak));
