@@ -33,7 +33,7 @@ inline int32_t esp_timer_get_time_ms()
 extern const char version[];
 extern const char build_date[];
 extern const char web_css[];
-extern char thisname[16];
+extern char thisname[24];
 extern char number[128];
 
 #ifdef __cplusplus

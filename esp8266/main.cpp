@@ -23,7 +23,7 @@ const char build_date[] RODATA_STR_ATTR = __DATE__ " " __TIME__;
 const char web_css[] RODATA_STR_ATTR = "";
 const char wifi_format[] RODATA_STR_ATTR = "ESP8266_%02X%02X%02X";
 const char pass_format[] RODATA_STR_ATTR = "8266ESP_%02X%02X%02X";
-char thisname[16] = "";
+char thisname[24] = "";
 char number[128] = "";
 
 extern "C" const char* const __wrap_default_ssid = wifi_format;
