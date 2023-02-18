@@ -132,13 +132,13 @@ stop:
         {
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
-        for (int i = 0; i < 8; ++i)
+        for (int i = 0; i < 64; ++i)
         {
             if (GPIO_INPUT_GET(context->rx) == 0)
             {
                 goto next;
             }
-            uart_wait_until(begin, cycle += context->baud_cycle / 2);
+            uart_wait_until(begin, cycle += context->baud_cycle / 8);
         }
 #endif
         return;
