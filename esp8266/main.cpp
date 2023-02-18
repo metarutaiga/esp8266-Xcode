@@ -25,6 +25,7 @@ const char wifi_format[] RODATA_STR_ATTR = "ESP8266_%02X%02X%02X";
 const char pass_format[] RODATA_STR_ATTR = "8266ESP_%02X%02X%02X";
 char thisname[24] = "";
 char number[128] = "";
+bool debug;
 
 extern "C" const char* const __wrap_default_ssid = wifi_format;
 
@@ -86,7 +87,10 @@ static void wifi_handler(void)
     if (fd >= 0)
     {
         if (strcmp(fs_gets(number, 128, fd), "YES") == 0)
+        {
             ota_init(8266);
+            debug = true;
+        }
         fs_close(fd);
     }
 
@@ -138,6 +142,7 @@ extern "C" void app_main()
     // Component
     ESP_LOGI(TAG, build_date);
     fs_init();
+    gpio_init();
     rtc_begin();
 
     // WiFi

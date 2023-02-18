@@ -35,6 +35,7 @@ extern const char build_date[];
 extern const char web_css[];
 extern char thisname[24];
 extern char number[128];
+extern bool debug;
 
 #ifdef __cplusplus
 };

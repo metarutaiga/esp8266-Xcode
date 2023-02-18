@@ -47,6 +47,14 @@ static const uint32_t gpio_address[16] =
     PERIPHS_IO_MUX_MTDO_U,
 };
 
+void gpio_init()
+{
+    for (int i = 0; i < 16; ++i)
+    {
+        GPIO_DIS_OUTPUT(i);
+    }
+}
+
 void gpio_regist(int gpio, int type, void (*handler)(void* arg, int down, uint32_t cycle), void* arg)
 {
     if (gpio < 0 || gpio > 16)

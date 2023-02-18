@@ -23,6 +23,7 @@ extern "C" {
 #define PIN_PULLDWN_DIS(PIN_NAME)   CLEAR_PERI_REG_MASK(PIN_NAME, PERIPHS_IO_MUX_PULLDWN)
 #define PIN_PULLDWN_EN(PIN_NAME)    SET_PERI_REG_MASK(PIN_NAME, PERIPHS_IO_MUX_PULLDWN)
 
+void gpio_init();
 void gpio_regist(int gpio, int type, void (*handler)(void* arg, int down, uint32_t cycle), void* arg);
 void gpio_pullup(int gpio, bool pullup);
 void gpio_pulldown(int gpio, bool pulldown);

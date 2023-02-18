@@ -6,6 +6,7 @@
 #include "uart.h"
 
 #define UART_RX_ONE_BIT 0
+#define UART_RX_FULL 1
 
 #define TAG __FILE_NAME__
 
@@ -31,7 +32,7 @@ static inline void uart_wait_until(int begin, int cycle)
 {
     while (esp_get_cycle_count() - begin < cycle)
     {
-        // portYIELD();
+//      portYIELD();
     }
 }
 
@@ -80,47 +81,69 @@ static void IRAM_ATTR uart_rx(void* arg, int down, uint32_t cycle)
     }
     context->last_cycle += last_cycle;
 #else
-    for (int i = 0; i < 8; ++i)
+    for (int i = 0; i < 256; ++i)
     {
         int begin = esp_get_cycle_count();
         int cycle = 0;
-        if (GPIO_INPUT_GET(context->rx) == 0)
+        for (int i = 0; i < 8; ++i)
         {
-            uint8_t c = 0;
-            for (int i = 0; i < 8; ++i)
+            if (GPIO_INPUT_GET(context->rx) == 0)
             {
-                uart_wait_until(begin, cycle += context->baud_cycle);
-                c |= GPIO_INPUT_GET(context->rx) << i;
-            }
-            switch (context->parity)
-            {
-            default:
-                break;
-            case 'E':
-                uart_wait_until(begin, cycle += context->baud_cycle);
-                break;
-            case 'O':
-                uart_wait_until(begin, cycle += context->baud_cycle);
-                break;
-            }
-            uart_wait_until(begin, cycle += context->baud_cycle);
-            for (int i = 0; i < 8; ++i)
-            {
-                if (GPIO_INPUT_GET(context->rx) == 1)
+                uint8_t c = 0;
+                for (int i = 0; i < 8; ++i)
                 {
-                    context->buffer[context->head] = c;
-                    context->head++;
-                    if (context->head >= context->buffer_size)
-                    {
-                        context->head = 0;
-                    }
-                    return;
+                    uart_wait_until(begin, cycle += context->baud_cycle);
+                    c |= GPIO_INPUT_GET(context->rx) << i;
                 }
-                uart_wait_until(begin, cycle += context->baud_cycle / 8);
+                switch (context->parity)
+                {
+                default:
+                    break;
+                case 'E':
+                    uart_wait_until(begin, cycle += context->baud_cycle);
+                    break;
+                case 'O':
+                    uart_wait_until(begin, cycle += context->baud_cycle);
+                    break;
+                }
+                uart_wait_until(begin, cycle += context->baud_cycle);
+                for (int i = 0; i < 8; ++i)
+                {
+                    if (GPIO_INPUT_GET(context->rx) == 1)
+                    {
+                        context->buffer[context->head] = c;
+                        context->head++;
+                        if (context->head >= context->buffer_size)
+                        {
+                            context->head = 0;
+                        }
+                        goto stop;
+                    }
+                    uart_wait_until(begin, cycle += context->baud_cycle / 8);
+                }
+                goto stop;
             }
-            return;
+            uart_wait_until(begin, cycle += context->baud_cycle / 8);
         }
-        uart_wait_until(begin, cycle += context->baud_cycle / 8);
+
+stop:
+#if UART_RX_FULL
+        for (int i = 0; i < context->stop; ++i)
+        {
+            uart_wait_until(begin, cycle += context->baud_cycle);
+        }
+        for (int i = 0; i < 8; ++i)
+        {
+            if (GPIO_INPUT_GET(context->rx) == 0)
+            {
+                goto next;
+            }
+            uart_wait_until(begin, cycle += context->baud_cycle / 2);
+        }
+#endif
+        return;
+next:
+        continue;
     }
 #endif
 }
@@ -178,7 +201,6 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
         PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTCK_U, FUNC_UART0_CTS);
         PIN_FUNC_SELECT(PERIPHS_IO_MUX_MTDO_U, FUNC_UART0_RTS);
         SET_PERI_REG_MASK(UART_SWAP_REG, BIT2);
-        GPIO_DIS_OUTPUT(13);
         uart0.clk_div.div_int = UART_CLK_FREQ / baud;
         uart0.conf0.bit_num = 3;
         uart0.conf0.parity = parity != 'O' ? 0 : 1;
@@ -189,15 +211,10 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
         uart0.conf0.rxfifo_rst = 1;
         uart0.conf0.rxfifo_rst = 0;
     }
-    else if (rx >= 0)
-    {
-        GPIO_DIS_OUTPUT(rx);
-    }
 
     if (tx == -2)
     {
         PIN_FUNC_SELECT(PERIPHS_IO_MUX_GPIO2_U, FUNC_UART1_TXD_BK);
-        GPIO_EN_OUTPUT(2);
         uart1.clk_div.div_int = UART_CLK_FREQ / baud;
         uart1.conf0.bit_num = 3;
         uart1.conf0.parity = parity != 'O' ? 0 : 1;
@@ -206,10 +223,6 @@ void* uart_init(int rx, int tx, int baud, int data, int parity, int stop, int bu
         uart1.conf0.tx_flow_en = 0;
         uart1.conf0.txfifo_rst = 1;
         uart1.conf0.txfifo_rst = 0;
-    }
-    else if (tx >= 0)
-    {
-        GPIO_EN_OUTPUT(tx);
     }
 
 #ifdef DEMO
@@ -240,6 +253,7 @@ int uart_send(void* uart, const void* buffer, int length, bool disable_interrupt
         vPortETSIntrLock();
     }
 
+    GPIO_EN_OUTPUT(context->tx);
     int begin = esp_get_cycle_count();
     int cycle = 0;
     for (int i = 0; i < length; ++i)
@@ -271,6 +285,7 @@ int uart_send(void* uart, const void* buffer, int length, bool disable_interrupt
         }
         uart_wait_until(begin, cycle += context->baud_cycle + context->baud_cycle / 2);
     }
+    GPIO_DIS_OUTPUT(context->tx);
 
     if (disable_interrupt)
     {
