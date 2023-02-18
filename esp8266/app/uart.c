@@ -128,7 +128,7 @@ static void IRAM_ATTR uart_rx(void* arg, int down, uint32_t cycle)
 
 stop:
 #if UART_RX_FULL
-        for (int i = 0; i < context->stop; ++i)
+        for (int i = 1; i < context->stop; ++i)
         {
             uart_wait_until(begin, cycle += context->baud_cycle);
         }
