@@ -258,7 +258,7 @@ int uart_send(void* uart, const void* buffer, int length, bool disable_interrupt
     int cycle = 0;
     for (int i = 0; i < length; ++i)
     {
-        uint8_t c = ((uint8_t*)buffer)[i];
+        uint8_t c = pgm_read_byte((uint8_t*)buffer + i);
         GPIO_OUTPUT_SET(context->tx, 0);
         for (int i = 0; i < 8; ++i)
         {
