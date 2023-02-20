@@ -129,6 +129,17 @@ static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_
 
         wifi_handler();
     }
+    else if (event_base == IP_EVENT && event_id == IP_EVENT_AP_STAIPASSIGNED)
+    {
+        // OTA
+        int fd = fs_open("ota", "r");
+        if (fd >= 0)
+        {
+            if (strcmp(fs_gets(number, 128, fd), "YES") == 0)
+                ota_init(8266);
+            fs_close(fd);
+        }
+    }
 }
 
 extern "C" void app_setup() __attribute__((weak));
